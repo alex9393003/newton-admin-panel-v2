@@ -6,7 +6,7 @@ export class Appointment {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column('text')
     appt: string
 
 

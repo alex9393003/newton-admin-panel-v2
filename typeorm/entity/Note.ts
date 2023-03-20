@@ -6,7 +6,7 @@ export class Note {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column('text')
     noteName: string
 
 }
