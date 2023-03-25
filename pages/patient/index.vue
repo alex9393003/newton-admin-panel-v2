@@ -20,6 +20,9 @@
             <th class="text-left">
               Calories
             </th>
+            <th class="text-left">
+            </th>
+            
           </tr>
         </thead>
         <tbody class="">
