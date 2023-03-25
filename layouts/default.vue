@@ -42,7 +42,7 @@
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block>
+            <v-btn color="primary" block>
               Logout
             </v-btn>
           </div>
@@ -57,7 +57,7 @@
     </v-app-bar>
 
     <v-main>
-      <!--  -->
+      <NuxtPage />
     </v-main>
   </v-app>
 </template>
@@ -82,13 +82,13 @@ const items =  [
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Client',
-          to: '/client'
+          title: 'Patients',
+          to: '/patient'
         },
         {
           icon: 'mdi-chart-bubble',
           title: 'Notes',
-          to: '/client/notes'
+          to: '/patient/notes'
         },
 
         
