@@ -1,11 +1,11 @@
 import { AppDataSource } from '../connection';
-import { User } from '../entity/User';
+import { Patient } from '../entity/Patient';
 
-export const getAllUsers = async () => {
+export const getAllPatients = async () => {
   try {
     const query = AppDataSource
-      .getRepository(User)
-      .createQueryBuilder('user');
+      .getRepository(Patient)
+      .createQueryBuilder('patient');
 
     const [results, count] = await query.getManyAndCount();
     console.log('results are ', results, ' count is', count)
@@ -13,6 +13,6 @@ export const getAllUsers = async () => {
 
   } catch (error) {
     console.log(error);
-    return error;
+    return error
   }
 };

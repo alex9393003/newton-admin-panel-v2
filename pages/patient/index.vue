@@ -8,6 +8,7 @@
           <v-card-title>
             Patient List
           </v-card-title>
+          <!-- {{ patients }} -->
           <v-spacer></v-spacer>
           <v-btn color="primary" class="ma-2 pa-2">Add New Patient</v-btn>
         </div>
@@ -15,10 +16,10 @@
         <thead>
           <tr>
             <th class="text-left">
-              Name
+              firstName
             </th>
             <th class="text-left">
-              Calories
+              lastName
             </th>
             <th class="text-left">
             </th>
@@ -27,11 +28,11 @@
         </thead>
         <tbody class="">
           <tr
-            v-for="item in desserts"
-            :key="item.name"
+            v-for="item in patients"
+            :key="item.id"
           >
-            <td>{{ item.name }}</td>
-            <td>{{ item.calories }}</td>
+            <td>{{ item.firstName }}</td>
+            <td>{{ item.lastName }}</td>
             <td class="d-flex justify-end">
               <v-btn class="ma-2 pa-2" color="primary" @click="seePatient(item)">See patient</v-btn>
             </td>
@@ -48,23 +49,31 @@
 </template>
 
 <script>
+import { getPatients } from '~/services/patient';
+
+
   export default {
     data () {
       return {
+        patients: [],
         desserts: [
           {
+            id: 1,
             name: 'Frozen Yogurt',
             calories: 159,
           },
           {
+            id: 2,
             name: 'Ice cream sandwich',
             calories: 237,
           },
           {
+            id: 3,
             name: 'Eclair',
             calories: 262,
           },
           {
+            id: 4,
             name: 'Cupcake',
             calories: 305,
           },
@@ -95,9 +104,18 @@
         ],
       }
     },
+    async mounted() {
+      console.log('mounted!');
+      // get patients from patient service
+      this.patients = await getPatients();
+      console.log(this.patients);
+    },
     methods: {
       seePatient (item) {
         console.log(item)
+        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item
+        navigateTo(`/patient/${item.id}`);
+      
       }
     }
   }
