@@ -1,23 +1,6 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer">
-      <!--  -->
-      <!-- <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list> -->
       <v-list-item
           class="my-5"
           title="Pynkerton Chiropractic"
@@ -36,8 +19,6 @@
             :value="item.value"
             :prepend-icon="item.icon"
           ></v-list-item>
-          <!-- <v-list-item :prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
-          <v-list-item :prepend-icon="mdi-forum" title="About" value="about"></v-list-item> -->
         </v-list>
 
         <template v-slot:append>
@@ -52,8 +33,56 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Pynkerton Chiropractic</v-toolbar-title>
       <v-switch class="d-flex justify-end mr-4" v-model="themeToggler"></v-switch>
+          <v-menu
+            min-width="200px"
+            rounded
+          >
+            <template v-slot:activator="{ props }">
+              <v-btn
+                icon
+                v-bind="props"
+                class="mx-16"
+              >
+                <v-avatar
+                  color="brown"
+                  size="large"
+                >
+                  <span class="text-h5">{{ user.initials }}</span>
+                </v-avatar>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text>
+                <div class="mx-auto text-center">
+                  <v-avatar
+                    color="brown"
+                  >
+                    <span class="text-h5">{{ user.initials }}</span>
+                  </v-avatar>
+                  <h3>{{ user.fullName }}</h3>
+                  <p class="text-caption mt-1">
+                    {{ user.email }}
+                  </p>
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                  >
+                    Edit Account
+                  </v-btn>
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                  >
+                    Disconnect
+                  </v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -74,6 +103,11 @@ import Home from '@/pages/index.vue';
 const theme = useTheme();
 const drawer = ref(null);
 const themeToggler = ref(false);
+const user =  {
+        initials: 'JD',
+        fullName: 'John Doe',
+        email: 'john.doe@doe.com',
+      };
 const items =  [
         {
           icon: 'mdi-apps',

@@ -8,6 +8,7 @@
           <v-card-title>
             Patient List
           </v-card-title>
+          <!-- {{ patients }} -->
           <v-spacer></v-spacer>
           <v-btn color="primary" class="ma-2 pa-2">Add New Patient</v-btn>
         </div>
@@ -15,20 +16,23 @@
         <thead>
           <tr>
             <th class="text-left">
-              Name
+              firstName
             </th>
             <th class="text-left">
-              Calories
+              lastName
             </th>
+            <th class="text-left">
+            </th>
+            
           </tr>
         </thead>
         <tbody class="">
           <tr
-            v-for="item in desserts"
-            :key="item.name"
+            v-for="item in patients"
+            :key="item.id"
           >
-            <td>{{ item.name }}</td>
-            <td>{{ item.calories }}</td>
+            <td>{{ item.firstName }}</td>
+            <td>{{ item.lastName }}</td>
             <td class="d-flex justify-end">
               <v-btn class="ma-2 pa-2" color="primary" @click="seePatient(item)">See patient</v-btn>
             </td>
@@ -45,56 +49,27 @@
 </template>
 
 <script>
+import { getPatients } from '~/services/patient';
+
+
   export default {
     data () {
       return {
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-          },
-        ],
+        patients: [],
       }
+    },
+    async mounted() {
+      console.log('mounted!');
+      // get patients from patient service
+      this.patients = await getPatients();
+      console.log(this.patients);
     },
     methods: {
       seePatient (item) {
         console.log(item)
+        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item
+        navigateTo(`/patient/${item.id}`);
+      
       }
     }
   }

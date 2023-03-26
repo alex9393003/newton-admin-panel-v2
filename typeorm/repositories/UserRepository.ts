@@ -13,5 +13,6 @@ export const getAllUsers = async () => {
 
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
