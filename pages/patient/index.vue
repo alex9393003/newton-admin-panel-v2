@@ -56,52 +56,6 @@ import { getPatients } from '~/services/patient';
     data () {
       return {
         patients: [],
-        desserts: [
-          {
-            id: 1,
-            name: 'Frozen Yogurt',
-            calories: 159,
-          },
-          {
-            id: 2,
-            name: 'Ice cream sandwich',
-            calories: 237,
-          },
-          {
-            id: 3,
-            name: 'Eclair',
-            calories: 262,
-          },
-          {
-            id: 4,
-            name: 'Cupcake',
-            calories: 305,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-          },
-        ],
       }
     },
     async mounted() {

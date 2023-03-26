@@ -2,6 +2,11 @@ import api from '@/services/api';
 
 export const getPatients = async () => {
   const { data } = await api.get('/patients');
-  console.log('data are ', data.data);
   return data.data;
 };
+
+export const addPatient = async (payload) => {
+  const { data } = await api.post('/patient', payload);
+  return data.data;
+};
+
