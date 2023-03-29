@@ -12,6 +12,9 @@ export class User {
     @Column('text')
     lastName: string
 
+    @Column('text')
+    email: string
+
     @Column('int')
     age: number
 
