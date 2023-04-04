@@ -119,6 +119,11 @@ const items =  [
           title: 'Patients',
           to: '/patient'
         },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Notes',
+          to: '/notes'
+        },
 
         
       ];
