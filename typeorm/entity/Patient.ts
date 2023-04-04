@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
   } from 'typeorm';
   import { Note } from './Note';
+  import { IsEmail } from 'class-validator';
   
   @Entity()
   export class Patient {
@@ -19,10 +20,11 @@ import {
     @Column('text')
     lastName: string;
   
-    @UpdateDateColumn('date')
+    @UpdateDateColumn({ type: 'timestamp' })
     lastUpdated: Date;
   
     @Column('text')
+    @IsEmail()
     email: string;
   
     @Column('text')
