@@ -28,34 +28,34 @@ import {
     @UpdateDateColumn()
     lastEdited: Date;
   
-    @Column()
+    @Column('number')
     heightFeet: number;
   
-    @Column()
+    @Column('number')
     heightInches: number;
   
-    @Column()
+    @Column('number')
     temperature: number;
   
-    @Column()
+    @Column('number')
     respiration: number;
   
-    @Column()
+    @Column('number')
     systolic: number;
   
-    @Column()
+    @Column('number')
     diastolic: number;
   
-    @Column()
+    @Column('number')
     physiotherapy: number;
   
-    @Column()
+    @Column('number')
     roomAssignment: number;
   
-    @Column()
+    @Column('number')
     physio: number;
   
-    @Column()
+    @Column('number')
     tx: number;
   
     @Column({ type: 'text' })

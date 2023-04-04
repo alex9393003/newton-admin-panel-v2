@@ -32,52 +32,52 @@ import {
     @Column({ type: 'enum', enum: ['l', 'r', 'b'] })
     side: string;
   
-    @Column()
+    @Column('boolean')
     sublux: boolean;
   
-    @Column()
+    @Column('boolean')
     muscleSpasm: boolean;
   
-    @Column()
+    @Column('boolean')
     triggerPoints: boolean;
   
-    @Column()
+    @Column('boolean')
     tenderness: boolean;
   
-    @Column()
+    @Column('boolean')
     numbness: boolean;
   
-    @Column()
+    @Column('boolean')
     edema: boolean;
   
-    @Column()
+    @Column('boolean')
     swelling: boolean;
   
-    @Column()
+    @Column('boolean')
     reducedMotion: boolean;
   
-    @Column()
+    @Column('text')
     positioning: string;
   
-    @Column()
+    @Column('boolean')
     coldPack: boolean;
   
-    @Column()
+    @Column('boolean')
     hotPack: boolean;
   
-    @Column()
+    @Column('boolean')
     electStim: boolean;
   
-    @Column()
+    @Column('boolean')
     traction: boolean;
   
-    @Column()
+    @Column('boolean')
     massage: boolean;
   
-    @Column()
+    @Column('text')
     technique: string;
   
-    @Column()
+    @Column('boolean')
     manipulation: boolean;
   
     @ManyToOne(() => Note, (note) => note.entries)
