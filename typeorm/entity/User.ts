@@ -1,21 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column('text', { nullable: true })
+  firstName: string;
 
-    @Column('text')
-    firstName: string
+  @Column('text', { nullable: true })
+  lastName: string;
 
-    @Column('text')
-    lastName: string
+  @Column('text', { default: 'john@gmail.com', nullable: false })
+  @IsEmail()
+  email: string;
 
-    @Column('text')
-    email: string
-
-    @Column('int')
-    age: number
-
+  @Column('int', { nullable: true })
+  age: number;
 }

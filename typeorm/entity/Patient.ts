@@ -7,31 +7,33 @@ import {
     UpdateDateColumn,
   } from 'typeorm';
   import { Note } from './Note';
+  import { IsEmail } from 'class-validator';
   
   @Entity()
   export class Patient {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column('text')
+    @Column('text', { nullable: false })
     firstName: string;
   
-    @Column('text')
+    @Column('text', { nullable: false })
     lastName: string;
   
-    @UpdateDateColumn('date')
+    @UpdateDateColumn({ type: 'timestamp', nullable: false })
     lastUpdated: Date;
   
-    @Column('text')
+    @Column('text', { default: 'john@gmail.com', nullable: false })
+    @IsEmail()
     email: string;
   
-    @Column('text')
+    @Column('text', { nullable: true })
     phoneNumber: string;
   
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'timestamp', nullable: true })
     nextAppointment: Date;
   
-    @CreateDateColumn('date')
+    @CreateDateColumn({ type: 'timestamp', nullable: false })
     createdDate: Date;
   
     @OneToMany(() => Note, (note) => note.patient)
