@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <v-container>
@@ -50,8 +48,6 @@
 
 <script>
 import { getPatients } from '~/services/patient';
-import { NuxtLink } from '~~/.nuxt/components';
-
 
   export default {
     data () {
@@ -60,14 +56,11 @@ import { NuxtLink } from '~~/.nuxt/components';
       }
     },
     async mounted() {
-      console.log('mounted!');
       // get patients from patient service
       this.patients = await getPatients();
-      console.log(this.patients);
     },
     methods: {
       seePatient (item) {
-        console.log(item)
         // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item. I want to pass props to that route as well
       
         navigateTo(`/patient/${item.id}`);

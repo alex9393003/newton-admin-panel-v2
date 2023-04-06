@@ -20,7 +20,6 @@
               </th>
               <th class="text-left">
               </th>
-              
             </tr>
           </thead>
           <tbody class="">
