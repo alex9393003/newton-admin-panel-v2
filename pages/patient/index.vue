@@ -50,6 +50,7 @@
 
 <script>
 import { getPatients } from '~/services/patient';
+import { NuxtLink } from '~~/.nuxt/components';
 
 
   export default {
@@ -67,9 +68,10 @@ import { getPatients } from '~/services/patient';
     methods: {
       seePatient (item) {
         console.log(item)
-        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item
-        navigateTo(`/patient/${item.id}`);
+        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item. I want to pass props to that route as well
       
+        navigateTo(`/patient/${item.id}`);
+
       }
     }
   }

@@ -30,7 +30,6 @@
                             <div class="d-flex">
                                 <v-card-title>General</v-card-title>
                                 <v-btn color="primary" class="justify-end">Edit General</v-btn>
-                                <v-btn color="primary" @click="seeSpinal()" class="justify-end">Spinal</v-btn>
 
 
 
@@ -51,7 +50,9 @@
                                     <v-card-text>Systolic: 156 lbs </v-card-text>
                                     <v-card-text>Diastolic: 98.7 </v-card-text>
                                 </v-col>
+                                
                             </v-row>
+                            
                     </div>
 
                     <!-- <div class="px-5 py-5">
@@ -59,7 +60,37 @@
                     </div> -->
 
                     <div class="px-5 py-5">
-                        <!-- <v-card-title>General</v-card-title> -->
+                        <v-btn color="primary" @click="toSpinalEntries()" class="mx-2">Spinal Entries</v-btn>
+                        <v-btn color="primary" @click="toExtremityEntries()" class="mx-2">Extremity Entries</v-btn>
+
+
+                    </div>
+                </v-card>
+                <v-card class="w-full mt-5">
+                    <div class="px-5 py-5"> 
+                        <div class="d-flex">
+                                <v-card-title>Additional Notes</v-card-title>
+                                <v-btn color="primary" class="justify-end">Edit Additional Notes</v-btn>
+                            </div>
+                            <v-divider></v-divider>
+                            <div class="px-5 py-5">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+
+                                </p>
+                            </div>
+                        
+                        <!-- <v-textarea
+                            label="Additional Notes"
+                            placeholder="Additional Notes"
+                            outlined
+                            rows="10"
+                        ></v-textarea> -->
                     </div>
                 </v-card>
             </v-col>
@@ -81,9 +112,13 @@
 
         },
         methods: {
-            seeSpinal() {
+            toSpinalEntries() {
                 // we need to grab the patient id from a prop
                 this.$router.push(`/patient/1/note/${this.$route.params.id}/spinal`);
+            },
+            toExtremityEntries() {
+                // we need to grab the patient id from a prop
+                this.$router.push(`/patient/1/note/${this.$route.params.id}/extremity`);
             }
         },
             
