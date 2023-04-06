@@ -92,20 +92,27 @@
   
   <script>
   import { getPatients } from '~~/services/patient';
+  import { patientStore } from '~/store/patient';
 //   get Notes 
 
     export default {
         data () {
             return {
                 notes: [],
+                currentPatient: null,
+                store: null
             
             }
         },
         async mounted() {
-            console.log('mounted!');
-            // get notes from notes service
+            this.store = patientStore();
             this.notes = await getPatients();
-            console.log(this.notes);
+            if (this.store.getCurrentPatient) {
+                this.currentPatient = this.store.getCurrentPatient;
+                console.log('current pateitn is ', this.currentPatient);
+            } else {
+                console.log('not finding current patient');
+            }
         },
         methods: {
             seeNote(item) {

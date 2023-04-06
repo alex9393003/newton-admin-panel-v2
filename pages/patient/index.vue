@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-container>
+      {{ currentPa }}
       <v-card class="elevation-4">
         <div class="py-5 d-flex">
           <v-card-title>
@@ -32,7 +33,7 @@
             <td>{{ item.firstName }}</td>
             <td>{{ item.lastName }}</td>
             <td class="d-flex justify-end">
-              <v-btn class="ma-2 pa-2" color="primary" @click="seePatient(item)">See patient</v-btn>
+              <v-btn class="ma-2 pa-2" color="primary" @click="goToPatient(item)">See patient</v-btn>
             </td>
           </tr>
         </tbody>
@@ -48,23 +49,43 @@
 
 <script>
 import { getPatients } from '~/services/patient';
+import { patientStore } from '~~/store/patient';
+
+
 
   export default {
     data () {
       return {
         patients: [],
+        store: null
       }
     },
     async mounted() {
       // get patients from patient service
       this.patients = await getPatients();
-    },
-    methods: {
-      seePatient (item) {
-        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item. I want to pass props to that route as well
-      
-        navigateTo(`/patient/${item.id}`);
+      this.store = patientStore();
+      if (this.store.getCurrentPatient) {
+        console.log('current patient is set', this.store.getCurrentPatient);
+      } else {
+        console.log('current patient is not set');
+      }
+      this.store.setCurrentPatient({
+        firstName: 'test',
+        lastName: 'test'
+      })
+      console.log(this.store.getCurrentPatient.firstName);
 
+    },
+    computed: {
+      currentPatient() {
+        return this.store.getCurrentPatient;
+      },
+  },
+    methods: {
+      goToPatient (item) {
+        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item. I want to pass props to that route as well
+        this.store.setCurrentPatient(item)
+        navigateTo(`/patient/${item.id}`);
       }
     }
   }
