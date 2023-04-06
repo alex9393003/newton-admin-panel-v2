@@ -1,3 +1,5 @@
+[nodeId]
+
 
 
 <template>
@@ -28,6 +30,8 @@
                             <div class="d-flex">
                                 <v-card-title>General</v-card-title>
                                 <v-btn color="primary" class="justify-end">Edit General</v-btn>
+                                <v-btn color="primary" @click="seeSpinal()" class="justify-end">Spinal</v-btn>
+
 
 
                             </div>
@@ -77,6 +81,10 @@
 
         },
         methods: {
+            seeSpinal() {
+                // we need to grab the patient id from a prop
+                this.$router.push(`/patient/1/note/${this.$route.params.id}/spinal`);
+            }
         },
             
         
