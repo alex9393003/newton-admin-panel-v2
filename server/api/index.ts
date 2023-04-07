@@ -1,9 +1,7 @@
 import 'reflect-metadata';
-// import { getAllUsers } from '~~/typeorm/repositories/UserRepository';
 import { AppDataSource } from '~~/typeorm/connection';
-import { addNewNote, updateNote } from '~/typeorm/repositories/NoteRepository';
+import { addNewNote, updateNote, deleteNote, getNotesByPatientId } from '~/typeorm/repositories/NoteRepository';
 import { Note } from '~/typeorm/entity/Note';
-// import { User } from '~~/typeorm/entity/User';
 
 AppDataSource.initialize().then(async () => {
     console.log('SERVER IS RUNNING WITH TYPEORM');
@@ -23,11 +21,15 @@ AppDataSource.initialize().then(async () => {
         otherNotes: "Some other notes",
       };
       
-      const patientId = 2; // Replace this with the actual patient ID
+      const patientId = 3; // Replace this with the actual patient ID
       
       const res : any = await addNewNote(notePayload, patientId);
-      console.log('response is ', res);
-      const res2 = await updateNote(res.id, { otherNotes: 'Some other notes 2' });
-      console.log('response 2 is ', res2);
+    //   console.log('response is ', res);
+    //   const res2 : any = await updateNote(res.id, { otherNotes: 'Some other notes 2' });
+    //   console.log('response 2 is ', res2);
+        // const res3 = await deleteNote(res2.id);
+        // console.log('response 3 is ', res3);
+    const notesForPatient = await getNotesByPatientId(3);
+    // console.log(notesForPatient);
 
 }).catch(error => console.log(error))

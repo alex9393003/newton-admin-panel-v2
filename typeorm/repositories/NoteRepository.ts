@@ -19,7 +19,6 @@ export const addNewNote = async (payload: Note, patientId: number) => {
       const newNote = notesRepository.create(payload);
       newNote.patient = patient; // Associate the note with the fetched patient
       const savedNote = await notesRepository.save(newNote);
-      console.log('saved note is ', savedNote);
       return savedNote;
     } catch (error) {
       console.log(error);
