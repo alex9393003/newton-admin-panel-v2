@@ -2,17 +2,25 @@ import { AppDataSource } from '../connection';
 import { Patient } from '../entity/Patient';
 import { FindManyOptions } from 'typeorm';
 
-//SaveNewPatient
+// SaveNewPatient
 export const saveNewPatient = async (
-  payload: any
-) => {
+  payload: Partial<Patient>
+): Promise<{ success: boolean; patient?: Patient; error?: string }> => {
   try {
     const patientRepository = AppDataSource.getRepository(Patient);
-    const response = patientRepository.save(payload);
-    return response;
-  } catch (error) {
+
+    // Check if a user with the same email already exists
+    const existingPatient = await patientRepository.findOne({ where: { email: payload.email } });
+    if (existingPatient) {
+      throw new Error('User with this email already exists');
+    }
+
+    const newPatient = patientRepository.create(payload);
+    const savedPatient = await patientRepository.save(newPatient);
+    return { success: true, patient: savedPatient };
+  } catch (error: any) {
     console.log(error);
-    return error;
+    return { success: false, error: (error as Error).message };
   }
 };
 
