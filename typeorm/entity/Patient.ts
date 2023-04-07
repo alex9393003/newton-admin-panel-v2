@@ -5,6 +5,7 @@ import {
     OneToMany,
     CreateDateColumn,
     UpdateDateColumn,
+    JoinColumn,
   } from 'typeorm';
   import { Note } from './Note';
   import { IsEmail } from 'class-validator';

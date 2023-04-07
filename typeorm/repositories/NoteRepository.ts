@@ -1,5 +1,6 @@
 import { AppDataSource } from '../connection';
 import { Patient } from '../entity/Patient';
+import { Note } from '../entity/Note';
 import { FindOneOptions, FindManyOptions } from 'typeorm';
 
 // updatePatient: Updates a patient with the given id and payload.
@@ -24,6 +25,25 @@ export const updatePatient = async (id: number, payload: Partial<Patient>) => {
     return error;
   }
 };
+
+// async function saveNoteWithPatient(notePayload: any, patientId: any) {
+//     const patientRepository = AppDataSource.getRepository(Patient);
+//     const noteRepository = AppDataSource.getRepository(Note);
+  
+//     // Fetch the patient from the database
+//     const patient = await patientRepository.findOne(patientId);
+  
+//     if (!patient) {
+//       throw new Error(`Patient with id ${patientId} not found`);
+//     }
+  
+//     // Create a new Note instance and set the patient
+//     const newNote = noteRepository.create(notePayload);
+//     newNote.patient = patient;
+  
+//     // Save the new note to the database
+//     await noteRepository.save(newNote);
+//   }
 
 // DeletePatient
 export const deletePatient = async (id: number) => {
@@ -62,18 +82,40 @@ export const getPatients = async (filter: FindManyOptions<Patient>) => {
   }
 };
 
-// AddNewPatient
-export const addNewPatient = async (payload: Patient) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const newPatient = patientRepository.create(payload);
-    const savedPatient = await patientRepository.save(newPatient);
-    return savedPatient;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
+// // AddNewNote
+// export const addNewNote = async (payload: Note) => {
+//   try {
+//     const notesRepository = AppDataSource.getRepository(Note);
+//     const newNote = notesRepository.create(payload);
+//     const savedNote = await notesRepository.save(newNote);
+//     return savedNote;
+//   } catch (error) {
+//     console.log(error);
+//     return error;
+//   }
+// };
+
+export const addNewNote = async (payload: Note, patientId: number) => {
+    try {
+      const notesRepository = AppDataSource.getRepository(Note);
+      const patientsRepository = AppDataSource.getRepository(Patient);
+  
+      // Fetch the patient from the database
+      const patient = await patientsRepository.findOne({ where: { id: patientId } });
+  
+      if (!patient) {
+        throw new Error(`Patient with id ${patientId} not found`);
+      }
+  
+      const newNote = notesRepository.create(payload);
+      newNote.patient = patient; // Associate the note with the fetched patient
+      const savedNote = await notesRepository.save(newNote);
+      return savedNote;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
 
 export const getAllPatients = async () => {
   try {
@@ -90,16 +132,16 @@ export const getAllPatients = async () => {
   }
 };
 
-export const saveNewPatient = async (
-    payload: any
-  ) => {
-    try {
-      console.log('saving patient');
-      const patientRepository = AppDataSource.getRepository(Patient);
-      const response = patientRepository.save(payload);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  };
+// export const saveNewNote = async (
+//     payload: any
+//   ) => {
+//     try {
+//       console.log('saving patient');
+//       const patientRepository = AppDataSource.getRepository(Patient);
+//       const response = patientRepository.save(payload);
+//       return response;
+//     } catch (error) {
+//       console.log(error);
+//       return error;
+//     }
+//   };

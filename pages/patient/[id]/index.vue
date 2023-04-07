@@ -11,17 +11,127 @@
                         Notes List
                     </v-card-title>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" class="ma-2 pa-2">Add New Note</v-btn>
+
+                        <v-row justify="center">
+                            <v-dialog
+                            v-model="dialog"
+                            persistent
+                            width="1024"
+                            >
+                            <template v-slot:activator="{ props }">
+                                <v-btn
+                                color="primary"
+                                v-bind="props"
+                                >
+                                Open Dialog
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                <span class="text-h5">User Profile</span>
+                                </v-card-title>
+                                <v-card-text>
+                                <v-container>
+                                    <v-row>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                    >
+                                        <v-text-field
+                                        label="Legal first name*"
+                                        required
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                    >
+                                        <v-text-field
+                                        label="Legal middle name"
+                                        hint="example of helper text only on focus"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="4"
+                                    >
+                                        <v-text-field
+                                        label="Legal last name*"
+                                        hint="example of persistent helper text"
+                                        persistent-hint
+                                        required
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                        label="Email*"
+                                        required
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                        label="Password*"
+                                        type="password"
+                                        required
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                    >
+                                        <v-select
+                                        :items="['0-17', '18-29', '30-54', '54+']"
+                                        label="Age*"
+                                        required
+                                        ></v-select>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        sm="6"
+                                    >
+                                        <v-autocomplete
+                                        :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                                        label="Interests"
+                                        multiple
+                                        ></v-autocomplete>
+                                    </v-col>
+                                    </v-row>
+                                </v-container>
+                                <small>*indicates required field</small>
+                                </v-card-text>
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    color="blue-darken-1"
+                                    variant="text"
+                                    @click="dialog = false"
+                                >
+                                    Close
+                                </v-btn>
+                                <v-btn
+                                    color="blue-darken-1"
+                                    variant="text"
+                                    @click="dialog = false"
+                                >
+                                    Save
+                                </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                            </v-dialog>
+                        </v-row>
+
                     </div>
                     <v-table>
                     <thead>
                     <tr>
                         <th class="text-left">
-                            {{ $route.params.id }}
-                        firstName
+                            First Name
                         </th>
                         <th class="text-left">
-                        lastName
+                            Last Name
                         </th>
                         <th class="text-left">
                         </th>
@@ -36,11 +146,10 @@
                         <td>{{ item.firstName }}</td>
                         <td>{{ item.lastName }}</td>
                         <td class="d-flex justify-end">
-                        <v-btn class="ma-2 pa-2" color="primary" @click="seeNote(item)">See Note</v-btn>
+                        <v-btn class="ma-2 pa-2" color="primary" @click="goToNote(item)">See Note</v-btn>
                         </td>
                     </tr>
                     </tbody>
-                    
                 </v-table>
                 </v-card>
                 <v-hover
@@ -69,18 +178,25 @@
                         </v-avatar>
                     </div>
                     <div class="d-flex align-center justify-space-around">
-                        <!-- <v-card-title>
-                            Hello
-                        </v-card-title> -->
-                        <v-label>First Name</v-label>
-                        <v-card-text>get(First Name)</v-card-text>
+                        <v-label class="">First Name</v-label>
+                        <v-card-text>{{currentPatient?.firstName}}</v-card-text>
                     </div>
                     <div class="d-flex align-center justify-space-around">
-                        <!-- <v-card-title>
-                            Hello
-                        </v-card-title> -->
-                        <v-label>Last Name</v-label>
-                        <v-card-text>get(Last Name)</v-card-text>
+                        <v-label class="">Last Name</v-label>
+                        <v-card-text>{{currentPatient?.lastName}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">Email</v-label>
+
+                        <v-card-text>{{currentPatient?.email}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">Phone</v-label>
+                        <v-card-text class="">{{currentPatient?.phoneNumber}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label>Age</v-label>
+                        <v-card-text>{{currentPatient?.age}}</v-card-text>
                     </div>
                 </v-card>
             </v-col>
@@ -91,37 +207,46 @@
   </template>
   
   <script>
-  import { getPatients } from '~~/services/patient';
+  import { getPatients, addPatient } from '~~/services/patient';
   import { patientStore } from '~/store/patient';
-//   get Notes 
+  import AddNote from '~/components/dialogs/AddNote.vue';
 
     export default {
+        components: {
+            AddNote,
+        },
         data () {
             return {
                 notes: [],
-                currentPatient: null,
-                store: null
-            
+                store: null,
+                dialog: false,
+            }
+        },
+        computed: {
+            currentPatient() {
+                return this.store?.getCurrentPatient;
             }
         },
         async mounted() {
             this.store = patientStore();
             this.notes = await getPatients();
-            if (this.store.getCurrentPatient) {
-                this.currentPatient = this.store.getCurrentPatient;
-                console.log('current pateitn is ', this.currentPatient);
-            } else {
-                console.log('not finding current patient');
-            }
+            await addPatient({ firstName: 'M', lastName: 'T', email: 'yoyo@yoyo.com'})
         },
         methods: {
-            seeNote(item) {
+            goToNote(item) {
                 this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
-            }
+            },
+            async saveNote(note) {
+                console.log('saving note ', note);
+                // const result = await addNoteToServer(note);
+                // if (result.success) {
+                // this.notes.push(note);
+            },
+            showAddNote() {
+                this.dialog = true;
+            },
         },
-            
-        
-}   
+    }
 </script>
   
 <style>
