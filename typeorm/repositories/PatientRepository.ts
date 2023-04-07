@@ -1,12 +1,20 @@
 import { AppDataSource } from '../connection';
 import { Patient } from '../entity/Patient';
-import { FindOneOptions, FindManyOptions } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 
-// updatePatient: Updates a patient with the given id and payload.
-// deletePatient: Deletes a patient with the given id.
-// getPatient: Retrieves a patient with the given id.
-// getPatients: Retrieves patients based on the given filter.
-// addNewPatient: Adds a new patient with the given payload.
+//SaveNewPatient
+export const saveNewPatient = async (
+  payload: any
+) => {
+  try {
+    const patientRepository = AppDataSource.getRepository(Patient);
+    const response = patientRepository.save(payload);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 // UpdatePatient
 export const updatePatient = async (id: number, payload: Partial<Patient>) => {
@@ -62,19 +70,7 @@ export const getPatients = async (filter: FindManyOptions<Patient>) => {
   }
 };
 
-// AddNewPatient
-export const addNewPatient = async (payload: Patient) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const newPatient = patientRepository.create(payload);
-    const savedPatient = await patientRepository.save(newPatient);
-    return savedPatient;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
+//GetAllPatients
 export const getAllPatients = async () => {
   try {
     const query = AppDataSource
@@ -90,16 +86,4 @@ export const getAllPatients = async () => {
   }
 };
 
-export const saveNewPatient = async (
-    payload: any
-  ) => {
-    try {
-      console.log('saving patient');
-      const patientRepository = AppDataSource.getRepository(Patient);
-      const response = patientRepository.save(payload);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  };
+

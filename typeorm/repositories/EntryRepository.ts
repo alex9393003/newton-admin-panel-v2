@@ -1,29 +1,6 @@
 import { AppDataSource } from '../connection';
 import { Entry } from '../entity/Entry';
 import { Note } from '../entity/Note';
-import { FindOneOptions, FindManyOptions } from 'typeorm';
-
-// export const addEntry = async (payload: Entry, noteId: string) => {
-//     try {
-//         const entryRepository = AppDataSource.getRepository(Entry);
-//         const noteRepository = AppDataSource.getRepository(Note);
-
-//         // Fetch the note from the database
-//         const note = await noteRepository.findOne({ where: { id: noteId } });
-
-//         if (!note) {
-//             throw new Error(`Note with id ${noteId} not found`);
-//         }
-
-//         const newEntry = entryRepository.create(payload);
-//         newEntry.note = note; // Associate the entry with the fetched note
-//         const savedEntry = await entryRepository.save(newEntry);
-//         return savedEntry;
-//     } catch (error) {
-//         console.log(error);
-//         return error;
-//     }
-// };
 
 export const addEntry = async (payload: Entry, noteId: string) => {
   try {
@@ -116,4 +93,18 @@ export const getAllEntriesByNoteId = async (noteId: string) => {
         console.log(error);
         return error;
     }
+};
+
+export const getEntryById = async (id: string) => {
+  try {
+    const entriesRepository = AppDataSource.getRepository(Entry);
+    const entry = await entriesRepository.findOne({ where: { id } });
+    if (!entry) {
+      throw new Error(`Entry with id ${id} not found`);
+    }
+    return entry;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
