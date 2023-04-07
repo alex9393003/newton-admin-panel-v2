@@ -6,6 +6,7 @@ import {
     UpdateDateColumn,
     ManyToOne,
     OneToMany,
+    JoinColumn,
   } from 'typeorm';
   import { Patient } from './Patient';
   import { Entry } from './Entry';
@@ -28,40 +29,41 @@ import {
     @UpdateDateColumn()
     lastEdited: Date;
   
-    @Column('number')
+    @Column('integer')
     heightFeet: number;
   
-    @Column('number')
+    @Column('integer')
     heightInches: number;
   
-    @Column('number')
+    @Column('integer')
     temperature: number;
   
-    @Column('number')
+    @Column('integer')
     respiration: number;
   
-    @Column('number')
+    @Column('integer')
     systolic: number;
   
-    @Column('number')
+    @Column('integer')
     diastolic: number;
   
-    @Column('number')
+    @Column('integer')
     physiotherapy: number;
   
-    @Column('number')
+    @Column('integer')
     roomAssignment: number;
   
-    @Column('number')
+    @Column('integer')
     physio: number;
   
-    @Column('number')
+    @Column('integer')
     tx: number;
   
     @Column({ type: 'text' })
     otherNotes: string;
   
     @ManyToOne(() => Patient, (patient) => patient.notes)
+    @JoinColumn()
     patient: Patient;
   
     @OneToMany(() => Entry, (entry) => entry.note)

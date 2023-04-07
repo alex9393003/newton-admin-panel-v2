@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <v-container>
@@ -8,7 +6,6 @@
           <v-card-title>
             Patient List
           </v-card-title>
-          <!-- {{ patients }} -->
           <v-spacer></v-spacer>
           <v-btn color="primary" class="ma-2 pa-2">Add New Patient</v-btn>
         </div>
@@ -34,7 +31,7 @@
             <td>{{ item.firstName }}</td>
             <td>{{ item.lastName }}</td>
             <td class="d-flex justify-end">
-              <v-btn class="ma-2 pa-2" color="primary" @click="seePatient(item)">See patient</v-btn>
+              <v-btn class="ma-2 pa-2" color="primary" @click="goToPatient(item)">See patient</v-btn>
             </td>
           </tr>
         </tbody>
@@ -50,29 +47,32 @@
 
 <script>
 import { getPatients } from '~/services/patient';
+import { patientStore } from '~~/store/patient';
 
-
-  export default {
-    data () {
-      return {
-        patients: [],
-      }
+export default {
+  data () {
+    return {
+      patients: [],
+      store: null
+    }
+  },
+  async mounted() {
+    this.patients = await getPatients();
+    this.store = patientStore();
+  },
+  computed: {
+    currentPatient() {
+      return this.store.getCurrentPatient;
     },
-    async mounted() {
-      console.log('mounted!');
-      // get patients from patient service
-      this.patients = await getPatients();
-      console.log(this.patients);
-    },
-    methods: {
-      seePatient (item) {
-        console.log(item)
-        // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item
-        navigateTo(`/patient/${item.id}`);
-      
-      }
+},
+  methods: {
+    goToPatient (item) {
+      // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item. I want to pass props to that route as well
+      this.store.setCurrentPatient(item)
+      navigateTo(`/patient/${item.id}`);
     }
   }
+}
 </script>
 
 <style>
@@ -80,3 +80,13 @@ import { getPatients } from '~/services/patient';
     height: 50px;
   }
 </style>
+
+// if (this.store.getCurrentPatient) {
+  //   console.log('current patient is set', this.store.getCurrentPatient);
+  // } else {
+  //   console.log('current patient is not set');
+  // }
+  // this.store.setCurrentPatient({
+  //   firstName: 'test',
+  //   lastName: 'test'
+  // })
