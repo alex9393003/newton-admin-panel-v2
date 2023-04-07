@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { AppDataSource } from '~~/typeorm/connection';
 import { addNewNote, updateNote, deleteNote, getNotesByPatientId } from '~/typeorm/repositories/NoteRepository';
 import { Note } from '~/typeorm/entity/Note';
+import { addEntry, updateEntry } from '~/typeorm/repositories/EntryRepository';
 
 AppDataSource.initialize().then(async () => {
     console.log('SERVER IS RUNNING WITH TYPEORM');
@@ -30,6 +31,26 @@ AppDataSource.initialize().then(async () => {
         // const res3 = await deleteNote(res2.id);
         // console.log('response 3 is ', res3);
     const notesForPatient = await getNotesByPatientId(3);
-    // console.log(notesForPatient);
+    const newEntryData: any = {
+        category: 'spinal',
+        region: 'upper-cerv',
+        side: 'l',
+        sublux: true,
+        muscleSpasm: true,
+        triggerPoints: true,
+        tenderness: false,
+        numbness: true,
+        edema: true,
+        swelling: true,
+        reducedMotion: true,
+        positioning: 'some positioning',
+        coldPack: false,
+        hotPack: true,
+        electStim: true,
+        traction: true,
+        massage: true,
+        technique: 'some technique',
+        manipulation: true
+      };
 
 }).catch(error => console.log(error))
