@@ -230,7 +230,6 @@
         async mounted() {
             this.store = patientStore();
             this.notes = await getPatients();
-            await addPatient({ firstName: 'M', lastName: 'T', email: 'yoyo@yoyo.com'})
         },
         methods: {
             goToNote(item) {
