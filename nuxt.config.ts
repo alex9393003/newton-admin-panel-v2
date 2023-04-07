@@ -10,5 +10,12 @@ export default defineNuxtConfig({
             API_BASE_URL: process.env.API_BASE_URL
         }
     },
+    modules: [
+        // pinia plugin
+        '@pinia/nuxt',
+    ],
+    pinia: {
+        autoImports: ['defineStore', 'acceptHMRUpdate'],
+      },
 
 })

@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     ManyToOne,
     OneToMany,
+    JoinColumn
   } from 'typeorm';
   import { Note } from './Note';
 //   import { Treatment } from './Treatment';
@@ -81,6 +82,7 @@ import {
     manipulation: boolean;
   
     @ManyToOne(() => Note, (note) => note.entries)
+    @JoinColumn()
     note: Note;
   
     // @OneToMany(() => Treatment, (treatment) => treatment.entry)

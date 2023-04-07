@@ -6,6 +6,7 @@ import {
     UpdateDateColumn,
     ManyToOne,
     OneToMany,
+    JoinColumn,
   } from 'typeorm';
   import { Patient } from './Patient';
   import { Entry } from './Entry';
@@ -62,6 +63,7 @@ import {
     otherNotes: string;
   
     @ManyToOne(() => Patient, (patient) => patient.notes)
+    @JoinColumn()
     patient: Patient;
   
     @OneToMany(() => Entry, (entry) => entry.note)
