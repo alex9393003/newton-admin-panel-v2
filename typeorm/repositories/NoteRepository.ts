@@ -3,98 +3,7 @@ import { Patient } from '../entity/Patient';
 import { Note } from '../entity/Note';
 import { FindOneOptions, FindManyOptions } from 'typeorm';
 
-// updatePatient: Updates a patient with the given id and payload.
-// deletePatient: Deletes a patient with the given id.
-// getPatient: Retrieves a patient with the given id.
-// getPatients: Retrieves patients based on the given filter.
-// addNewPatient: Adds a new patient with the given payload.
-
-// UpdatePatient
-export const updatePatient = async (id: number, payload: Partial<Patient>) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const patient = await patientRepository.findOne({ where: { id } });
-
-    if (!patient) throw new Error('Patient not found');
-
-    await patientRepository.update(id, payload);
-    const updatedPatient = await patientRepository.findOne({ where: { id } });
-    return updatedPatient;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-// async function saveNoteWithPatient(notePayload: any, patientId: any) {
-//     const patientRepository = AppDataSource.getRepository(Patient);
-//     const noteRepository = AppDataSource.getRepository(Note);
-  
-//     // Fetch the patient from the database
-//     const patient = await patientRepository.findOne(patientId);
-  
-//     if (!patient) {
-//       throw new Error(`Patient with id ${patientId} not found`);
-//     }
-  
-//     // Create a new Note instance and set the patient
-//     const newNote = noteRepository.create(notePayload);
-//     newNote.patient = patient;
-  
-//     // Save the new note to the database
-//     await noteRepository.save(newNote);
-//   }
-
-// DeletePatient
-export const deletePatient = async (id: number) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const result = await patientRepository.delete(id);
-    return result.affected;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-// GetPatient
-export const getPatient = async (id: number) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const patient = await patientRepository.findOne({ where: { id } });
-    if (!patient) throw new Error('Patient not found');
-    return patient;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-// GetPatients
-export const getPatients = async (filter: FindManyOptions<Patient>) => {
-  try {
-    const patientRepository = AppDataSource.getRepository(Patient);
-    const patients = await patientRepository.find(filter);
-    return patients;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
-
-// // AddNewNote
-// export const addNewNote = async (payload: Note) => {
-//   try {
-//     const notesRepository = AppDataSource.getRepository(Note);
-//     const newNote = notesRepository.create(payload);
-//     const savedNote = await notesRepository.save(newNote);
-//     return savedNote;
-//   } catch (error) {
-//     console.log(error);
-//     return error;
-//   }
-// };
-
+//patient must exist for a note to be added so we don't need to add new patients here
 export const addNewNote = async (payload: Note, patientId: number) => {
     try {
       const notesRepository = AppDataSource.getRepository(Note);
@@ -110,6 +19,7 @@ export const addNewNote = async (payload: Note, patientId: number) => {
       const newNote = notesRepository.create(payload);
       newNote.patient = patient; // Associate the note with the fetched patient
       const savedNote = await notesRepository.save(newNote);
+      console.log('saved note is ', savedNote);
       return savedNote;
     } catch (error) {
       console.log(error);
@@ -117,31 +27,69 @@ export const addNewNote = async (payload: Note, patientId: number) => {
     }
   };
 
-export const getAllPatients = async () => {
+export const getAllNotes = async () => {
   try {
     const query = AppDataSource
-      .getRepository(Patient)
-      .createQueryBuilder('patient');
+      .getRepository(Note)
+      .createQueryBuilder('note');
 
     const [results, count] = await query.getManyAndCount();
     return results;
-
   } catch (error) {
     console.log(error);
     return error
   }
 };
 
-// export const saveNewNote = async (
-//     payload: any
-//   ) => {
-//     try {
-//       console.log('saving patient');
-//       const patientRepository = AppDataSource.getRepository(Patient);
-//       const response = patientRepository.save(payload);
-//       return response;
-//     } catch (error) {
-//       console.log(error);
-//       return error;
-//     }
-//   };
+export const updateNote = async (noteId: string, payload: Partial<Note>) => {
+    try {
+      const notesRepository = AppDataSource.getRepository(Note);
+      const result = await notesRepository.update(noteId, payload);
+      if (result.affected === 0) {
+        throw new Error(`Note with id ${noteId} not found`);
+      }
+      return await notesRepository.findOne({ where: { id: noteId } });
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  export const deleteNote = async (noteId: string) => {
+    try {
+      const notesRepository = AppDataSource.getRepository(Note);
+      const result = await notesRepository.delete(noteId);
+      if (result.affected === 0) {
+        throw new Error(`Note with id ${noteId} not found`);
+      }
+      return true;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  export const getNotesByPatientId = async (patientId: number) => {
+    try {
+      const notesRepository = AppDataSource.getRepository(Note);
+      const notes = await notesRepository.find({ where: { patient: { id: patientId } } });
+      return notes;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  export const getNoteById = async (noteId: string) => {
+    try {
+      const notesRepository = AppDataSource.getRepository(Note);
+      const note = await notesRepository.findOne({ where: { id: noteId } });
+      if (!note) {
+        throw new Error(`Note with id ${noteId} not found`);
+      }
+      return note;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
