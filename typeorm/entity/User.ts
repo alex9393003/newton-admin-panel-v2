@@ -1,6 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { IsEmail } from 'class-validator';
 
+export enum UserRole {
+  ADMIN = 'admin',
+  SUPER_ADMIN = 'super-admin',
+  USER = 'user',
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -16,6 +22,9 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column('int', { nullable: true })
-  age: number;
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role: UserRole;
+
+  @Column('text', { nullable: false })
+  firebaseUid: string;
 }

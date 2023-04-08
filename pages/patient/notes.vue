@@ -99,7 +99,6 @@ import { getPatients, addPatient } from '~/services/patient';
         } catch (error) {
           console.log(error);
         }
-        console.log(formData)
       }
     }
   }
