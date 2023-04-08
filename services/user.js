@@ -10,9 +10,30 @@ export const getUser = async (payload) => {
   return data.data;
 };
 
-export const addUser = async (payload) => {
-  const { data } = await api.post('/user/user', payload);
+export const getUserByFirebaseUID = async (payload) => {
+  const { data } = await api.post('/user/user-uid', payload);
   return data.data;
+};
+
+export const addUser = async (payload) => {
+  try {
+
+    const credentials = await createUser(payload.email, payload.password);
+    if (credentials && credentials.user) {
+      const firebaseUid = credentials.user.uid;
+
+      // Save user data in your PostgreSQL database
+      const response = await api.post('/user/user', {
+        payload,
+        firebaseUid
+      });
+
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const updateUser = async (payload) => {

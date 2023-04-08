@@ -8,7 +8,6 @@ export const getAllUsers = async () => {
       .createQueryBuilder('user');
 
     const [results, count] = await query.getManyAndCount();
-    console.log('results are ', results, ' count is', count)
     return results;
 
   } catch (error) {
@@ -24,10 +23,10 @@ export const saveNewUser = async (
   try {
     const userRepository = AppDataSource.getRepository(User);
 
-    // Check if a user with the same email already exists
-    const existingUser = await userRepository.findOne({ where: { email: payload.email } });
+    // Check if a user with the same firebaseUid already exists
+    const existingUser = await userRepository.findOne({ where: { firebaseUid: payload.firebaseUid } });
     if (existingUser) {
-      throw new Error('User with this email already exists');
+      throw new Error('User with this Firebase UID already exists');
     }
 
     const newUser = userRepository.create(payload);
@@ -73,6 +72,19 @@ export const getUser = async (id: number) => {
   try {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOne({ where: { id } });
+    if (!user) throw new Error('User not found');
+    return user;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+// GetUserByFirebaseUid
+export const getUserByFirebaseUid = async (firebaseUid: string) => {
+  try {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { firebaseUid } });
     if (!user) throw new Error('User not found');
     return user;
   } catch (error) {
