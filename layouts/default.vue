@@ -23,7 +23,7 @@
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn color="primary" block>
+            <v-btn color="primary" block @click="signOut()">
               Logout
             </v-btn>
           </div>
@@ -98,8 +98,9 @@
 </script>
 
 <script setup>
+import { userStore } from "~/store/user";
 import { useTheme } from "vuetify";
-import Home from '@/pages/index.vue';
+const store = userStore();
 const theme = useTheme();
 const drawer = ref(null);
 const themeToggler = ref(false);
@@ -119,14 +120,12 @@ const items =  [
           title: 'Patients',
           to: '/patient'
         },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Notes',
-          to: '/notes'
-        },
-
-        
       ];
+
+      //create method signoutuser that sets the isloggedin in user store to be false
+      const signOut = async () => {
+        await signOutUser();
+      };
 watch(themeToggler, () => {
   theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
 });

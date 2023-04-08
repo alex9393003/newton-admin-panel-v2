@@ -58,14 +58,10 @@
         }
       },
       async mounted() {
-        console.log('mounted!');
-        // get patients from patient service
         this.patients = await getPatients();
-        console.log(this.patients);
       },
       methods: {
         seePatient (item) {
-          console.log(item)
           // I want to go to the dynamic route 'patient/[id]' of the id associated with the v-table item
           navigateTo(`/patient/${item.id}`);
         

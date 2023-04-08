@@ -1,9 +1,12 @@
 //https://firebase.google.com/docs/auth/web/start
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getUserByFirebaseUID } from "~/services/user";
+import { signInUserWithAPI } from "~/services/auth";
+import { userStore } from '~/store/user';
+import { User } from '~/typeorm/entity/User';
 
-
-export const createUser = async (email, password) => {
+export const createUser = async (email : string, password : string) => {
     const auth = getAuth();
 
     const credentials = await createUserWithEmailAndPassword(auth, email, password)
@@ -13,42 +16,52 @@ export const createUser = async (email, password) => {
         });
         
         return credentials;
-    
-
 }
 
-export const signInUser = async (email, password) => {
-
+export const signInUser = async (email: string, password: string) => {
     const auth = getAuth();
+    try {
+        const credentials = await signInWithEmailAndPassword(auth, email, password);
+        const res = await signInUserWithAPI(email, password);
 
-    const credentials = await signInWithEmailAndPassword(auth, email, password)
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-
-        return credentials
-
-}
+        if (credentials && res) {
+            return { success: true, credentials };
+        } else {
+            return { success: false, error: 'Error signing user in.' };
+        }
+    } catch (error : any) {
+        console.log('Error signing user in:', error);
+        return { success: false, error: error.message };
+    }
+  };
 
 export const initUser = async () => {
-
     const auth = getAuth();
+    const store = userStore();
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
-          const uid = user.uid;
-          console.log(user);
-        } else {
-            console.log('no user');
-        }
-      });
+            // If the user is logged in, fetch their data from your PostgreSQL database
+            const response = await getUserByFirebaseUID(user.uid); // Replace this with your actual API call to fetch user data from your database
+  
+            if (response) {
+              // Update the store with the user data
+              store.setUser(response);
+              store.setIsLoggedIn(true);
 
+            } else {
+              console.log("Invalid response from getUserByFirebaseUID");
+            }
+        }
+
+      });
 }
 
 export const signOutUser = async () => {
+    const store = userStore();
     const auth = getAuth();
     const result = await auth.signOut();
-    console.log('sign out: ' , result);
+    store.setIsLoggedIn(false);
+    store.setUser({} as User);
     return result;
 }
