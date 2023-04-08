@@ -4,10 +4,17 @@ export default defineNuxtConfig({
     build: {
         transpile: ['vuetify']
     },
+    publicRuntimeConfig: {
+        FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    },
+    privateRuntimeConfig: {
+        FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    },
     plugins: ['~/plugins/typeorm-plugin.ts'],
     runtimeConfig: {
         public: {
-            API_BASE_URL: process.env.API_BASE_URL
+            API_BASE_URL: process.env.API_BASE_URL,
+            FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
         }
     },
     modules: [
@@ -16,6 +23,6 @@ export default defineNuxtConfig({
     ],
     pinia: {
         autoImports: ['defineStore', 'acceptHMRUpdate'],
-      },
+    },
 
 })
