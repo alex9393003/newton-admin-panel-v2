@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { initDataSource } from '~/typeorm/initDataSource';
+import { addNewNote } from '~/typeorm/repositories/NoteRepository';
 
 const AppDataSource = initDataSource()
 
@@ -10,26 +11,26 @@ AppDataSource.initialize().then(async () => {
     ____/ / _  /___   _  _, _/ __ |/ /  _  /___   _  _, _/        _  _, _/ / /_/ /  _  /|  /  _  /|  /  __/ /   _  /|  /  / /_/ /  
     /____/  /_____/   /_/ |_|  _____/   /_____/   /_/ |_|         /_/ |_|  \____/   /_/ |_/   /_/ |_/   /___/   /_/ |_/   \____/   
                                                                                                                                    `);
-    // const notePayload: any = {
-    //     visitDate: new Date(),
-    //     visitTime: new Date(),
-    //     heightFeet: 5,
-    //     heightInches: 10,
-    //     temperature: 13,
-    //     respiration: 16,
-    //     systolic: 120,
-    //     diastolic: 80,
-    //     physiotherapy: 1,
-    //     roomAssignment: 101,
-    //     physio: 1,
-    //     tx: 1,
-    //     otherNotes: "Some other notes",
-    //   };
+    const notePayload: any = {
+        visitDate: new Date(),
+        visitTime: new Date(),
+        heightFeet: 5,
+        heightInches: 10,
+        temperature: 13,
+        respiration: 16,
+        systolic: 120,
+        diastolic: 80,
+        physiotherapy: 1,
+        roomAssignment: 101,
+        physio: 1,
+        tx: 1,
+        otherNotes: "Some other notes",
+      };
       
-    //   const patientId = 3; // Replace this with the actual patient ID
+      const patientId = 3; // Replace this with the actual patient ID
       
-    //   const res : any = await addNewNote(notePayload, patientId);
-    // //   console.log('response is ', res);
+      const res : any = await addNewNote(notePayload, patientId);
+    //   console.log('response is ', res);
     // //   const res2 : any = await updateNote(res.id, { otherNotes: 'Some other notes 2' });
     // //   console.log('response 2 is ', res2);
     //     // const res3 = await deleteNote(res2.id);
