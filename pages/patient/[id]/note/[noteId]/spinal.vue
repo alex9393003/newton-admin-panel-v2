@@ -47,7 +47,7 @@
   </template>
   
   <script>
-  import { getPatients } from '~/services/patient';
+  // import { getPatients } from '~/services/patient';
   
   
     export default {
@@ -58,7 +58,7 @@
       },
       async mounted() {
         // get patients from patient service
-        this.patients = await getPatients();
+        // this.patients = await getPatients();
       },
       methods: {
         seePatient (item) {

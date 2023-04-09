@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getPatients, addPatient } from '~/services/patient';
+// import { getPatients, addPatient } from '~/services/patient';
 
 
   export default {
@@ -75,7 +75,7 @@ import { getPatients, addPatient } from '~/services/patient';
     },
     async mounted() {
       // get patients from patient service
-      this.patients = await getPatients();
+      // this.patients = await getPatients();
     },
     methods: {
       seePatient (item) {
@@ -94,7 +94,7 @@ import { getPatients, addPatient } from '~/services/patient';
           ...this.form
         }
         try {
-          const res = await addPatient(formData);
+          // const res = await addPatient(formData);
           return res;
         } catch (error) {
           console.log(error);
