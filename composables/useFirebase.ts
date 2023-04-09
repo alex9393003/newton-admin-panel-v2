@@ -6,10 +6,8 @@ import { createAuthService } from "~/services/auth";
 import { createUserService } from "~/services/user";
 import { userStore } from '~/store/user';
 import { User } from '~/typeorm/entity/User';
+import { getApiInstance } from "~/utils/apiInstance";
 
-const api = getApiInstance();
-const authService = createAuthService(api as AxiosInstance);
-const userService = createUserService(api as AxiosInstance);
 
 export const createUser = async (email : string, password : string) => {
     const auth = getAuth();
@@ -24,16 +22,22 @@ export const createUser = async (email : string, password : string) => {
 }
 
 export const signInUser = async (email: string, password: string) => {
+    const api = getApiInstance();
     const auth = getAuth();
-    try {
-        
-        const credentials = await signInWithEmailAndPassword(auth, email, password);
-        const res = await authService.signInUserWithAPI(email, password);
+    const authService = createAuthService(api as AxiosInstance);
 
-        if (credentials && res) {
-            return { success: true, credentials };
+    try {
+        const credentials = await signInWithEmailAndPassword(auth, email, password);
+        if (credentials) {
+            const res = await authService.signInUserWithAPI(credentials.user.uid);
+            if (credentials && res) {
+                return { success: true, credentials };
+            } else {
+                return { success: false, error: 'Error signing user in.' };
+            }
         } else {
-            return { success: false, error: 'Error signing user in.' };
+            const res = { success: false, error: 'Error signing user in. Not receiving credentials from Firebase' }
+            return res
         }
     } catch (error : any) {
         console.log('Error signing user in:', error);
@@ -42,8 +46,11 @@ export const signInUser = async (email: string, password: string) => {
   };
 
 export const initUser = async () => {
+    const api = getApiInstance();
     const auth = getAuth();
     const store = userStore();
+    const userService = createUserService(api as AxiosInstance);
+
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {

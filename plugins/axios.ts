@@ -1,15 +1,18 @@
 import axios from "axios";
+import { setApiInstance } from "@/utils/apiInstance";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const config = useRuntimeConfig()
-  const baseURL = config.API_BASE_URL;
+  const config = useRuntimeConfig();
   const api = axios.create({
-    baseURL: baseURL,
+    baseURL: config.API_BASE_URL,
     headers: {
       common: {},
     },
   });
 
-  // make the global variable $api available in all components
+  // Set the api instance
+  setApiInstance(api);
+
+  // Make the global variable $api available in all components
   nuxtApp.vueApp.config.globalProperties.$api = api;
 });

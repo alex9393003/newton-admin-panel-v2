@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     build: {
         transpile: ['vuetify']
     },
-    plugins: ['~/plugins/typeorm-plugin.ts', '~/plugins/firebaseAuth.ts', '~/plugins/axios.ts', '~/plugins/vuetify.ts'],
+    plugins: ['~/plugins/firebaseAuth.ts', '~/plugins/axios.ts', '~/plugins/vuetify.ts'],
     runtimeConfig: {
         public: {
             API_BASE_URL: process.env.API_BASE_URL,
@@ -14,14 +14,14 @@ export default defineNuxtConfig({
             FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
             FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
             FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
-            LOCAL_DB_TYPE: process.env.LOCAL_DB_TYPE,
-            LOCAL_DB_HOST: process.env.LOCAL_DB_HOST,
-            LOCAL_DB_PORT: process.env.LOCAL_DB_PORT,
-            LOCAL_DB_USERNAME: process.env.LOCAL_DB_USERNAME,
-            LOCAL_DB_PASSWORD: process.env.LOCAL_DB_PASSWORD,
-            LOCAL_DB_DATABASE: process.env.LOCAL_DB_DATABASE,
-            LOCAL_DB_SYNCHRONIZE: process.env.LOCAL_DB_SYNCHRONIZE,
-            LOCAL_DB_LOGGING: process.env.LOCAL_DB_LOGGING,
+            DB_TYPE: process.env.DB_TYPE,
+            DB_HOST: process.env.DB_HOST,
+            DB_PORT: process.env.DB_PORT,
+            DB_USERNAME: process.env.DB_USERNAME,
+            DB_PASSWORD: process.env.DB_PASSWORD,
+            DB_DATABASE: process.env.DB_DATABASE,
+            DB_SYNCHRONIZE: process.env.DB_SYNCHRONIZE,
+            DB_LOGGING: process.env.DB_LOGGING,
         }
     },
     

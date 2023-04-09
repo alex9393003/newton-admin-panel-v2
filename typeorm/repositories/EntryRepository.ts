@@ -1,6 +1,10 @@
-import { AppDataSource } from '../connection';
-import { Entry } from '../entity/Entry';
-import { Note } from '../entity/Note';
+import { getAppDataSource } from "../connection";
+import { Entry } from "../entity/Entry";
+import { Note } from "../entity/Note";
+import { initDataSource } from "../initDataSource";
+
+
+const AppDataSource = initDataSource();
 
 export const addEntry = async (payload: Entry, noteId: string) => {
   try {

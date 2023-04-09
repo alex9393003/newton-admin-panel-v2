@@ -238,7 +238,6 @@
                 this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
             },
             async saveNote(note) {
-                console.log('saving note ', note);
                 // const result = await addNoteToServer(note);
                 // if (result.success) {
                 // this.notes.push(note);

@@ -1,5 +1,7 @@
-import { AppDataSource } from '../connection';
 import { User } from '../entity/User';
+import { initDataSource } from "../initDataSource";
+
+const AppDataSource = initDataSource();
 
 export const getAllUsers = async () => {
   try {

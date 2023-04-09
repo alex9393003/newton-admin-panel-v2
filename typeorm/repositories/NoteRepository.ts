@@ -1,7 +1,10 @@
-import { AppDataSource } from '../connection';
 import { Patient } from '../entity/Patient';
 import { Note } from '../entity/Note';
 import { FindOneOptions, FindManyOptions } from 'typeorm';
+import { initDataSource } from "../initDataSource";
+
+
+const AppDataSource = initDataSource();
 
 //patient must exist for a note to be added so we don't need to add new patients here
 export const addNewNote = async (payload: Note, patientId: number) => {

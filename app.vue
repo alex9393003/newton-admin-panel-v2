@@ -28,6 +28,7 @@
             <v-btn
               color="primary"
               @click="signIn()"
+              :disabled="loading"
             >
               Log In
             </v-btn>
@@ -61,6 +62,7 @@ export default {
             password: '',
             loginUnsuccessful: false,
             store: null,
+            loading: false,
         }
     },
     computed: {
@@ -77,18 +79,20 @@ export default {
       await initUser();
     },
     methods: {
-        async signIn() {
-          try {
-            const credentials = await signInUser(this.email, this.password);
-            if (!credentials) {
-              this.loginUnsuccessful = true;
-            }
-            return credentials
-          } catch(err) {
-            console.log('Sign in unsuccessful', err);
+      async signIn() {
+        this.loading = true;
+        try {
+          const credentials = await signInUser(this.email, this.password);
+          if (!credentials) {
+            this.loginUnsuccessful = true;
           }
-
+          return credentials;
+        } catch (err) {
+          console.log("Sign in unsuccessful", err);
+        } finally {
+          this.loading = false;
         }
+      },
     },
 }
 </script>
