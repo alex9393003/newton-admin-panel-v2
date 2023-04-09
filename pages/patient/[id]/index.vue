@@ -207,9 +207,9 @@
   </template>
   
   <script>
-  import { getPatients, addPatient } from '~~/services/patient';
   import { patientStore } from '~/store/patient';
   import AddNote from '~/components/dialogs/AddNote.vue';
+  import { createPatientService } from '~~/services/patient';
 
     export default {
         components: {
@@ -220,6 +220,7 @@
                 notes: [],
                 store: null,
                 dialog: false,
+                patientService: null
             }
         },
         computed: {
@@ -228,8 +229,9 @@
             }
         },
         async mounted() {
+            this.patientService = createPatientService(this.$api);
             this.store = patientStore();
-            this.notes = await getPatients();
+            this.notes = await this.patientService.getPatients(this.$route.params.id);
         },
         methods: {
             goToNote(item) {

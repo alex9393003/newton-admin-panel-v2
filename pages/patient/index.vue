@@ -43,12 +43,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { getPatients } from '~/services/patient';
-import { patientStore } from '~/store/patient';
+import { createPatientService } from '~/services/patient';
+import { patientStore } from '~~/store/patient';
 
 const router = useRouter();
 const patients = ref([]);
 const store = patientStore();
+const $api = getCurrentInstance().appContext.config.globalProperties.$api;
+const patientService = createPatientService($api)
 
 definePageMeta({
   middleware: 'auth',
@@ -56,7 +58,9 @@ definePageMeta({
 })
 
 onMounted(async () => {
-  patients.value = await getPatients();
+  // patients.value = await patientService.getPatients();
+  patients.value = await patientService.getPatients();
+  // patients.value = await getPatients();
 });
 
 const goToPatient = (item) => {

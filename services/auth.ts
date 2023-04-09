@@ -1,6 +1,7 @@
-import api from '@/services/api';
+import { AxiosInstance } from "axios";
 
-export const signInUserWithAPI = async (email, password) => {
+export const createAuthService = (api : AxiosInstance) => ({
+  signInUserWithAPI: async (email : string, password : string) => {
     try {
       const credentials = await signInUser(email, password);
       if (credentials && credentials.user) {
@@ -18,4 +19,5 @@ export const signInUserWithAPI = async (email, password) => {
       console.error(error);
       throw error;
     }
-  };
+  }
+});
