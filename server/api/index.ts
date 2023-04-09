@@ -11,6 +11,10 @@ AppDataSource.initialize().then(async () => {
     ____/ / _  /___   _  _, _/ __ |/ /  _  /___   _  _, _/        _  _, _/ / /_/ /  _  /|  /  _  /|  /  __/ /   _  /|  /  / /_/ /  
     /____/  /_____/   /_/ |_|  _____/   /_____/   /_/ |_|         /_/ |_|  \____/   /_/ |_/   /_/ |_/   /___/   /_/ |_/   \____/   
                                                                                                                                    `);
+    console.log('established a connection with the database');
+    const config = useRuntimeConfig()
+    console.log('DB_HOST is ', config.public.DB_HOST);
+    
     const notePayload: any = {
         visitDate: new Date(),
         visitTime: new Date(),
