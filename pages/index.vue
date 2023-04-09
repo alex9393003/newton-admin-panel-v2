@@ -2,7 +2,7 @@
     <v-container>
       <v-row justify="center" align="center">
         <v-col cols="6" sm="8" md="6">
-
+          <div v-if="DBHost">DB HOST EXISTS</div>
           <v-hover
           v-slot="{ isHovering, props }"
           open-delay="50"
