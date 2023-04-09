@@ -2,6 +2,7 @@
     <v-container>
       <v-row justify="center" align="center">
         <v-col cols="6" sm="8" md="6">
+
           <v-hover
           v-slot="{ isHovering, props }"
           open-delay="50"
@@ -46,9 +47,15 @@
     
     <script>
     export default {
-      async mounted() {
 
-      },
+    data () {
+      DBHost: null
+    },
+
+    async mounted() {
+      const config = useRuntimeConfig()
+      this.DBHost = config.public
+    },
     }
     </script>
   
