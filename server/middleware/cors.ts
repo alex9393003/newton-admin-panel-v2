@@ -11,6 +11,6 @@ export default defineEventHandler((event) => {
       event.res.statusMessage = "No Content."
       return 'OK'
     } else {
-      return console.log('not okay');
+      return 
     }
   })
