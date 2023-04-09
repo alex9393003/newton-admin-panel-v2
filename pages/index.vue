@@ -47,6 +47,7 @@
     </template>
     
     <script>
+
     export default {
 
     data () {
@@ -55,7 +56,7 @@
 
     async mounted() {
       const config = useRuntimeConfig()
-      this.DBHost = config.public
+      this.DBHost = config
     },
     }
     </script>
