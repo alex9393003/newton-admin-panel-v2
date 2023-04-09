@@ -1,14 +1,15 @@
+//https://firebase.google.com/docs/auth/web/start
+
 import { AxiosInstance } from "axios";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { createAuthService } from "~/services/auth";
 import { createUserService } from "~/services/user";
 import { userStore } from '~/store/user';
 import { User } from '~/typeorm/entity/User';
-import { getApiInstance } from '~/utils/getApiInstance';
 
 const api = getApiInstance();
-const { signInUserWithAPI } = createAuthService(api as AxiosInstance);
-const { getUserByFirebaseUID } = createUserService(api as AxiosInstance);
+const authService = createAuthService(api as AxiosInstance);
+const userService = createUserService(api as AxiosInstance);
 
 export const createUser = async (email : string, password : string) => {
     const auth = getAuth();
@@ -25,22 +26,20 @@ export const createUser = async (email : string, password : string) => {
 export const signInUser = async (email: string, password: string) => {
     const auth = getAuth();
     try {
+        
         const credentials = await signInWithEmailAndPassword(auth, email, password);
-        const res = await signInUserWithAPI(email, password);
+        const res = await authService.signInUserWithAPI(email, password);
 
         if (credentials && res) {
             return { success: true, credentials };
         } else {
             return { success: false, error: 'Error signing user in.' };
         }
-    } catch (error : unknown) {
-        if (error instanceof Error) {
-            console.log('Error signing user in:', error);
-            return { success: false, error: error.message };
-        }
-        return { success: false, error: 'Unknown error.' };
+    } catch (error : any) {
+        console.log('Error signing user in:', error);
+        return { success: false, error: error.message };
     }
-};
+  };
 
 export const initUser = async () => {
     const auth = getAuth();
@@ -48,16 +47,18 @@ export const initUser = async () => {
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            // If the user is logged in, fetch their data from your PostgreSQL database
             try {
-                const response = await getUserByFirebaseUID(user.uid);
+                const response = await userService.getUserByFirebaseUID(user.uid); // Replace this with your actual API call to fetch user data from your database
                 if (response) {
+                    // Update the store with the user data
                     store.setUser(response);
                     store.setIsLoggedIn(true);
                 } else {
                     console.log("Invalid response from getUserByFirebaseUID");
                 }
-            } catch (error) {
-                console.error("Error in initUser:", error);
+            } catch (err) {
+                return err
             }
         }
     });
