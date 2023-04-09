@@ -1,8 +1,7 @@
 import 'reflect-metadata';
-import { AppDataSource } from '~~/typeorm/connection';
-import { addNewNote, updateNote, deleteNote, getNotesByPatientId } from '~/typeorm/repositories/NoteRepository';
-import { Note } from '~/typeorm/entity/Note';
-import { addEntry, updateEntry } from '~/typeorm/repositories/EntryRepository';
+import { initDataSource } from '~/typeorm/initDataSource';
+
+const AppDataSource = initDataSource()
 
 AppDataSource.initialize().then(async () => {
     console.log(`__________________________ ___    ____________________        ________ _____  _______   _______   _______________   ___________

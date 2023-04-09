@@ -1,6 +1,8 @@
-import { AppDataSource } from '../connection';
 import { Patient } from '../entity/Patient';
 import { FindManyOptions } from 'typeorm';
+import { initDataSource } from "../initDataSource";
+
+const AppDataSource = initDataSource();
 
 // SaveNewPatient
 export const saveNewPatient = async (

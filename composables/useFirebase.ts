@@ -1,10 +1,13 @@
 //https://firebase.google.com/docs/auth/web/start
 
+import { AxiosInstance } from "axios";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { getUserByFirebaseUID } from "~/services/user";
-import { signInUserWithAPI } from "~/services/auth";
+import { createAuthService } from "~/services/auth";
+import { createUserService } from "~/services/user";
 import { userStore } from '~/store/user';
 import { User } from '~/typeorm/entity/User';
+import { getApiInstance } from "~/utils/apiInstance";
+
 
 export const createUser = async (email : string, password : string) => {
     const auth = getAuth();
@@ -19,15 +22,22 @@ export const createUser = async (email : string, password : string) => {
 }
 
 export const signInUser = async (email: string, password: string) => {
+    const api = getApiInstance();
     const auth = getAuth();
+    const authService = createAuthService(api as AxiosInstance);
+
     try {
         const credentials = await signInWithEmailAndPassword(auth, email, password);
-        const res = await signInUserWithAPI(email, password);
-
-        if (credentials && res) {
-            return { success: true, credentials };
+        if (credentials) {
+            const res = await authService.signInUserWithAPI(credentials.user.uid);
+            if (credentials && res) {
+                return { success: true, credentials };
+            } else {
+                return { success: false, error: 'Error signing user in.' };
+            }
         } else {
-            return { success: false, error: 'Error signing user in.' };
+            const res = { success: false, error: 'Error signing user in. Not receiving credentials from Firebase' }
+            return res
         }
     } catch (error : any) {
         console.log('Error signing user in:', error);
@@ -36,25 +46,29 @@ export const signInUser = async (email: string, password: string) => {
   };
 
 export const initUser = async () => {
+    const api = getApiInstance();
     const auth = getAuth();
     const store = userStore();
+    const userService = createUserService(api as AxiosInstance);
+
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             // If the user is logged in, fetch their data from your PostgreSQL database
-            const response = await getUserByFirebaseUID(user.uid); // Replace this with your actual API call to fetch user data from your database
-  
-            if (response) {
-              // Update the store with the user data
-              store.setUser(response);
-              store.setIsLoggedIn(true);
-
-            } else {
-              console.log("Invalid response from getUserByFirebaseUID");
+            try {
+                const response = await userService.getUserByFirebaseUID(user.uid); // Replace this with your actual API call to fetch user data from your database
+                if (response) {
+                    // Update the store with the user data
+                    store.setUser(response);
+                    store.setIsLoggedIn(true);
+                } else {
+                    console.log("Invalid response from getUserByFirebaseUID");
+                }
+            } catch (err) {
+                return err
             }
         }
-
-      });
+    });
 }
 
 export const signOutUser = async () => {

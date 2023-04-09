@@ -1,17 +1,18 @@
 import axios from "axios";
-import { baseURL } from "nuxt/dist/core/runtime/nitro/paths";
-export default defineNuxtPlugin((nuxtApp) => {
-  const baseURL = "<https://localhost:3000>"
+import { setApiInstance } from "@/utils/apiInstance";
 
-  let api = axios.create({
-    url: baseURL,
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
+  const api = axios.create({
+    baseURL: config.API_BASE_URL,
     headers: {
       common: {},
     },
   });
-return {
-    provide: {
-      api: api,
-    },
-  };
+
+  // Set the api instance
+  setApiInstance(api);
+
+  // Make the global variable $api available in all components
+  nuxtApp.vueApp.config.globalProperties.$api = api;
 });
