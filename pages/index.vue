@@ -2,6 +2,8 @@
     <v-container>
       <v-row justify="center" align="center">
         <v-col cols="6" sm="8" md="6">
+          <div v-if="DBHost">DB HOST EXISTS</div>
+          <div v-else>DB HOST DOES NOT EXIST</div>
           <v-hover
           v-slot="{ isHovering, props }"
           open-delay="50"
@@ -45,10 +47,19 @@
     </template>
     
     <script>
-    export default {
-      async mounted() {
 
-      },
+
+    export default {
+
+
+    data () {
+      DBHost: null
+    },
+
+    async mounted() {
+      const { publicConfig } = useRuntimeConfig()
+      this.DBHost = publicConfig
+    },
     }
     </script>
   
