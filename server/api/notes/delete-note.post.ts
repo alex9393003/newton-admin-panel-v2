@@ -1,5 +1,5 @@
 
-import { deleteNote } from "~/typeorm/repositories/NoteRepository";
+import { deleteNote } from "~/server/typeorm/repositories/NoteRepository";
 
 export default defineEventHandler(async event => {
     const body = await readBody(event);

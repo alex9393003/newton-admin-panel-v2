@@ -1,5 +1,5 @@
 
-import { deletePatient } from "~/typeorm/repositories/PatientRepository";
+import { deletePatient } from "~/server/typeorm/repositories/PatientRepository";
 
 export default defineEventHandler(async event => {
     const body = await readBody(event);

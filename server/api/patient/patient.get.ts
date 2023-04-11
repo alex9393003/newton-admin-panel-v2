@@ -1,4 +1,4 @@
-import { getPatient } from "~/typeorm/repositories/PatientRepository";
+import { getPatient } from "~/server/typeorm/repositories/PatientRepository";
 
 export default defineEventHandler(async event => {
     const body = await readBody(event);

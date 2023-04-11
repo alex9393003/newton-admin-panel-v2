@@ -1,4 +1,4 @@
-import { getUserByFirebaseUid } from "~~/typeorm/repositories/UserRepository";
+import { getUserByFirebaseUid } from "~/server/typeorm/repositories/UserRepository";
 
 export default defineEventHandler(async event => {
     console.log('hitting the server route');

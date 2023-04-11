@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Patient } from '~/typeorm/entity/Patient'
+import { Patient } from '~/server/typeorm/entity/Patient'
 
 interface PatientState {
   currentPatient: Patient;

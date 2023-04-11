@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { User } from '~~/typeorm/entity/User';
+import { User } from '~/server/typeorm/entity/User';
 
 interface UserState {
   user: User;

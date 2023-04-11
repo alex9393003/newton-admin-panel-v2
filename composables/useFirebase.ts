@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { createAuthService } from "~/services/auth";
 import { createUserService } from "~/services/user";
 import { userStore } from '~/store/user';
-import { User } from '~/typeorm/entity/User';
+import { User } from '~/server/typeorm/entity/User';
 import { getApiInstance } from "~/utils/apiInstance";
 
 

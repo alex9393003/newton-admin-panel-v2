@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { initDataSource } from '~/typeorm/initDataSource';
-import { addNewNote } from '~/typeorm/repositories/NoteRepository';
+import { initDataSource } from '~/server/typeorm/initDataSource';
+import { addNewNote } from '~/server/typeorm/repositories/NoteRepository';
 
 const AppDataSource = initDataSource()
 console.log('in my server/api index.ts file and the AppDataSource is ');
