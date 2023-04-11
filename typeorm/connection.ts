@@ -31,11 +31,11 @@ export function getAppDataSource(config: {
       migrations: [],
       subscribers: [],
     });
-    console.log('in my connection.ts file and new appdatasource is ', AppDataSource);
+    console.log('in my connection.ts file and new appdatasource is ');
 
   }
 
-  console.log('in my connection.ts file and about to return AppDataSource', AppDataSource)
+  console.log('in my connection.ts file and about to return AppDataSource')
 
   return AppDataSource;
 }

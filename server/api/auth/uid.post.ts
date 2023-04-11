@@ -5,12 +5,12 @@ export default defineEventHandler(async event => {
     const body = await readBody(event);
     const res : any = await getUserByFirebaseUid(body.firebaseUid);
     if (res instanceof Error) { 
-        console.log('in server route and the error is ', res);
+        console.log('in server route and the error is ');
         return {
           error: res // return the error message
         }
       } else {
-        console.log('in server route and NO ERROR and the res is ', res)
+        console.log('in server route and NO ERROR and the res is ')
         return {
             data: res.firebaseUid
           }

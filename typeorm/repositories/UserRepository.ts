@@ -5,7 +5,7 @@ console.log('in user repository and about to call initDataSource()');
 
 const AppDataSource = initDataSource();
 
-console.log('in user repo and have called initDataSource() and AppDataSource is ', AppDataSource);
+console.log('in user repo and have called initDataSource() and AppDataSource is ');
 
 export const getAllUsers = async () => {
   try {

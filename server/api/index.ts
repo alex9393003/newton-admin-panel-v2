@@ -3,10 +3,10 @@ import { initDataSource } from '~/typeorm/initDataSource';
 import { addNewNote } from '~/typeorm/repositories/NoteRepository';
 
 const AppDataSource = initDataSource()
-console.log('in my server/api index.ts file and the AppDataSource is ', AppDataSource);
+console.log('in my server/api index.ts file and the AppDataSource is ');
 
 AppDataSource.initialize().then(async () => {
-    console.log('in my server/api index.ts file and AFTER INITIALIZED the AppDataSource is ', AppDataSource);
+    console.log('in my server/api index.ts file and AFTER INITIALIZED the AppDataSource is ');
 
     console.log(`__________________________ ___    ____________________        ________ _____  _______   _______   _______________   ___________
     __  ___/___  ____/___  __ \__ |  / /___  ____/___  __ \       ___  __ \__  / / /___  | / /___  | / /____  _/___  | / /__  ____/
