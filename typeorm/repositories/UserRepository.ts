@@ -88,8 +88,11 @@ export const getUser = async (id: number) => {
 
 // GetUserByFirebaseUid
 export const getUserByFirebaseUid = async (firebaseUid: string) => {
+  console.log('in getUserByFirebaseUid() ');
+  console.log('User is ', User);
   try {
     const userRepository = AppDataSource.getRepository(User);
+    console.log('in getUserByFirebaseUid() and userRepository is ', userRepository);
     const user = await userRepository.findOne({ where: { firebaseUid } });
     if (!user) throw new Error('User not found');
     return user;

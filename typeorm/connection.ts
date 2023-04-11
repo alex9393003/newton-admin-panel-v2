@@ -27,7 +27,7 @@ export function getAppDataSource(config: {
       database: config.database,
       synchronize: true,
       logging: false,
-      entities: [User, Note, Entry, Patient],
+      entities: [User, Note, Patient, Entry],
       migrations: [],
       subscribers: [],
     });
