@@ -76,7 +76,7 @@ export default {
     },
     async mounted() {
       this.store = userStore();
-      await initUser();
+      // await initUser();
     },
     methods: {
       async signIn() {
