@@ -14,7 +14,7 @@ export function initDataSource() {
     database: config.public.DB_DATABASE,
   };
 
-  console.log('inside the initDataSource function and the dataSourceConfig Im about to return  is ');
+  console.log('inside the initDataSource function and the dataSourceConfig Im about to return  is ', dataSourceConfig);
 
   return getAppDataSource(dataSourceConfig);
 }
