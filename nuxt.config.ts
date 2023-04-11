@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     build: {
         transpile: ['vuetify']
     },
-    plugins: ['~/plugins/firebaseAuth.ts', '~/plugins/axios.ts', '~/plugins/vuetify.ts'],
+    plugins: ['~/plugins/firebaseAuth.ts', '~/plugins/axios.ts', '~/plugins/vuetify.ts', '~/plugins/reflect-metadata.js'],
     runtimeConfig: {
         public: {
             API_BASE_URL: process.env.API_BASE_URL,
