@@ -30,7 +30,15 @@ export const signInUser = async (email: string, password: string) => {
         const credentials = await signInWithEmailAndPassword(auth, email, password);
         if (credentials) {
             const res = await authService.signInUserWithAPI(credentials.user.uid);
-            if (credentials && res) {
+            console.log('res is ', res);
+            console.log(typeof(res));
+            if (res instanceof Error) {
+                console.log('is this calling');
+                console.log('error ', res.message);
+                return {
+                    error: res.message
+                }
+            } else if (credentials && res) {
                 return { success: true, credentials };
             } else {
                 return { success: false, error: 'Error signing user in.' };
@@ -57,7 +65,7 @@ export const initUser = async () => {
             // If the user is logged in, fetch their data from your PostgreSQL database
             try {
                 const response = await userService.getUserByFirebaseUID(user.uid); // Replace this with your actual API call to fetch user data from your database
-                if (response) {
+                if (response instanceof User) {
                     // Update the store with the user data
                     store.setUser(response);
                     store.setIsLoggedIn(true);

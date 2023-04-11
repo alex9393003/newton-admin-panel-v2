@@ -48,15 +48,17 @@
     
     <script>
 
+
     export default {
+
 
     data () {
       DBHost: null
     },
 
     async mounted() {
-      const config = useRuntimeConfig()
-      this.DBHost = config
+      const { publicConfig } = useRuntimeConfig()
+      this.DBHost = publicConfig
     },
     }
     </script>
