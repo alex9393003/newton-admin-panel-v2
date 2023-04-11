@@ -55,9 +55,13 @@ export const signInUser = async (email: string, password: string) => {
 
 export const initUser = async () => {
     const api = getApiInstance();
+    console.log('getting past api');
     const auth = getAuth();
+    console.log('getting past auth');
     const store = userStore();
+    console.log('getting past store');
     const userService = createUserService(api as AxiosInstance);
+    console.log('getting past userService');
 
 
     onAuthStateChanged(auth, async (user) => {
