@@ -1,7 +1,11 @@
 import { User } from '../entity/User';
 import { initDataSource } from "../initDataSource";
 
+console.log('in user repository and about to call initDataSource()');
+
 const AppDataSource = initDataSource();
+
+console.log('in user repo and have called initDataSource() and AppDataSource is ', AppDataSource);
 
 export const getAllUsers = async () => {
   try {
