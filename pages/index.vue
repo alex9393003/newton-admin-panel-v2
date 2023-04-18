@@ -2,8 +2,6 @@
     <v-container>
       <v-row justify="center" align="center">
         <v-col cols="6" sm="8" md="6">
-          <div v-if="DBHost">DB HOST EXISTS</div>
-          <div v-else>DB HOST DOES NOT EXIST</div>
           <v-hover
           v-slot="{ isHovering, props }"
           open-delay="50"
@@ -40,6 +38,18 @@
         </v-hover>
         </v-col>
       </v-row>
+
+      <!-- chart section  -->
+      <v-row>
+      <v-col cols="12">
+        <v-card>
+          <v-card-title class="mb-3 mt-2">Patient Analytics</v-card-title>
+          <v-card-text>
+            <line-chart :data="chartData" :options="chartOptions" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   
   
     </v-container>
@@ -48,50 +58,29 @@
     
     <script>
 
-
     export default {
-
-
-    data () {
-      DBHost: null
-    },
-
-    async mounted() {
-      const { publicConfig } = useRuntimeConfig()
-      this.DBHost = publicConfig
-    },
-    }
+      data() {
+        return {
+          chartData: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [
+              {
+                label: "Example Data",
+                data: [12, 19, 3, 5, 2, 3, 10, 15, 8, 23, 12, 7],
+                borderColor: "rgba(75, 192, 192, 1)",
+                tension: 0.1,
+              },
+            ],
+          },
+          chartOptions: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        };
+      },
+    };
     </script>
-  
-    <!-- <style lang="sass" scoped><template>
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6">
-        <v-card class="logo py-4 d-flex justify-center">
-          User Management
-        </v-card>
-        <v-btn color="primary"></v-btn>
-        <v-card>
-  
-        </v-card>
-      </v-col>
-    </v-row>
-  </template>
-  
-  <script>
-
-  
-  export default {
-    name: 'User Management',
-    async mounted() {
-
-  
-    },
-  }
-  </script>
-  
-    .v-card.on-hover.v-theme--dark
-      background-color: rgba(#FFF, 0.8)
-      >.v-card__text
-        color: #000
-    </style> -->
     

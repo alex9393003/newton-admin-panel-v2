@@ -14,7 +14,6 @@ export const createUserService = (api : AxiosInstance) => ({
   },
   
   getUserByFirebaseUID: async (payload : any) => {
-    console.log('hitting getuserbyfirebaseuid in user service')
     const { data } = await api.post('/user/user-uid', payload);
     return data.data;
   },
