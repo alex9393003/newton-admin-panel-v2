@@ -208,13 +208,9 @@
   
   <script>
   import { patientStore } from '~/store/patient';
-  import AddNote from '~/components/dialogs/AddNote.vue';
   import { createPatientService } from '~~/services/patient';
 
     export default {
-        components: {
-            AddNote,
-        },
         data () {
             return {
                 notes: [],
@@ -236,14 +232,6 @@
         methods: {
             goToNote(item) {
                 this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
-            },
-            async saveNote(note) {
-                // const result = await addNoteToServer(note);
-                // if (result.success) {
-                // this.notes.push(note);
-            },
-            showAddNote() {
-                this.dialog = true;
             },
         },
     }
