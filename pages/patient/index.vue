@@ -7,7 +7,7 @@
             Patient List
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-btn color="primary" class="ma-2 pa-2">Add New Patient</v-btn>
+          <v-btn color="primary" class="ma-2 pa-2" @click="patientDialog = true">Add New Patient</v-btn>
         </div>
         <v-table>
           <thead>
@@ -38,39 +38,42 @@
       </v-card>
     </v-container>
   </div>
+  <PatientDialog v-model="patientDialog" />
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+<script>
+import PatientDialog from '~/components/dialogs/PatientDialog.vue';
+import { patientStore } from '~/store/patient';
 import { createPatientService } from '~/services/patient';
-import { patientStore } from '~~/store/patient';
 
-const router = useRouter();
-const patients = ref([]);
-const store = patientStore();
-const $api = getCurrentInstance().appContext.config.globalProperties.$api;
-const patientService = createPatientService($api)
-
-definePageMeta({
-  middleware: 'auth',
-  auth: true
-})
-
-onMounted(async () => {
-  // patients.value = await patientService.getPatients();
-  patients.value = await patientService.getPatients();
-  // patients.value = await getPatients();
-});
-
-const goToPatient = (item) => {
-  store.setCurrentPatient(item);
-  router.push(`/patient/${item.id}`);
-};
+export default {
+  name: 'NotePage',
+  components: {
+      PatientDialog
+  },
+  data () {
+      return {
+          patientDialog: false,
+          patientService: null,
+          patients: [],
+      }
+  },
+  async mounted() {
+      this.patientStore = patientStore();
+      this.patientService = createPatientService(this.$api);
+      this.patients = await this.patientService.getPatients();
+  },
+  methods: {
+      editPatientItem(item) {
+        this.patientDialog = true;
+      },
+      goToPatient(item) {
+          this.patientStore.setCurrentPatient(item);
+          this.$router.push(`/patient/${item.id}`);
+      },
+      backToDashboard() {
+          this.$router.push('/');
+      },
+  },
+} 
 </script>
-
-<style>
-  tbody tr {
-    height: 50px;
-  }
-</style>
