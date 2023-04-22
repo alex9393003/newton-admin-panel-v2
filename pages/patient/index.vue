@@ -38,7 +38,7 @@
       </v-card>
     </v-container>
   </div>
-  <PatientDialog v-model="patientDialog" />
+  <PatientDialog v-model="patientDialog" @close-dialog="closePatientDialog" @patient-added="refreshPatientList" />
 </template>
 
 <script>
@@ -64,6 +64,9 @@ export default {
       this.patients = await this.patientService.getPatients();
   },
   methods: {
+      async refreshPatientList() {
+          this.patients = await this.patientService.getPatients();
+      },
       editPatientItem(item) {
         this.patientDialog = true;
       },
@@ -73,6 +76,9 @@ export default {
       },
       backToDashboard() {
           this.$router.push('/');
+      },
+      closePatientDialog() {
+          this.patientDialog = false;
       },
   },
 } 
