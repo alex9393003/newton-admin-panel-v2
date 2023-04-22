@@ -5,8 +5,8 @@
         <v-row>
             <v-col cols="4">
                 <v-card class="w-full h-full">
-                    <v-card-title>Patient X</v-card-title>
-                    <v-card-subtitle>Note for 03/27/23</v-card-subtitle>
+                    <v-card-title>{{ currentPatient }}</v-card-title>
+                    <v-card-subtitle>{{ currentNote }}</v-card-subtitle>
                     <div class="px-2 py-5">
                             <div class="d-flex">
                                 <v-card-title>General</v-card-title>
@@ -100,8 +100,14 @@
 import SpinalDialog from '~/components/dialogs/SpinalDialog.vue';
 import ExtremityDialog from '~/components/dialogs/ExtremityDialog.vue';
 import EntriesTable from '~/components/tables/EntriesTable.vue';
+import { noteStore } from '~/store/note';
+import { patientStore } from '~/store/patient';
+import { createNoteService } from '~/services/note';
+
+
 
 export default {
+    name: 'NotePage',
     components: {
         SpinalDialog,
         ExtremityDialog,
@@ -111,6 +117,8 @@ export default {
         return {
             spinalDialog: false,
             extremityDialog: false,
+            noteStore: null,
+            patientStore: null,
             mockItems: [
                 {
                     id: 1,
@@ -135,8 +143,18 @@ export default {
             selectedExtremityItem: null,
         }
     },
+    computed: {
+        currentNote() {
+            return this.noteStore?.getCurrentNote;
+        },
+        currentPatient() {
+            return this.patientStore?.getCurrentPatient;
+        }
+    },
     async mounted() {
-
+        this.noteStore = noteStore();
+        this.patientStore = patientStore();
+        
     },
     methods: {
         // toSpinalEntries() {
