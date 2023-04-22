@@ -97,6 +97,13 @@ export default {
     closeDialog() {
       this.$emit('close-dialog');
     },
+    resetForm() {
+      this.form.firstName = '';
+      this.form.lastName = '';
+      this.form.email = '';
+      this.form.phoneNumber = '';
+      this.form.nextAppointment = null;
+    },
     async submitPatientForm() {
       if (this.$refs.patientForm.validate()) {
         const res = await this.patientService.addPatient(this.form);
@@ -106,6 +113,7 @@ export default {
           console.log('Patient added successfully');
           this.$emit('patient-added');
           this.closeDialog();
+          this.resetForm();
         }
       } else {
         console.log('Form not submitted. Did not meet validation standards.');
