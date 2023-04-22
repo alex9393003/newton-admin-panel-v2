@@ -11,40 +11,31 @@
                             <div class="d-flex">
                                 <v-card-title>General</v-card-title>
                                 <v-btn color="primary" class="justify-end">Edit General</v-btn>
-
-
-
                             </div>
-
                             <v-divider></v-divider>
-
                             <v-row>
                                 <v-col class="py-5 px-2"  cols="6">
                                     <v-card-text>Height: 5' 10" </v-card-text>
                                     <v-card-text>Weight: 156 lbs </v-card-text>
                                     <v-card-text>Temperature: 98.7 </v-card-text>
-
-
                                 </v-col>
                                 <v-col class="py-5 px-2" cols="6">
                                     <v-card-text>Respiration: 5' 10" </v-card-text>
                                     <v-card-text>Systolic: 156 lbs </v-card-text>
                                     <v-card-text>Diastolic: 98.7 </v-card-text>
                                 </v-col>
-                                
-                            </v-row>
-                            
+                        </v-row>
                     </div>
                 </v-card>
                 </v-col>
                 <v-col cols="8">
                     <v-card class="elevation-4">
                         <div class="py-5 d-flex">
-                        <v-card-title>Extremity Entries</v-card-title>
+                        <v-card-title>Spinal Entries</v-card-title>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" class="mr-3" @click="spinalDialog = true">Add Entry</v-btn>
                         </div>
-                        <EntriesTable :items="mockItems" @view-item="viewSpinalItem" @edit-item="editSpinalItem" />
+                        <EntriesTable :items="spinalEntries" @edit-item="editSpinalItem" />
                     </v-card>
                     </v-col>
         </v-row>
@@ -60,21 +51,8 @@
                             <div class="px-5 py-5">
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
-
                                 </p>
                             </div>
-                        
-                        <!-- <v-textarea
-                            label="Additional Notes"
-                            placeholder="Additional Notes"
-                            outlined
-                            rows="10"
-                        ></v-textarea> -->
                     </div>
                 </v-card>
             </v-col>
@@ -86,7 +64,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" class="mr-3" @click="extremityDialog = true">Add Entry</v-btn>
         </div>
-        <EntriesTable :items="mockItems" @view-item="viewExtremityItem" @edit-item="editExtremityItem" />
+        <EntriesTable :items="extremityEntries"  @edit-item="editExtremityItem" />
       </v-card>
     </v-col>
         </v-row>
@@ -103,8 +81,7 @@ import EntriesTable from '~/components/tables/EntriesTable.vue';
 import { noteStore } from '~/store/note';
 import { patientStore } from '~/store/patient';
 import { createNoteService } from '~/services/note';
-
-
+import { createEntryService } from '~/services/entry';
 
 export default {
     name: 'NotePage',
@@ -119,26 +96,10 @@ export default {
             extremityDialog: false,
             noteStore: null,
             patientStore: null,
-            mockItems: [
-                {
-                    id: 1,
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: '',
-                },
-                {
-                    id: 1,
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: '',
-                },
-                {
-                    id: 1,
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: '',
-                },
-            ],
+            noteEntries: [],
+            spinalEntries: [],
+            extremityEntries: [],
+            entryService: null,
             selectedSpinalItem: null,
             selectedExtremityItem: null,
         }
@@ -154,17 +115,12 @@ export default {
     async mounted() {
         this.noteStore = noteStore();
         this.patientStore = patientStore();
-        
+        this.entryService = createEntryService(this.$api);
+        this.noteEntries = await this.entryService.getEntriesForNote({ noteId: this.currentNote.id });
+        this.spinalEntries = this.noteEntries.filter(entry => entry.category === 'spinal');
+        this.extremityEntries = this.noteEntries.filter(entry => entry.category === 'extremeties');
     },
     methods: {
-        // toSpinalEntries() {
-        //     // we need to grab the patient id from a prop
-        //     this.$router.push(`/patient/1/note/${this.$route.params.id}/spinal`);
-        // },
-        // toExtremityEntries() {
-        //     // we need to grab the patient id from a prop
-        //     this.$router.push(`/patient/1/note/${this.$route.params.id}/extremity`);
-        // },
         editSpinalItem(item) {
         // Handle editing spinal item
         this.spinalDialog = true;

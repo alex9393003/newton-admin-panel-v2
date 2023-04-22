@@ -3,7 +3,7 @@ import { AxiosInstance } from "axios";
 // TODO: give payload typings 
 export const createEntryService = (api : AxiosInstance) => ({
     getEntriesForNote: async (payload : any) => {
-        const { data } = await api.get('/entry/note-entries', payload);
+        const { data } = await api.post('/entry/note-entries', payload);
         return data.data;
     },
 
