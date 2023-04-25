@@ -46,8 +46,8 @@
         ></v-pagination>
       </v-card>
     </v-container>
-  </div>
   <PatientDialog v-model="patientDialog" @close-dialog="closePatientDialog" @patient-added="refreshPatientList" />
+</div>
 </template>
 
 <script>
