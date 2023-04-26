@@ -2,6 +2,8 @@
     <div>
       <v-container>
         <v-btn class="mb-4" @click="backToPatients()">Back to Patient List</v-btn>
+        <v-btn color="primary" @click="editNote(currentNote)">Edit Note</v-btn>
+
         <v-row>
             <v-col cols="4">
                 <v-card class="w-full h-full">
@@ -10,7 +12,7 @@
                     <div class="px-2 py-5">
                             <div class="d-flex">
                                 <v-card-title>General</v-card-title>
-                                <v-btn color="primary" class="justify-end">Edit General</v-btn>
+                                <!-- <v-btn color="primary" class="justify-end">Edit General</v-btn> -->
                             </div>
                             <v-divider></v-divider>
                             <v-row>
@@ -45,7 +47,7 @@
                     <div class="px-5 py-5"> 
                         <div class="d-flex">
                                 <v-card-title>Additional Notes</v-card-title>
-                                <v-btn color="primary" class="justify-end">Edit</v-btn>
+                                <!-- <v-btn color="primary" class="justify-end">Edit</v-btn> -->
                             </div>
                             <v-divider></v-divider>
                             <div class="px-5 py-5">
@@ -71,12 +73,14 @@
       </v-container>
     <SpinalDialog v-model="spinalDialog" :current-note="currentNote" :selected-item="selectedSpinalItem" @entry-added="fetchEntries" @close-dialog="closeSpinalDialog" />
     <ExtremityDialog v-model="extremityDialog" :selected-item="selectedExtremityItem" @entry-added="fetchEntries" @close-dialog="closeExtremityDialog" />
+    <NoteDialog v-model="noteDialog" :selected-item="selectedNoteItem" @note-added="getCurrentNote" @close-dialog="closeNoteDialog" />
 </div>  
 </template>
   
 <script>
 import SpinalDialog from '~/components/dialogs/SpinalDialog.vue';
 import ExtremityDialog from '~/components/dialogs/ExtremityDialog.vue';
+import NoteDialog from '~/components/dialogs/NoteDialog.vue';
 import EntriesTable from '~/components/tables/EntriesTable.vue';
 import { noteStore } from '~/store/note';
 import { patientStore } from '~/store/patient';
@@ -89,12 +93,14 @@ export default {
         SpinalDialog,
         ExtremityDialog,
         EntriesTable,
+        NoteDialog
     },
     data () {
         return {
             noteService: null,
             spinalDialog: false,
             extremityDialog: false,
+            noteDialog: false,
             noteStore: null,
             patientStore: null,
             noteEntries: [],
@@ -103,12 +109,11 @@ export default {
             entryService: null,
             selectedSpinalItem: null,
             selectedExtremityItem: null,
+            selectedNoteItem: null,
+            currentNote: null,
         }
     },
     computed: {
-        currentNote() {
-            return this.noteStore?.getCurrentNote || this.noteService?.getNote({id: this.$route.params.id});
-        },
         currentPatient() {
             return this.patientStore?.getCurrentPatient;
         }
@@ -118,6 +123,7 @@ export default {
         this.patientStore = patientStore();
         this.entryService = createEntryService(this.$api);
         this.noteService = createNoteService(this.$api);
+        await this.getCurrentNote();
         this.fetchEntries();
     },
     methods: {
@@ -125,15 +131,30 @@ export default {
             this.selectedSpinalItem = item;
             this.spinalDialog = true;
         },
+        async getCurrentNote() {
+            if (this.noteStore?.getCurrentNote) {
+                return this.noteStore.getCurrentNote;
+            } else {
+                this.currentNote = await this.noteService?.getNote({ id: this.$route.params.noteId });
+            }
+        },
         editExtremityItem(item) {
             this.selectedExtremityItem = item;
             this.extremityDialog = true;
+        },
+        editNote(item) {
+            console.log('item is', item)
+            this.selectedNoteItem = item;
+            this.noteDialog = true;
         },
         closeSpinalDialog() {
             this.spinalDialog = false;
         },
         closeExtremityDialog() {
             this.extremityDialog = false;
+        },
+        closeNoteDialog() {
+            this.noteDialog = false;
         },
         backToPatients() {
             this.$router.push(`/patient/${this.$route.params.id}`);
@@ -148,8 +169,6 @@ export default {
             }
         },
     },
-        
-    
 }   
 </script>
   

@@ -17,7 +17,12 @@ export const createNoteService = (api : AxiosInstance) => ({
         return data.data;
     },
 
-    addNote: async (payload : any) => {
+    addNote: async (payload : any, patientId : any) => {
+        console.log('payload is ', payload);
+        payload = {
+            ...payload,
+            patientId
+        }
         const { data } = await api.post('/notes/note', payload);
         return data.data;
     },

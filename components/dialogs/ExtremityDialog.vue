@@ -1,12 +1,14 @@
 <template>
-  <v-dialog v-model="extremityDialog" max-width="1000px">
+  <v-dialog max-width="1000px">
     <v-card>
       <v-card-title>
-        <span class="text-h5">Add Extremity Entry</span>
+        <span class="text-h5">{{ title }}</span>
+        {{ selectedItem }}
       </v-card-title>
       <v-card-text>
         <v-form ref="extremityEntryForm" v-model="formIsValid">
           <v-row>
+            {{ currentNote }}
             <v-col cols="6">
               <v-select
                 v-model="form.category"
@@ -34,6 +36,14 @@
           </v-row>
 
           <v-row>
+            <v-col cols="6">
+              <v-select
+                v-model="form.spinalLevel"
+                :items="['t1', 't2', 't3']"
+                label="Spinal Level"
+                required
+              ></v-select>
+            </v-col>
             <v-col cols="6">
               <v-select
                 v-model="form.extremityLevel"
@@ -96,7 +106,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="submitExtremityEntryForm">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="submitExtremityEntryForm(currentNote.id)">{{saveButtonText}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -113,12 +123,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    selectedItem: {
+      type: Object,
+    },
+    currentNote: {
+      type: Object,
+    }
   },
   data() {
     return {
       form: {
         category: '',
         region: '',
+        spinalLevel: '',
         extremityLevel: '',
         side: '',
         sublux: false,
@@ -150,6 +167,22 @@ export default {
         this.$emit('input', val);
       },
     },
+    isUpdateMode() {
+      return !!this.selectedItem;
+    },
+    title() {
+      return this.isUpdateMode ? 'Update Extremity Entry' : 'Add Extremity Entry';
+    },
+    saveButtonText() {
+      return this.isUpdateMode ? 'Update' : 'Save';
+    },
+  },
+  watch: {
+    selectedItem(newItem, oldItem) {
+      if (newItem && newItem !== oldItem) {
+        this.populateFormData(newItem);
+      }
+    },
   },
   async mounted() {
     this.entryService = createEntryService(this.$api);
@@ -167,9 +200,16 @@ export default {
         }
       }
     },
+    populateFormData(item) {
+      this.form = {
+        ...item
+      }
+    },
     async submitExtremityEntryForm() {
+      const noteId = this.$route.params.noteId;
       if (this.$refs.extremityEntryForm.validate()) {
-        const res = await this.entryService.addEntry(this.form);
+        const res = this.isUpdateMode ? await this.entryService.updateEntry(this.form) : await this.entryService.addEntry(this.form, noteId);
+        console.log('response is ', res);
         if (await res instanceof Error) {
           console.log('Entry not added');
         } else {

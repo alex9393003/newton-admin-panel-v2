@@ -1,9 +1,8 @@
 <template>
-  <v-dialog v-model="spinalDialog" max-width="1000px">
+  <v-dialog max-width="1000px">
     <v-card>
       <v-card-title>
         <span class="text-h5">{{ title }}</span>
-        {{ selectedItem }}
       </v-card-title>
       <v-card-text>
         <v-form ref="spinalEntryForm" v-model="formIsValid">
@@ -106,7 +105,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="submitSpinalEntryForm(currentNote.id)">{{saveButtonText}}</v-btn>
+        <v-btn color="blue darken-1" text @click="submitSpinalEntryForm()">{{saveButtonText}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

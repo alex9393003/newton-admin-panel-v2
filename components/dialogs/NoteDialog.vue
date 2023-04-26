@@ -1,8 +1,8 @@
 <template>
-    <v-dialog v-model="noteDialog" max-width="1000px">
+    <v-dialog max-width="1000px">
       <v-card>
         <v-card-title>
-          <span class="text-h5">Add Note</span>
+          <span class="text-h5">{{ title }}</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="noteForm" v-model="formIsValid">
@@ -113,7 +113,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="submitNoteForm">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="submitNoteForm">{{saveButtonText}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -122,6 +122,7 @@
 <script>
 import { createNoteService } from '~/services/note';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import { formatISO, parseISO } from 'date-fns';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 
@@ -134,6 +135,9 @@ export default {
     value: {
       type: Boolean,
       default: false,
+    },
+    selectedItem: {
+      type: Object,
     },
   },
   data() {
@@ -166,15 +170,29 @@ export default {
         this.$emit('input', val);
       },
     },
+    isUpdateMode() {
+      return !!this.selectedItem;
+    },
+    title() {
+      return this.isUpdateMode ? 'Update Note' : 'Add Note';
+    },
+    saveButtonText() {
+      return this.isUpdateMode ? 'Update' : 'Save';
+    },
   },
   watch: {
     visitDateTime(val) {
-    if (val) {
-      const isoString = val.toISOString();
-      this.form.visitDate = isoString.substring(0, 10);
-      this.form.visitTime = isoString.substring(11, 16);
-    }
-  },
+      if (val) {
+        const isoString = val.toISOString();
+        this.form.visitDate = isoString.substring(0, 10);
+        this.form.visitTime = isoString.substring(11, 16);
+      }
+    },
+    selectedItem(newItem, oldItem) {
+      if (newItem && newItem !== oldItem) {
+        this.populateFormData(newItem);
+      }
+    },
   },
   async mounted() {
     this.noteService = createNoteService(this.$api);
@@ -182,6 +200,15 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('close-dialog');
+    },
+    async populateFormData(item) {
+      console.log('item is ', item);
+      const visitDateTime = parseISO(item.visitDate);
+      this.form = {
+        ...item,
+        visitDate: formatISO(visitDateTime, { representation: 'date' }),
+        visitTime: formatISO(visitDateTime, { representation: 'time' }).substring(0, 5),
+      };
     },
     resetForm() {
       this.form.visitDate = null;
@@ -199,8 +226,21 @@ export default {
       this.form.otherNotes = "";
     },
     async submitNoteForm() {
+      const patientId = this.$route.params.id;
+
       if (this.$refs.noteForm.validate()) {
-        const res = await this.noteService.addNote(this.form);
+        const visitDateTime = formatISO(
+            new Date(this.form.visitDate + 'T' + this.form.visitTime),
+            { representation: 'complete' }
+          );
+
+          const formData = {
+            ...this.form,
+            visitDate: visitDateTime,
+          };
+          const res = this.isUpdateMode
+            ? await this.noteService.updateNote(formData)
+            : await this.noteService.addNote(formData, patientId);
         if (await res instanceof Error) {
           console.log('Note not added');
         } else {
