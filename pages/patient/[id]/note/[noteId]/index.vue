@@ -69,9 +69,9 @@
     </v-col>
         </v-row>
       </v-container>
-    </div>
-    <SpinalDialog v-model="spinalDialog" />
-    <ExtremityDialog v-model="extremityDialog" />
+    <SpinalDialog v-model="spinalDialog" :current-note="currentNote" :selected-item="selectedSpinalItem" @entry-added="fetchEntries" @close-dialog="closeSpinalDialog" />
+    <ExtremityDialog v-model="extremityDialog" :selected-item="selectedExtremityItem" @entry-added="fetchEntries" @close-dialog="closeExtremityDialog" />
+</div>  
 </template>
   
 <script>
@@ -80,8 +80,8 @@ import ExtremityDialog from '~/components/dialogs/ExtremityDialog.vue';
 import EntriesTable from '~/components/tables/EntriesTable.vue';
 import { noteStore } from '~/store/note';
 import { patientStore } from '~/store/patient';
-import { createNoteService } from '~/services/note';
 import { createEntryService } from '~/services/entry';
+import { createNoteService } from '~/services/note';
 
 export default {
     name: 'NotePage',
@@ -92,6 +92,7 @@ export default {
     },
     data () {
         return {
+            noteService: null,
             spinalDialog: false,
             extremityDialog: false,
             noteStore: null,
@@ -106,7 +107,7 @@ export default {
     },
     computed: {
         currentNote() {
-            return this.noteStore?.getCurrentNote;
+            return this.noteStore?.getCurrentNote || this.noteService?.getNote({id: this.$route.params.id});
         },
         currentPatient() {
             return this.patientStore?.getCurrentPatient;
@@ -116,21 +117,35 @@ export default {
         this.noteStore = noteStore();
         this.patientStore = patientStore();
         this.entryService = createEntryService(this.$api);
-        this.noteEntries = await this.entryService.getEntriesForNote({ noteId: this.currentNote.id });
-        this.spinalEntries = this.noteEntries.filter(entry => entry.category === 'spinal');
-        this.extremityEntries = this.noteEntries.filter(entry => entry.category === 'extremeties');
+        this.noteService = createNoteService(this.$api);
+        this.fetchEntries();
     },
     methods: {
         editSpinalItem(item) {
-        // Handle editing spinal item
-        this.spinalDialog = true;
+            this.selectedSpinalItem = item;
+            this.spinalDialog = true;
         },
         editExtremityItem(item) {
-        // Handle editing extremity item
-        this.extremityDialog = true;
+            this.selectedExtremityItem = item;
+            this.extremityDialog = true;
+        },
+        closeSpinalDialog() {
+            this.spinalDialog = false;
+        },
+        closeExtremityDialog() {
+            this.extremityDialog = false;
         },
         backToPatients() {
             this.$router.push(`/patient/${this.$route.params.id}`);
+        },
+        async fetchEntries() {
+            if (this.currentNote) {
+                this.noteEntries = await this.entryService.getEntriesForNote({ noteId: this.currentNote.id });
+                this.spinalEntries = this.noteEntries.filter(entry => entry.category === 'spinal');
+                this.extremityEntries = this.noteEntries.filter(entry => entry.category === 'extremeties');
+            } else {
+                console.warn("Current note is not available.");
+            }
         },
     },
         
