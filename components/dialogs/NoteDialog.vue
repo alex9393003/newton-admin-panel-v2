@@ -144,7 +144,6 @@ export default {
     return {
       form: {
         visitDate: null,
-        visitTime: null,
         heightFeet: 0,
         heightInches: 0,
         temperature: 0,
@@ -185,7 +184,6 @@ export default {
       if (val) {
         const isoString = val.toISOString();
         this.form.visitDate = isoString.substring(0, 10);
-        this.form.visitTime = isoString.substring(11, 16);
       }
     },
     selectedItem(newItem, oldItem) {
@@ -200,19 +198,18 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('close-dialog');
+      this.resetForm();
     },
     async populateFormData(item) {
-      console.log('item is ', item);
-      const visitDateTime = parseISO(item.visitDate);
-      this.form = {
-        ...item,
-        visitDate: formatISO(visitDateTime, { representation: 'date' }),
-        visitTime: formatISO(visitDateTime, { representation: 'time' }).substring(0, 5),
-      };
-    },
+        console.log('item is ', item);
+        const visitDateTime = parseISO(item.visitDate);
+        this.form = {
+          ...item,
+        };
+        this.visitDateTime = visitDateTime;
+      },
     resetForm() {
       this.form.visitDate = null;
-      this.form.visitTime = null;
       this.form.heightFeet = 0;
       this.form.heightInches = 0;
       this.form.temperature = 0;
@@ -229,26 +226,20 @@ export default {
       const patientId = this.$route.params.id;
 
       if (this.$refs.noteForm.validate()) {
-        const visitDateTime = formatISO(
-            new Date(this.form.visitDate + 'T' + this.form.visitTime),
-            { representation: 'complete' }
-          );
-
-          const formData = {
-            ...this.form,
-            visitDate: visitDateTime,
-          };
-          const res = this.isUpdateMode
-            ? await this.noteService.updateNote(formData)
-            : await this.noteService.addNote(formData, patientId);
-        if (await res instanceof Error) {
-          console.log('Note not added');
-        } else {
-          console.log('Note added successfully');
-          this.$emit('note-added');
-          this.closeDialog();
-          this.resetForm();
-        }
+        const formData = {
+        ...this.form,
+        visitDate: this.visitDateTime ? this.visitDateTime.toISOString() : null,
+      };
+      const res = this.isUpdateMode
+        ? await this.noteService.updateNote(formData)
+        : await this.noteService.addNote(formData, patientId);
+      if (await res instanceof Error) {
+        console.log('Note not added');
+      } else {
+        console.log('Note added successfully');
+        this.$emit('note-added');
+        this.closeDialog();
+      }
       } else {
         console.log('Form not submitted. Did not meet validation standards.');
       }

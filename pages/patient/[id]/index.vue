@@ -11,7 +11,9 @@
                 <v-spacer></v-spacer>
                 <v-row justify="center">
                     <v-btn @click="dialog = true">Add New Note</v-btn>
-                  <NoteDialog v-model="dialog" @note-added="refreshNotes" />
+                    <v-btn @click="generateAndExportPdf()">PDF Test</v-btn>
+                  <NoteDialog v-model="dialog" :selected-item="selectedNoteItem" @note-added="refreshNotes" @close-dialog="closeNoteDialog" />
+
                 </v-row>
               </div>
               <v-table>
@@ -59,8 +61,35 @@
             </v-hover>
           </v-col>
           <v-col cols="4">
-            <!-- The rest of your template... -->
-          </v-col>
+                <v-card class="px-5 mx-5 my-5">
+                    <div class="d-flex align-center justify-space-around py-16">
+                        <v-avatar color="info" size="x-large">
+                            MT
+                        </v-avatar>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">First Name</v-label>
+                        <v-card-text>{{currentPatient?.firstName}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">Last Name</v-label>
+                        <v-card-text>{{currentPatient?.lastName}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">Email</v-label>
+
+                        <v-card-text>{{currentPatient?.email}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label class="">Phone</v-label>
+                        <v-card-text class="">{{currentPatient?.phoneNumber}}</v-card-text>
+                    </div>
+                    <div class="d-flex align-center justify-space-around">
+                        <v-label>Age</v-label>
+                        <v-card-text>{{currentPatient?.age}}</v-card-text>
+                    </div>
+                </v-card>
+            </v-col>
         </v-row>
       </v-container>
     </div>
@@ -72,6 +101,7 @@
   import { createPatientService } from '~/services/patient';
   import { createNoteService } from '~/services/note';
   import NoteDialog from '~/components/dialogs/NoteDialog.vue';
+  import { exportPdf } from '~/utils/pdfExport';
 
   
   export default {
@@ -108,6 +138,17 @@
       },
       async refreshNotes() {
         this.notes = await this.noteService.getNotesForPatient({ patientId: this.$route.params.id });
+      },
+      closeNoteDialog() {
+        this.dialog = false;
+      },
+      async generateAndExportPdf() {
+        // Sample data
+        const data = Array.from({ length: 25 }, () =>
+          Array.from({ length: 10 }, () => 'Sample')
+        );
+
+        await exportPdf(data);
       },
     },
   };

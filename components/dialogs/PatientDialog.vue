@@ -2,7 +2,7 @@
   <v-dialog v-model="patientDialog" max-width="1000px">
     <v-card>
       <v-card-title>
-        <span class="text-h5">Add Patient</span>
+        <span class="text-h5">{{ title }}</span>
       </v-card-title>
       <v-card-text>
         <v-form ref="patientForm" v-model="formValid">
@@ -36,7 +36,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="submitPatientForm">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="submitPatientForm">{{saveButtonText}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -56,6 +56,9 @@ export default {
     value: {
       type: Boolean,
       default: false,
+    },
+    selectedItem: {
+      type: Object,
     },
   },
   data() {
@@ -89,6 +92,22 @@ export default {
         this.$emit('input', val);
       },
     },
+    isUpdateMode() {
+      return !!this.selectedItem;
+    },
+    title() {
+      return this.isUpdateMode ? 'Update Patient' : 'Add Patient';
+    },
+    saveButtonText() {
+      return this.isUpdateMode ? 'Update' : 'Save';
+    },
+  },
+  watch: {
+    selectedItem(newItem, oldItem) {
+      if (newItem && newItem !== oldItem) {
+        this.populateFormData(newItem);
+      }
+    },
   },
   async mounted() {
     this.patientService = createPatientService(this.$api);
@@ -96,6 +115,11 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('close-dialog');
+      this.resetForm();
+
+    },
+    populateFormData(item) {
+      this.form = { ...item };
     },
     resetForm() {
       this.form.firstName = '';
@@ -105,15 +129,21 @@ export default {
       this.form.nextAppointment = null;
     },
     async submitPatientForm() {
+      console.log(this.$refs.patientForm.validate());
       if (this.$refs.patientForm.validate()) {
-        const res = await this.patientService.addPatient(this.form);
+        const res = this.isUpdateMode
+          ? await this.patientService.updatePatient(this.form)
+          : await this.patientService.addPatient(this.form);
         if (await res instanceof Error) {
-          console.log('Patient not added');
+          console.log('Patient not added/updated');
         } else {
-          console.log('Patient added successfully');
+          console.log(
+            this.isUpdateMode
+              ? 'Patient updated successfully'
+              : 'Patient added successfully'
+          );
           this.$emit('patient-added');
           this.closeDialog();
-          this.resetForm();
         }
       } else {
         console.log('Form not submitted. Did not meet validation standards.');

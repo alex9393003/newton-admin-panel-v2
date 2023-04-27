@@ -33,6 +33,7 @@
               <td>{{ item.lastName }}</td>
               <td>{{ formatDateTime(item.lastUpdated) }}</td>
               <td class="d-flex justify-end">
+                <v-icon @click="editPatientItem(item)">mdi-pencil</v-icon>
                 <v-btn class="ma-2 pa-2" color="primary" @click="goToPatient(item)">See patient</v-btn>
               </td>
             </tr>
@@ -46,7 +47,8 @@
         ></v-pagination>
       </v-card>
     </v-container>
-  <PatientDialog v-model="patientDialog" @close-dialog="closePatientDialog" @patient-added="refreshPatientList" />
+  <PatientDialog v-model="patientDialog" :selected-item="selectedPatientItem" @close-dialog="closePatientDialog" @patient-added="refreshPatientList" />
+
 </div>
 </template>
 
@@ -80,6 +82,7 @@ export default {
       this.patientStore = patientStore();
       this.patientService = createPatientService(this.$api);
       this.patients = await this.patientService.getPatients();
+      console.log('PATIENTS', this.patients);
       this.updateDisplayedPatients();
   },
   methods: {
@@ -87,17 +90,19 @@ export default {
           this.patients = await this.patientService.getPatients();
           this.updateDisplayedPatients();
       },
-      editPatientItem(item) {
-        this.patientDialog = true;
-      },
       goToPatient(item) {
           this.patientStore.setCurrentPatient(item);
           this.$router.push(`/patient/${item.id}`);
+      },
+      editPatientItem(patient) {
+        this.selectedPatientItem = patient;
+        this.patientDialog = true;
       },
       backToDashboard() {
           this.$router.push('/');
       },
       closePatientDialog() {
+          this.selectedPatientItem = null;
           this.patientDialog = false;
       },
       updateDisplayedPatients() {

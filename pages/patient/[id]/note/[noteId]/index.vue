@@ -133,7 +133,7 @@ export default {
         },
         async getCurrentNote() {
             if (this.noteStore?.getCurrentNote) {
-                return this.noteStore.getCurrentNote;
+                this.currentNote = this.noteStore.getCurrentNote;
             } else {
                 this.currentNote = await this.noteService?.getNote({ id: this.$route.params.noteId });
             }
@@ -148,12 +148,15 @@ export default {
             this.noteDialog = true;
         },
         closeSpinalDialog() {
+            this.selectedExtremityItem = null;
             this.spinalDialog = false;
         },
         closeExtremityDialog() {
+            this.selectedExtremityItem = null;
             this.extremityDialog = false;
         },
         closeNoteDialog() {
+            this.selectedNoteItem = null;
             this.noteDialog = false;
         },
         backToPatients() {

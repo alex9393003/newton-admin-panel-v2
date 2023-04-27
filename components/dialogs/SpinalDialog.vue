@@ -189,6 +189,7 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('close-dialog');
+      this.resetForm();
     },
     resetForm() {
       for (const key in this.form) {
@@ -215,7 +216,6 @@ export default {
           console.log('Entry added successfully');
           this.$emit('entry-added');
           this.closeDialog();
-          this.resetForm();
         }
       } else {
         console.log('Form not submitted. Did not meet validation standards.');

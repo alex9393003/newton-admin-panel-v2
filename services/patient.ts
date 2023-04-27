@@ -4,6 +4,7 @@ import { AxiosInstance } from "axios";
 export const createPatientService = (api : AxiosInstance) => ({
   getPatients: async () => {
     const { data } = await api.get('/patient/patients');
+    console.log('data from getPatients is ', data);
     return data.data;
   },
 
