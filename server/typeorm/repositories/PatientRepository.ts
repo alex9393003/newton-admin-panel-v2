@@ -34,7 +34,12 @@ export const updatePatient = async (id: number, payload: Partial<Patient>) => {
 
     if (!patient) throw new Error('Patient not found');
 
-    await patientRepository.update(id, payload);
+    // Update the patient data
+    Object.assign(patient, payload);
+
+    // Save the updated patient data using the save() method
+    await patientRepository.save(patient);
+
     const updatedPatient = await patientRepository.findOne({ where: { id } });
     return updatedPatient;
   } catch (error) {
