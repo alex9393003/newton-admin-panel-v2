@@ -12,6 +12,7 @@
                 <v-row justify="center">
                     <v-btn @click="dialog = true">Add New Note</v-btn>
                     <v-btn @click="generateAndExportPdf()">PDF Test</v-btn>
+                    <button @click="generateCSV(testPayload)">Export CSV</button>
                   <NoteDialog v-model="dialog" :selected-item="selectedNoteItem" @note-added="refreshNotes" @close-dialog="closeNoteDialog" />
 
                 </v-row>
@@ -102,6 +103,7 @@
   import { createNoteService } from '~/services/note';
   import NoteDialog from '~/components/dialogs/NoteDialog.vue';
   import { exportPdf } from '~/utils/pdfExport';
+  import { saveAs } from 'file-saver'
 
   
   export default {
@@ -117,6 +119,28 @@
         dialog: false,
         patientService: null,
         noteService: null,
+        testPayload: {
+          occ_L: 1,
+          occ_R: 1,
+          occ_B: 1,
+          occ_sublux: 1,
+          occ_muscle_spasms: 1,
+          occ_trigger_points: 1,
+          occ_tenderness: 1,
+          occ_numbness: 1,
+          occ_edema: 1,
+          occ_swelling: 1,
+          occ_reduced_motion: 1,
+          occ_positioning: 1,
+          occ_cold_packs: 1,
+          occ_hot_packs: 1,
+          occ_elect_stim: 1,
+          occ_traction: 1,
+          occ_massage: 1,
+          occ_treatment_positioning: 1,
+          occ_techniques: 1,
+          occ_manipulation: 1,
+        }
       };
     },
     computed: {
@@ -132,6 +156,45 @@
       this.notes = await this.noteService.getNotesForPatient({ patientId: this.$route.params.id });
     },
     methods: {
+      generateCSV(payload) {
+        // const header = [
+        //   'SPINAL',
+        //   'LEVELS',
+        //   'REGIONS',
+        //   '',
+        //   'L',
+        //   'R',
+        //   'B',
+        //   '',
+        //   'SUBLUX',
+        //   'MUSCLE SPASMS',
+        //   // ... other headers
+        // ]
+
+        // const rows = [
+        //   ['OCC', 'Sub. Occ', 'Full C-Region', '', payload.OCC, payload.OCC, payload.OCC, '', payload.OCC, payload.OCC, payload.OCC, payload.OCC, payload.OCC, payload.OCC, payload.OCC, payload.OCC, '', payload.OCC, payload.OCC, payload.OCC, '', payload.OCC, '', payload.OCC, payload.OCC, '', payload.OCC, payload.OCC, payload.OCC],
+        //   ['C1', '', '', '', payload.C1, payload.C1, payload.C1, '', payload.C1, payload.C1, payload.C1, payload.C1, payload.C1, payload.C1, payload.C1, payload.C1, '', payload.C1, payload.C1, payload.C1, '', payload.C1, '', payload.C1, payload.C1, '', payload.C1, payload.C1, payload.C1],
+        //   // ... other rows
+        // ]
+
+        const header = [
+          'SPINAL', '', '', '', 'SIDES', '', '', '', '', '', '', '', '', '', 'OBJECTIVE FINDINGS', '', '', '', '', '', '', '', '', '', '', 'PHYSIOTHERAPIES', '', '', '', '', '', '', '', '', 'TREATMENT',
+          'LEVELS', 'REGIONS', '', '', 'L', 'R', 'B', '', 'SUBLUX', 'MUSCLE SPASMS', 'TRIGGER POINTS', 'TENDERNESS', 'NUMBNESS', 'EDEMA', 'SWELLING', 'REDUCED MOTION', '', 'POSITIONING', 'COLD PACKS', 'HOT PACKS', '', 'ELECT STIM', '', 'TRACTION', 'MASSAGE', '', 'POSITIONING', 'TECHNIQUES', 'MANIPULATION'
+        ];
+
+        const rows = [
+          ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+          ['OCC', 'Sub. Occ', 'Full C-Region', '', payload.occ_L, payload.occ_R, payload.occ_B, '', payload.occ_sublux, payload.occ_muscle_spasms, payload.occ_trigger_points, payload.occ_tenderness, payload.occ_numbness, payload.occ_edema, payload.occ_swelling, payload.occ_reduced_motion, '', payload.occ_positioning, payload.occ_cold_packs, payload.occ_hot_packs, '', payload.occ_elect_stim, '', payload.occ_traction, payload.occ_massage, '', payload.occ_treatment_positioning, payload.occ_techniques, payload.occ_manipulation],
+          //... other rows
+        ];
+
+        const csvContent = [header, ...rows]
+          .map((e) => e.join(','))
+          .join('\n')
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' })
+        saveAs(blob, 'export.csv')
+      },
       goToNote(item) {
         this.noteStore.setCurrentNote(item);
         this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
@@ -142,13 +205,80 @@
       closeNoteDialog() {
         this.dialog = false;
       },
-      async generateAndExportPdf() {
-        // Sample data
-        const data = Array.from({ length: 25 }, () =>
-          Array.from({ length: 10 }, () => 'Sample')
-        );
+      // async generateAndExportPdf() {
+      //   // Sample data
+      //   const data = Array.from({ length: 25 }, () =>
+      //     Array.from({ length: 10 }, () => 'Sample')
+      //   );
 
-        await exportPdf(data);
+      //   await exportPdf(data);
+      // },
+      async generateAndExportPdf() {
+        // Construct the samplePayload as shown above
+        const samplePayload = {
+          vitals: {
+            height: "180",
+            weight: 75,
+            temperature: 98.6,
+            systolic: 120,
+            diastolic: 80,
+            pulse: 70,
+            respiration: 16,
+          },
+          physiotherapyNumber: 5,
+          roomAssignments: 3,
+          physio: 2,
+          tx: 1,
+          spinalData: {
+            // Add sample spinalData here
+          },
+        };
+
+        // Generate spinalData and add it to samplePayload
+        // ... (Add the code for generating spinalData as shown above)
+        const spinalData = {};
+        const spinalRows = [
+          "Occ",
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5",
+          "C6",
+          "C7",
+          "T1",
+          "T2",
+          "T3",
+          "T4",
+          "T5",
+          "T6",
+          "T7",
+          "T8",
+          "T9",
+          "T10",
+          "T11",
+          "T12",
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+        ];
+
+        spinalRows.forEach((row) => {
+          spinalData[row] = Array.from({ length: 13 }, () => Math.floor(Math.random() * 10) + 1);
+        });
+
+        samplePayload.spinalData = spinalData;
+
+        samplePayload.spinalData = spinalData;
+
+        await exportPdf(samplePayload);
       },
     },
   };
