@@ -1,11 +1,9 @@
 import { User } from '../entity/User';
 import { initDataSource } from "../initDataSource";
 
-console.log('in user repository and about to call initDataSource()');
 
 const AppDataSource = initDataSource();
 
-console.log('in user repo and have called initDataSource() and AppDataSource is ');
 
 export const getAllUsers = async () => {
   try {
@@ -88,11 +86,8 @@ export const getUser = async (id: number) => {
 
 // GetUserByFirebaseUid
 export const getUserByFirebaseUid = async (firebaseUid: string) => {
-  console.log('in getUserByFirebaseUid() ');
-  console.log('User is ', User);
   try {
     const userRepository = AppDataSource.getRepository(User);
-    console.log('in getUserByFirebaseUid() and userRepository is ', userRepository);
     const user = await userRepository.findOne({ where: { firebaseUid } });
     if (!user) throw new Error('User not found');
     return user;

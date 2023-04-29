@@ -9,6 +9,8 @@ const AppDataSource = initDataSource();
 //patient must exist for a note to be added so we don't need to add new patients here
 export const addNewNote = async (payload: Note, patientId: number) => {
     try {
+      console.log('payload is ', payload);
+      console.log('patientId is ', patientId);
       const notesRepository = AppDataSource.getRepository(Note);
       const patientsRepository = AppDataSource.getRepository(Patient);
   
@@ -21,7 +23,9 @@ export const addNewNote = async (payload: Note, patientId: number) => {
   
       const newNote = notesRepository.create(payload);
       newNote.patient = patient; // Associate the note with the fetched patient
+      console.log('NEW NOTE IS, ', newNote);
       const savedNote = await notesRepository.save(newNote);
+      console.log('savedNote is ', savedNote);
       return savedNote;
     } catch (error) {
       console.log(error);

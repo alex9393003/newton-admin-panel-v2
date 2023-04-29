@@ -9,7 +9,6 @@ import { User } from '~/server/typeorm/entity/User';
 import { getApiInstance } from "~/utils/apiInstance";
 
 
-
 export const createUser = async (email : string, password : string) => {
     const auth = getAuth();
 
@@ -18,7 +17,7 @@ export const createUser = async (email : string, password : string) => {
             const errorCode = error.code;
             const errorMessage = error.message;
         });
-
+        
         return credentials;
 }
 
@@ -27,15 +26,21 @@ export const signInUser = async (email: string, password: string) => {
     const auth = getAuth();
     const authService = createAuthService(api as AxiosInstance);
     const store = userStore();
+
     try {
         const credentials = await signInWithEmailAndPassword(auth, email, password);
         if (credentials) {
             const res = await authService.signInUserWithAPI(credentials.user.uid);
+            console.log('res is ', res);
+            console.log(typeof(res));
             if (res instanceof Error) {
+                console.log('is this calling');
+                console.log('error ', res.message);
                 return {
                     error: res.message
                 }
             } else if (credentials && res) {
+                console.log('WOOOOO')
                 store.setUser(res);
                 store.setIsLoggedIn(true);
                 console.log('user is ', store.getUser instanceof User)
@@ -43,43 +48,45 @@ export const signInUser = async (email: string, password: string) => {
             } else {
                 return { success: false, error: 'Error signing user in.' };
             }
+        } else {
+            const res = { success: false, error: 'Error signing user in. Not receiving credentials from Firebase' }
+            return res
         }
-        const res = { success: false, error: 'Error signing user in. Not receiving credentials from Firebase' }
-        return res
     } catch (error : any) {
         console.log('Error signing user in:', error);
         return { success: false, error: error.message };
     }
   };
 
-
   export const initUser = async () => {
     const api = getApiInstance();
+    console.log('getting past api');
     const auth = getAuth();
+    console.log('getting past auth');
     const store = userStore();
+    console.log('getting past store');
     const userService = createUserService(api as AxiosInstance);
+    console.log('getting past userService');
   
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          // If the user is logged in, fetch their data from your PostgreSQL database
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // If the user is logged in, fetch their data from your PostgreSQL database
+        try {
           const response = await userService.getUserByFirebaseUID(user.uid);
-
-          console.log('response is ', response);
-  
-          if (response instanceof Error) {
-            console.log("Invalid response from getUserByFirebaseUID");
+          if (response instanceof User) {
             // Update the store with the user data
-          } else {
             store.setUser(response);
             store.setIsLoggedIn(true);
+          } else {
+            console.log("Invalid response from getUserByFirebaseUID");
           }
+        } catch (err) {
+          console.error(err);
         }
-        resolve(null);
-      });
+      }
+      store.setAuthInitialized(true); // Set authInitialized to true when onAuthStateChanged is called
     });
   };
-  
 
 export const signOutUser = async () => {
     const store = userStore();
@@ -89,5 +96,3 @@ export const signOutUser = async () => {
     store.setUser({} as User);
     return result;
 }
-
-

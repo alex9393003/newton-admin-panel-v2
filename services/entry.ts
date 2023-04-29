@@ -1,9 +1,10 @@
 import { AxiosInstance } from "axios";
+import { UUID } from "crypto";
 
 // TODO: give payload typings 
 export const createEntryService = (api : AxiosInstance) => ({
     getEntriesForNote: async (payload : any) => {
-        const { data } = await api.get('/entry/note-entries', payload);
+        const { data } = await api.post('/entry/note-entries', payload);
         return data.data;
     },
 
@@ -12,7 +13,12 @@ export const createEntryService = (api : AxiosInstance) => ({
         return data.data;
     },
 
-    addEntry: async (payload : any) => {
+    addEntry: async (payload : any, noteId : any) => {
+        console.log("note id is ", noteId);
+        payload = {
+            ...payload,
+            noteId
+        }
         const { data } = await api.post('/entry/entry', payload);
         return data.data;
     },
