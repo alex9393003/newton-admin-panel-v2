@@ -11,9 +11,8 @@
                 <v-spacer></v-spacer>
                 <v-row justify="center">
                     <v-btn @click="dialog = true">Add New Note</v-btn>
-                    <v-btn @click="generateAndExportPdf()">PDF Test</v-btn>
-                  <NoteDialog v-model="dialog" :selected-item="selectedNoteItem" @note-added="refreshNotes" @close-dialog="closeNoteDialog" />
-
+                    <v-btn @click="exportCSV">CSV Test</v-btn>
+                  <NoteDialog v-model="dialog"  @note-added="refreshNotes" @close-dialog="closeNoteDialog" />
                 </v-row>
               </div>
               <v-table>
@@ -101,7 +100,9 @@
   import { createPatientService } from '~/services/patient';
   import { createNoteService } from '~/services/note';
   import NoteDialog from '~/components/dialogs/NoteDialog.vue';
-  import { exportPdf } from '~/utils/pdfExport';
+  import {generateCSV} from '~/utils/csvExport';
+  import { saveAs } from 'file-saver'
+  
 
   
   export default {
@@ -117,6 +118,28 @@
         dialog: false,
         patientService: null,
         noteService: null,
+        testPayload: {
+          occ_L: 1,
+          occ_R: 1,
+          occ_B: 1,
+          occ_sublux: 1,
+          occ_muscle_spasms: 1,
+          occ_trigger_points: 1,
+          occ_tenderness: 1,
+          occ_numbness: 1,
+          occ_edema: 1,
+          occ_swelling: 1,
+          occ_reduced_motion: 1,
+          occ_positioning: 1,
+          occ_cold_packs: 1,
+          occ_hot_packs: 1,
+          occ_elect_stim: 1,
+          occ_traction: 1,
+          occ_massage: 1,
+          occ_treatment_positioning: 1,
+          occ_techniques: 1,
+          occ_manipulation: 1,
+        }
       };
     },
     computed: {
@@ -132,6 +155,35 @@
       this.notes = await this.noteService.getNotesForPatient({ patientId: this.$route.params.id });
     },
     methods: {
+      exportCSV() {
+        // Replace the example payload data with your actual data
+        const payload = {
+          c5: {
+            physio: {
+              positioning: 'Positioning value',
+              coldPacks: 'Cold Packs value',
+              hotPacks: 'Hot Packs value',
+              electStim: 'Electrical Stimulation value',
+              traction: 'Traction value',
+              massage: 'Massage value',
+            },
+            treatment: {
+              positioning: 'Treatment Positioning value',
+              techniques: 'Techniques value',
+              manipulation: 'Manipulation value',
+            },
+          },
+          c6: {
+            sides: {
+              l: 'Left side value',
+              r: 'Right side value',
+              b: 'Both sides value',
+            },
+          },
+        };
+
+        generateCSV(payload);
+      },
       goToNote(item) {
         this.noteStore.setCurrentNote(item);
         this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
@@ -141,14 +193,6 @@
       },
       closeNoteDialog() {
         this.dialog = false;
-      },
-      async generateAndExportPdf() {
-        // Sample data
-        const data = Array.from({ length: 25 }, () =>
-          Array.from({ length: 10 }, () => 'Sample')
-        );
-
-        await exportPdf(data);
       },
     },
   };
