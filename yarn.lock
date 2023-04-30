@@ -1395,6 +1395,21 @@
   dependencies:
     "@types/webpack" "^4"
 
+"@types/pdfkit@*":
+  "integrity" "sha512-z0y4rQky+nvno3nzyNUeZbrx2YvwP0GEfnpk8o3zG7jL4FYCZk9Vn11DzM+HC4RPzaJDOg9kiLzl3lng4FDcLA=="
+  "resolved" "https://registry.npmjs.org/@types/pdfkit/-/pdfkit-0.12.9.tgz"
+  "version" "0.12.9"
+  dependencies:
+    "@types/node" "*"
+
+"@types/pdfmake@^0.2.2":
+  "integrity" "sha512-CBtkugrgklpXsZ9Wj/+cw+zYoeDnJxVev62ahwpdPCz/O405Wxr+iq76JgUiZc/QAo3P2lWbI2nYA5GrrSL8VQ=="
+  "resolved" "https://registry.npmjs.org/@types/pdfmake/-/pdfmake-0.2.2.tgz"
+  "version" "0.2.2"
+  dependencies:
+    "@types/node" "*"
+    "@types/pdfkit" "*"
+
 "@types/pug@2.0.6":
   "integrity" "sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg=="
   "resolved" "https://registry.npmjs.org/@types/pug/-/pug-2.0.6.tgz"
