@@ -35,7 +35,7 @@ export function getAppDataSource(config: {
 
   }
 
-  console.log('in my connection.ts file and about to return AppDataSource', AppDataSource)
+  // console.log('in my connection.ts file and about to return AppDataSource', AppDataSource)
 
   return AppDataSource;
 }
