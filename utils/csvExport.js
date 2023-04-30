@@ -130,9 +130,9 @@ export function generateXLSX(payload, exportAsPDF = false, getPdfMakeInstance) {
   }
 
   async function generatePDF(xlsxData, pdfMakeInstance) {
-    const pdfFonts = await import('pdfmake/build/vfs_fonts');
-    console.log('pdf fonts is ', pdfFonts);
-    pdfMakeInstance.vfs = pdfFonts.pdfMake.vfs;
+    // const pdfFonts = await import('pdfmake/build/vfs_fonts');
+    // console.log('pdf fonts is ', pdfFonts);
+    // pdfMakeInstance.vfs = pdfFonts.pdfMake.vfs;
   
     const cols = 29; // Define the number of columns (A to AC)
     const jsonData = XLSX.utils.sheet_to_json(xlsxData.Sheets[xlsxData.SheetNames[0]], { header: 1 });
