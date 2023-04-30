@@ -13,5 +13,6 @@ export async function initDataSource() {
 
   const dataSource = getAppDataSource(dataSourceConfig);
   await dataSource.initialize(); // Add this line to initialize the connection
+  console.log('my datasource is ', dataSource);
   return dataSource;
 }

@@ -77,11 +77,13 @@ export default {
         }
       },
       isLoggedIn() {
-        if (this.store) {
-          return this.store.getIsLoggedIn;
-        } else  {
-          return null;
-        }
+        // if (this.store) {
+        //   return this.store.getIsLoggedIn;
+        // } else  {
+        //   return null;
+        // }
+        // for debugging purposes
+        return true;
       },
     },
     async mounted() {
