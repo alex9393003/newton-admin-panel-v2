@@ -31,19 +31,19 @@ export const signInUser = async (email: string, password: string) => {
         const credentials = await signInWithEmailAndPassword(auth, email, password);
         if (credentials) {
             const res = await authService.signInUserWithAPI(credentials.user.uid);
-            console.log('res is ', res);
-            console.log(typeof(res));
+            // console.log('res is ', res);
+            // console.log(typeof(res));
             if (res instanceof Error) {
-                console.log('is this calling');
+                // console.log('is this calling');
                 console.log('error ', res.message);
                 return {
                     error: res.message
                 }
             } else if (credentials && res) {
-                console.log('WOOOOO')
+                // console.log('WOOOOO')
                 store.setUser(res);
                 store.setIsLoggedIn(true);
-                console.log('user is ', store.getUser instanceof User)
+                // console.log('user is ', store.getUser instanceof User)
                 return { success: true, credentials };
             } else {
                 return { success: false, error: 'Error signing user in.' };
@@ -60,13 +60,13 @@ export const signInUser = async (email: string, password: string) => {
 
   export const initUser = async () => {
     const api = getApiInstance();
-    console.log('getting past api');
+    // console.log('getting past api');
     const auth = getAuth();
-    console.log('getting past auth');
+    // console.log('getting past auth');
     const store = userStore();
-    console.log('getting past store');
+    // console.log('getting past store');
     const userService = createUserService(api as AxiosInstance);
-    console.log('getting past userService');
+    // console.log('getting past userService');
   
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -78,7 +78,7 @@ export const signInUser = async (email: string, password: string) => {
             store.setUser(response);
             store.setIsLoggedIn(true);
           } else {
-            console.log("Invalid response from getUserByFirebaseUID");
+            // console.log("Invalid response from getUserByFirebaseUID");
           }
         } catch (err) {
           console.error(err);

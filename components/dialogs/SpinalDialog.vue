@@ -209,9 +209,9 @@ export default {
       const noteId = this.$route.params.noteId;
       if (this.$refs.spinalEntryForm.validate()) {
         const res = this.isUpdateMode ? await this.entryService.updateEntry(this.form) : await this.entryService.addEntry(this.form, noteId);
-        console.log('response is ', res);
+        // console.log('response is ', res);
         if (await res instanceof Error) {
-          console.log('Entry not added');
+          // console.log('Entry not added');
         } else {
           console.log('Entry added successfully');
           this.$emit('entry-added');

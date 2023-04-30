@@ -65,10 +65,10 @@ export const signInUser = async (email: string, password: string) => {
           // If the user is logged in, fetch their data from your PostgreSQL database
           const response = await userService.getUserByFirebaseUID(user.uid);
 
-          console.log('response is ', response);
+          // console.log('response is ', response);
   
           if (response instanceof Error) {
-            console.log("Invalid response from getUserByFirebaseUID");
+            // console.log("Invalid response from getUserByFirebaseUID");
             // Update the store with the user data
           } else {
             store.setUser(response);
