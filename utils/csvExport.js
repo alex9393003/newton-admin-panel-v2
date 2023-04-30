@@ -118,8 +118,9 @@ export function generateXLSX(payload, exportAsPDF = false, getPdfMakeInstance) {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
   
     if (exportAsPDF) {
-        const pdfMakeInstance = getPdfMakeInstance(); // Get the pdfMake instance using the provided function
-        generatePDF(wb, pdfMakeInstance);
+        console.log('make a pdf')
+        // const pdfMakeInstance = getPdfMakeInstance(); // Get the pdfMake instance using the provided function
+        // generatePDF(wb, pdfMakeInstance);
     } else {
       // Export the XLSX file to the user
       const wopts = { bookType: 'xlsx', bookSST: false, type: 'array' };
@@ -129,56 +130,56 @@ export function generateXLSX(payload, exportAsPDF = false, getPdfMakeInstance) {
     }
   }
 
-  async function generatePDF(xlsxData, pdfMakeInstance) {
-    // const pdfFonts = await import('pdfmake/build/vfs_fonts');
-    // console.log('pdf fonts is ', pdfFonts);
-    // pdfMakeInstance.vfs = pdfFonts.pdfMake.vfs;
+//   async function generatePDF(xlsxData, pdfMakeInstance) {
+//     // const pdfFonts = await import('pdfmake/build/vfs_fonts');
+//     // console.log('pdf fonts is ', pdfFonts);
+//     // pdfMakeInstance.vfs = pdfFonts.pdfMake.vfs;
   
-    const cols = 29; // Define the number of columns (A to AC)
-    const jsonData = XLSX.utils.sheet_to_json(xlsxData.Sheets[xlsxData.SheetNames[0]], { header: 1 });
-    const content = jsonData.map(row => {
-      const newRow = [];
-      for (let i = 0; i < cols; i++) {
-        newRow.push({ text: row[i] || '', style: 'tableCell' });
-      }
-      return newRow;
-    }).filter(row => row.some(cell => cell.text !== '')); // Filter out empty rows
+//     const cols = 29; // Define the number of columns (A to AC)
+//     const jsonData = XLSX.utils.sheet_to_json(xlsxData.Sheets[xlsxData.SheetNames[0]], { header: 1 });
+//     const content = jsonData.map(row => {
+//       const newRow = [];
+//       for (let i = 0; i < cols; i++) {
+//         newRow.push({ text: row[i] || '', style: 'tableCell' });
+//       }
+//       return newRow;
+//     }).filter(row => row.some(cell => cell.text !== '')); // Filter out empty rows
   
-    content[0] = content[0].map(cell => {
-      if (cell.text === '') {
-        return cell; // Skip empty header cells
-      }
-      return { ...cell, style: 'tableHeader' }; // Style non-empty header cells
-    });
+//     content[0] = content[0].map(cell => {
+//       if (cell.text === '') {
+//         return cell; // Skip empty header cells
+//       }
+//       return { ...cell, style: 'tableHeader' }; // Style non-empty header cells
+//     });
   
-    const docDefinition = {
-      content: [
-        {
-          table: {
-            headerRows: 1,
-            body: content,
-            widths: [30, 50, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], // Set specific widths for each column as numbers
-          },
-        },
-      ],
-      styles: {
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'white',
-          fillColor: '#2d4154',
-        },
-        tableCell: {
-          margin: [3, 1, 3, 1],
-          fontSize: 8,
-        },
-      },
-      defaultStyle: {
-        fontSize: 8,
-      },
-      pageOrientation: 'landscape',
-    };
+//     const docDefinition = {
+//       content: [
+//         {
+//           table: {
+//             headerRows: 1,
+//             body: content,
+//             widths: [30, 50, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], // Set specific widths for each column as numbers
+//           },
+//         },
+//       ],
+//       styles: {
+//         tableHeader: {
+//           bold: true,
+//           fontSize: 10,
+//           color: 'white',
+//           fillColor: '#2d4154',
+//         },
+//         tableCell: {
+//           margin: [3, 1, 3, 1],
+//           fontSize: 8,
+//         },
+//       },
+//       defaultStyle: {
+//         fontSize: 8,
+//       },
+//       pageOrientation: 'landscape',
+//     };
   
-    const pdfDoc = pdfMakeInstance.createPdf(docDefinition);
-    pdfDoc.download('exported_data.pdf');
-  }
+//     const pdfDoc = pdfMakeInstance.createPdf(docDefinition);
+//     pdfDoc.download('exported_data.pdf');
+//   }
