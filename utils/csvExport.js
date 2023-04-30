@@ -135,41 +135,49 @@ export function generateXLSX(payload, exportAsPDF = false) {
   async function generatePDF(xlsxData) {
     console.log('XLSX Data:', xlsxData);
     const cols = 29; // Define the number of columns (A to AC)
-    const jsonData = XLSX.utils.sheet_to_json(xlsxData, { header: 1 });
+    const jsonData = XLSX.utils.sheet_to_json(xlsxData.Sheets[xlsxData.SheetNames[0]], { header: 1 });
     const content = jsonData.map(row => {
       const newRow = [];
       for (let i = 0; i < cols; i++) {
         newRow.push({ text: row[i] || '', style: 'tableCell' });
       }
       return newRow;
+    }).filter(row => row.some(cell => cell.text !== '')); // Filter out empty rows
+  
+    content[0] = content[0].map(cell => {
+      if (cell.text === '') {
+        return cell; // Skip empty header cells
+      }
+      return { ...cell, style: 'tableHeader' }; // Style non-empty header cells
     });
   
     const docDefinition = {
-      content: [
-        {
-          table: {
-            headerRows: 1,
-            body: content,
-            widths: new Array(cols).fill('*'),
+        content: [
+          {
+            table: {
+              headerRows: 1,
+              body: content,
+              widths: [30, 50, 50, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20], // Set specific widths for each column as numbers
+            },
+          },
+        ],
+        styles: {
+          tableHeader: {
+            bold: true,
+            fontSize: 10,
+            color: 'white',
+            fillColor: '#2d4154',
+          },
+          tableCell: {
+            margin: [3, 1, 3, 1],
+            fontSize: 8,
           },
         },
-      ],
-      styles: {
-        tableHeader: {
-          bold: true,
-          fontSize: 12,
-          color: 'white',
-          fillColor: '#2d4154',
+        defaultStyle: {
+          fontSize: 8,
         },
-        tableCell: {
-          margin: [5, 2, 5, 2],
-        },
-      },
-      defaultStyle: {
-        fontSize: 10,
-      },
-    };
-  
+        pageOrientation: 'landscape',
+      };
     console.log('Content:', content);
     console.log('Doc Definition:', docDefinition);
   
