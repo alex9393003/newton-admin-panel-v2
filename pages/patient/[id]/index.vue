@@ -13,7 +13,7 @@
                     <v-btn @click="dialog = true">Add New Note</v-btn>
                     <v-btn @click="exportCSV">CSV Test</v-btn>
                     <v-btn @click="exportXLSX">CSV Test</v-btn>
-                    <v-btn @click="exportPDF">CSV Test</v-btn>
+                    <!-- <v-btn @click="exportPDF">CSV Test</v-btn> -->
 
 
                   <NoteDialog v-model="dialog"  @note-added="refreshNotes" @close-dialog="closeNoteDialog" />
@@ -216,35 +216,36 @@
 
         generateXLSX(payload);
       },
-      exportPDF() {
-        // Replace the example payload data with your actual data
-        const payload = {
-          c5: {
-            physio: {
-              positioning: 'Positioning value',
-              coldPacks: 'Cold Packs value',
-              hotPacks: 'Hot Packs value',
-              electStim: 'Electrical Stimulation value',
-              traction: 'Traction value',
-              massage: 'Massage value',
-            },
-            treatment: {
-              positioning: 'Treatment Positioning value',
-              techniques: 'Techniques value',
-              manipulation: 'Manipulation value',
-            },
-          },
-          c6: {
-            sides: {
-              l: 'Left side value',
-              r: 'Right side value',
-              b: 'Both sides value',
-            },
-          },
-        };
+      // async exportPDF() {
+      //   const { $pdfMake } = useContext();
+      //   // Replace the example payload data with your actual data
+      //   const payload = {
+      //     c5: {
+      //       physio: {
+      //         positioning: 'Positioning value',
+      //         coldPacks: 'Cold Packs value',
+      //         hotPacks: 'Hot Packs value',
+      //         electStim: 'Electrical Stimulation value',
+      //         traction: 'Traction value',
+      //         massage: 'Massage value',
+      //       },
+      //       treatment: {
+      //         positioning: 'Treatment Positioning value',
+      //         techniques: 'Techniques value',
+      //         manipulation: 'Manipulation value',
+      //       },
+      //     },
+      //     c6: {
+      //       sides: {
+      //         l: 'Left side value',
+      //         r: 'Right side value',
+      //         b: 'Both sides value',
+      //       },
+      //     },
+      //   };
 
-        generateXLSX(payload, true);
-      },
+      //   generateXLSX(payload, true, $pdfMake);
+      // },
       goToNote(item) {
         this.noteStore.setCurrentNote(item);
         this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);
@@ -264,3 +265,113 @@
         height: 50px;
     }
 </style>
+
+<!-- todo: pdf stuff -->
+<!-- <script>
+import { ref, computed, onMounted } from 'vue';
+// import { useRouter, useRoute } from 'vue';
+// import { useContext } from 'nuxt3';
+import { patientStore } from '~/store/patient';
+import { noteStore } from '~/store/note';
+import { createPatientService } from '~/services/patient';
+import { createNoteService } from '~/services/note';
+import NoteDialog from '~/components/dialogs/NoteDialog.vue';
+import { generateCSV, generateXLSX } from '~/utils/csvExport';
+
+export default {
+  name: 'PatientPage',
+  components: {
+    NoteDialog,
+  },
+  setup() {
+    const api = useNuxtApp().vueApp.config.globalProperties.$api;
+    const test = useNuxtApp();
+    const router = useRouter();
+    const route = useRoute();
+    const patientStoreInstance = patientStore();
+    const noteStoreInstance = noteStore();
+    const notes = ref([]);
+    const dialog = ref(false);
+    const patientService = createPatientService(api);
+    const noteService = createNoteService(api);
+    const testPayload = ref({
+      // ... your testPayload data
+    });
+
+    const currentPatient = computed(() => {
+      return patientStoreInstance.getCurrentPatient;
+    });
+
+    onMounted(async () => {
+      console.log('api is ',api);
+      notes.value = await noteService.getNotesForPatient({ patientId: route.params.id });
+    });
+
+    const exportCSV = () => {
+      // ... exportCSV logic
+    };
+
+    const exportXLSX = () => {
+      // ... exportXLSX logic
+    };
+
+    // todo: get pdfs working with pdfMake
+    // const exportPDF = async () => {
+    //   const pdfMake = useNuxtApp().vueApp.config.globalProperties.$pdfMake;
+    //   console.log('pdf make is ', pdfMake);
+    //   // ... exportPDF logic, using $pdfMake
+    //   const payload = {
+    //     c5: {
+    //       physio: {
+    //         positioning: 'Positioning value',
+    //         coldPacks: 'Cold Packs value',
+    //         hotPacks: 'Hot Packs value',
+    //         electStim: 'Electrical Stimulation value',
+    //         traction: 'Traction value',
+    //         massage: 'Massage value',
+    //       },
+    //       treatment: {
+    //         positioning: 'Treatment Positioning value',
+    //         techniques: 'Techniques value',
+    //         manipulation: 'Manipulation value',
+    //       },
+    //     },
+    //     c6: {
+    //       sides: {
+    //         l: 'Left side value',
+    //         r: 'Right side value',
+    //         b: 'Both sides value',
+    //       },
+    //     },
+    //   };
+    //   generateXLSX(payload, true, () => pdfMake);
+    // };
+
+    const goToNote = (item) => {
+      noteStoreInstance.setCurrentNote(item);
+      router.push(`/patient/${route.value.params.id}/note/${item.id}`);
+    };
+
+    const refreshNotes = async () => {
+      notes.value = await noteService.getNotesForPatient({ patientId: route.value.params.id });
+    };
+
+    const closeNoteDialog = () => {
+      dialog.value = false;
+    };
+
+    return {
+      notes,
+      dialog,
+      currentPatient,
+      exportCSV,
+      exportXLSX,
+      exportPDF,
+      goToNote,
+      refreshNotes,
+      closeNoteDialog,
+      testPayload,
+    };
+  },
+};
+</script> -->
