@@ -88,11 +88,16 @@ export const getPatients = async (filter: FindManyOptions<Patient>) => {
 //GetAllPatients
 export const getAllPatients = async () => {
   try {
+    console.log("in get all patients");
+    console.log('my appdatasource is ', AppDataSource)
     const query = AppDataSource
       .getRepository(Patient)
       .createQueryBuilder('patient');
 
+
+
     const [results, count] = await query.getManyAndCount();
+    console.log('results from this function are ', results);
     return results;
 
   } catch (error) {
