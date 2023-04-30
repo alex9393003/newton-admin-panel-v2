@@ -51,6 +51,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^9.19.1",
     "pdf-lib": "^1.17.1",
+    "pdfmake": "^0.2.7",
     "pg": "^8.10.0",
     "pinia": "^2.0.33",
     "reflect-metadata": "^0.1.13",
@@ -58,6 +59,7 @@
     "typeorm": "^0.3.12",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.0.13",
-    "vuetify": "^3.1.4"
+    "vuetify": "^3.1.4",
+    "xlsx": "^0.18.5"
   }
 }

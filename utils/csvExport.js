@@ -1,6 +1,11 @@
 // Import the necessary dependencies
 import { saveAs } from 'file-saver';
 import { cellMappings } from './cellMappings';
+import * as XLSX from 'xlsx';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 // Helper function to convert an alphanumeric cell reference to row and column index
 function cellReferenceToIndex(ref) {
@@ -28,7 +33,7 @@ function cellReferenceToIndex(ref) {
 //   }
 
 // Define the generateCSV function
-function generateCSV(payload) {
+export function generateCSV(payload) {
     console.log('FUNCTION BEING CALLED');
   // Create a 2D array representing the cells of the CSV content
   const rows = 42; // Define the number of rows
@@ -74,5 +79,100 @@ console.log('cell mappings are ', cellMappings);
   saveAs(blob, 'exported_data.csv');
 }
 
-// Export the generateCSV function
-export { generateCSV };
+// Define the generateXLSX function
+export function generateXLSX(payload, exportAsPDF = false) {
+    // Create a 2D array representing the cells of the XLSX content
+    const rows = 42; // Define the number of rows
+    const cols = 29; // Define the number of columns (A to AC)
+    const cells = new Array(rows)
+      .fill(null)
+      .map(() => new Array(cols).fill(''));
+  
+    // Populate the cells based on the cell mappings
+    for (const [ref, value] of Object.entries(cellMappings)) {
+      const { row, col } = cellReferenceToIndex(ref);
+      try {
+        if (typeof value === 'function') {
+          cells[row][col] = value(payload);
+        } else {
+          cells[row][col] = value;
+        }
+      } catch (error) {
+        console.error(`Error populating cell ${ref}:`, error);
+        cells[row][col] = ''; // Set an empty string or a default value in case of error
+      }
+    }
+  
+    // Apply merged cells
+    // applyMergedCells(cells, mergedCells);
+  
+    // Create a worksheet object
+    const ws = XLSX.utils.aoa_to_sheet(cells);
+  
+    // Apply merged cells to the worksheet
+    // ws['!merges'] = mergedCells.map(({ start, end }) => {
+    //   return {
+    //     s: cellReferenceToIndex(start),
+    //     e: cellReferenceToIndex(end),
+    //   };
+    // });
+  
+    // Create a workbook and add the worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+    if (exportAsPDF) {
+      generatePDF(wb);
+    } else {
+      // Export the XLSX file to the user
+      const wopts = { bookType: 'xlsx', bookSST: false, type: 'array' };
+      const wbout = XLSX.write(wb, wopts);
+      const blob = new Blob([wbout], { type: 'application/octet-stream' });
+      saveAs(blob, 'exported_data.xlsx');
+    }
+  }
+
+  async function generatePDF(xlsxData) {
+    console.log('XLSX Data:', xlsxData);
+    const cols = 29; // Define the number of columns (A to AC)
+    const jsonData = XLSX.utils.sheet_to_json(xlsxData, { header: 1 });
+    const content = jsonData.map(row => {
+      const newRow = [];
+      for (let i = 0; i < cols; i++) {
+        newRow.push({ text: row[i] || '', style: 'tableCell' });
+      }
+      return newRow;
+    });
+  
+    const docDefinition = {
+      content: [
+        {
+          table: {
+            headerRows: 1,
+            body: content,
+            widths: new Array(cols).fill('*'),
+          },
+        },
+      ],
+      styles: {
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: 'white',
+          fillColor: '#2d4154',
+        },
+        tableCell: {
+          margin: [5, 2, 5, 2],
+        },
+      },
+      defaultStyle: {
+        fontSize: 10,
+      },
+    };
+  
+    console.log('Content:', content);
+    console.log('Doc Definition:', docDefinition);
+  
+    const pdfDoc = pdfMake.createPdf(docDefinition);
+    pdfDoc.download('exported_data.pdf');
+  }
