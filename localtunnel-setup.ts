@@ -1,0 +1,1 @@
+import { onNuxtReady } from "nuxt/app";
