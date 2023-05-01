@@ -1,6 +1,6 @@
 import { Patient } from '../entity/Patient';
 import { FindManyOptions } from 'typeorm';
-import { initDataSource } from "../initDataSource";
+import { initDataSource } from '../database';
 
 const AppDataSource = initDataSource();
 
@@ -88,11 +88,17 @@ export const getPatients = async (filter: FindManyOptions<Patient>) => {
 //GetAllPatients
 export const getAllPatients = async () => {
   try {
+    console.log("in get all patients");
+    console.log('my appdatasource entitymetadatas are ', AppDataSource.entityMetadatas);
+    console.log('entities are ', AppDataSource.options.entities);
     const query = AppDataSource
       .getRepository(Patient)
       .createQueryBuilder('patient');
 
+
+
     const [results, count] = await query.getManyAndCount();
+    console.log('results from this function are ', results);
     return results;
 
   } catch (error) {

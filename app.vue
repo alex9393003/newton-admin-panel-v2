@@ -30,8 +30,8 @@
             ></v-text-field>
             <v-btn
               color="primary"
-              @click="signIn()"
               :disabled="loading"
+              @click="signIn()"
             >
               Log In
             </v-btn>
@@ -77,16 +77,19 @@ export default {
         }
       },
       isLoggedIn() {
-        if (this.store) {
-          return this.store.getIsLoggedIn;
-        } else  {
-          return null;
-        }
+        // if (this.store) {
+        //   return this.store.getIsLoggedIn;
+        // } else  {
+        //   return null;
+        // }
+        // for debugging purposes
+        return true;
       },
     },
     async mounted() {
       this.store = userStore();
       await this.initUser();
+
     },
     methods: {
       async signIn() {
@@ -96,10 +99,10 @@ export default {
           if (!credentials) {
             this.loginUnsuccessful = true;
           }
-          console.log('sign in should be successful', )
+          // console.log('sign in should be successful', )
           return credentials;
         } catch (err) {
-          console.log("Sign in unsuccessful", err);
+          // console.log("Sign in unsuccessful", err);
         } finally {
           this.loading = false;
         }

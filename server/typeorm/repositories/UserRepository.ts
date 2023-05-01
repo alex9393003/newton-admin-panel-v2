@@ -1,5 +1,5 @@
 import { User } from '../entity/User';
-import { initDataSource } from "../initDataSource";
+import { initDataSource } from '../database';
 
 
 const AppDataSource = initDataSource();
