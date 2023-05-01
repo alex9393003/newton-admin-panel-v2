@@ -4506,7 +4506,7 @@
     "object-assign" "^4.0.1"
     "thenify-all" "^1.0.0"
 
-"nanoid@^3.3.4":
+"nanoid@^3.3.6":
   "integrity" "sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA=="
   "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.6.tgz"
   "version" "3.3.6"
@@ -5293,12 +5293,12 @@
   "resolved" "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
   "version" "4.2.0"
 
-"postcss@^8.0.0", "postcss@^8.0.9", "postcss@^8.1.0", "postcss@^8.1.10", "postcss@^8.2.15", "postcss@^8.2.2", "postcss@^8.4.21":
-  "integrity" "sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg=="
-  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.21.tgz"
-  "version" "8.4.21"
+"postcss@^8.0.0", "postcss@^8.0.9", "postcss@^8.1.0", "postcss@^8.1.10", "postcss@^8.2.15", "postcss@^8.2.2", "postcss@^8.4.21", "postcss@^8.4.23":
+  "integrity" "sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA=="
+  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.4.23.tgz"
+  "version" "8.4.23"
   dependencies:
-    "nanoid" "^3.3.4"
+    "nanoid" "^3.3.6"
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.2"
 
@@ -5622,10 +5622,10 @@
     "source-map" "^0.7.4"
     "yargs" "^17.5.1"
 
-"rollup@^1.20.0||^2.0.0||^3.0.0", "rollup@^2.68.0||^3.0.0", "rollup@^2.78.0||^3.0.0", "rollup@^2.x || ^3.x", "rollup@^3.18.0", "rollup@^3.20.0", "rollup@2.x || 3.x":
-  "integrity" "sha512-3zwkBQl7Ai7MFYQE0y1MeQ15+9jsi7XxfrqwTb/9EK8D9C9+//EBR4M+CuA1KODRaNbFez/lWxA5vhEGZp4MUg=="
-  "resolved" "https://registry.npmjs.org/rollup/-/rollup-3.20.2.tgz"
-  "version" "3.20.2"
+"rollup@^1.20.0||^2.0.0||^3.0.0", "rollup@^2.68.0||^3.0.0", "rollup@^2.78.0||^3.0.0", "rollup@^2.x || ^3.x", "rollup@^3.18.0", "rollup@^3.20.0", "rollup@^3.21.0", "rollup@2.x || 3.x":
+  "integrity" "sha512-c4vC+JZ3bbF4Kqq2TtM7zSKtSyMybFOjqmomFax3xpfYaPZDZ4iz8NMIuBRMjnXOcKYozw7bC6vhJjiWD6JpzQ=="
+  "resolved" "https://registry.npmjs.org/rollup/-/rollup-3.21.2.tgz"
+  "version" "3.21.2"
   optionalDependencies:
     "fsevents" "~2.3.2"
 
@@ -6062,20 +6062,10 @@
     "source-map" "~0.6.1"
     "source-map-support" "~0.5.12"
 
-"terser@^5.15.1":
-  "integrity" "sha512-QI5g1E/ef7d+PsDifb+a6nnVgC4F22Bg6T0xrBrz6iloVB4PUkkunp6V8nzoOOZJIzjWVdAGqCdlKlhLq/TbIA=="
-  "resolved" "https://registry.npmjs.org/terser/-/terser-5.16.8.tgz"
-  "version" "5.16.8"
-  dependencies:
-    "@jridgewell/source-map" "^0.3.2"
-    "acorn" "^8.5.0"
-    "commander" "^2.20.0"
-    "source-map-support" "~0.5.20"
-
-"terser@^5.4.0":
-  "integrity" "sha512-QI5g1E/ef7d+PsDifb+a6nnVgC4F22Bg6T0xrBrz6iloVB4PUkkunp6V8nzoOOZJIzjWVdAGqCdlKlhLq/TbIA=="
-  "resolved" "https://registry.npmjs.org/terser/-/terser-5.16.8.tgz"
-  "version" "5.16.8"
+"terser@^5.15.1", "terser@^5.4.0":
+  "integrity" "sha512-hVl35zClmpisy6oaoKALOpS0rDYLxRFLHhRuDlEGTKey9qHjS1w9GMORjuwIMt70Wan4lwsLYyWDVnWgF+KUEw=="
+  "resolved" "https://registry.npmjs.org/terser/-/terser-5.17.1.tgz"
+  "version" "5.17.1"
   dependencies:
     "@jridgewell/source-map" "^0.3.2"
     "acorn" "^8.5.0"
@@ -6430,15 +6420,14 @@
     "vscode-languageserver-textdocument" "^1.0.1"
     "vscode-uri" "^3.0.2"
 
-"vite@^3.0.0 || ^4.0.0":
-  "integrity" "sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg=="
-  "resolved" "https://registry.npmjs.org/vite/-/vite-4.2.1.tgz"
-  "version" "4.2.1"
+"vite@^3.0.0 || ^4.0.0", "vite@^4.3.3":
+  "integrity" "sha512-MwFlLBO4udZXd+VBcezo3u8mC77YQk+ik+fbc0GZWGgzfbPP+8Kf0fldhARqvSYmtIWoAJ5BXPClUbMTlqFxrA=="
+  "resolved" "https://registry.npmjs.org/vite/-/vite-4.3.3.tgz"
+  "version" "4.3.3"
   dependencies:
     "esbuild" "^0.17.5"
-    "postcss" "^8.4.21"
-    "resolve" "^1.22.1"
-    "rollup" "^3.18.0"
+    "postcss" "^8.4.23"
+    "rollup" "^3.21.0"
   optionalDependencies:
     "fsevents" "~2.3.2"
 
