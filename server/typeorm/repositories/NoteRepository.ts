@@ -1,7 +1,7 @@
 import { Patient } from '../entity/Patient';
 import { Note } from '../entity/Note';
 import { FindOneOptions, FindManyOptions } from 'typeorm';
-import { initDataSource } from "../initDataSource";
+import { initDataSource } from '../database';
 
 
 const AppDataSource = initDataSource();

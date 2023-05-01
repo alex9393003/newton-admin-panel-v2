@@ -9,10 +9,6 @@ import {
   } from 'typeorm';
   import { Note } from './Note';
   import { IsEmail } from 'class-validator';
-  import { fileURLToPath } from 'url';
-  import path from 'path';
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    console.log('dirname for Patient entity file ', __dirname);
   
   @Entity()
   export class Patient {

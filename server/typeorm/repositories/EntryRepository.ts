@@ -1,7 +1,7 @@
-import { getAppDataSource } from "../connection";
+
 import { Entry } from "../entity/Entry";
 import { Note } from "../entity/Note";
-import { initDataSource } from "../initDataSource";
+import { initDataSource } from "../database";
 
 
 const AppDataSource = initDataSource();

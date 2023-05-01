@@ -1,8 +1,6 @@
 import { Patient } from '../entity/Patient';
 import { FindManyOptions } from 'typeorm';
-import { initDataSource } from "../initDataSource";
-import { fileURLToPath } from 'url';
-import path from 'path';
+import { initDataSource } from '../database';
 
 const AppDataSource = initDataSource();
 
@@ -93,21 +91,9 @@ export const getAllPatients = async () => {
     console.log("in get all patients");
     console.log('my appdatasource entitymetadatas are ', AppDataSource.entityMetadatas);
     console.log('entities are ', AppDataSource.options.entities);
-    const PatientRepository = AppDataSource.getRepository(Patient);
-    console.log('my patient repository is ', PatientRepository);
-
-    const test = await PatientRepository.find();
-    const test2 = await PatientRepository.metadata;
-    const test3 = PatientRepository.exist
-    console.log('test is ', test);
-    console.log('test2 is ', test2);
-    console.log('test3 is ', test3);
-
     const query = AppDataSource
       .getRepository(Patient)
       .createQueryBuilder('patient');
-
-
 
 
 

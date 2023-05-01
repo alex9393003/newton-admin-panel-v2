@@ -19,7 +19,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "target": "es6",
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
     "resolveJsonModule": true,
