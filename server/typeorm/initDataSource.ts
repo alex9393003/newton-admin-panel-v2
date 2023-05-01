@@ -1,7 +1,7 @@
 import { getAppDataSource } from "./connection";
 
 
-export function initDataSource() {
+export async function initDataSource() {
   const config = useRuntimeConfig();
   const formattedPort = parseInt(config.public.DB_PORT);
   const dataSourceConfig = {

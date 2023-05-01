@@ -21,6 +21,13 @@ export function getAppDataSource(config: {
   database: string;
 }): DataSource {
   if (!AppDataSource) {
+    // const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    // const config = useRuntimeConfig();
+    // const isProduction = config.public.NODE_ENV === "production";
+    // const fileExtension = isProduction ? "*.js" : "*.ts";
+    // const entitiesPath = path.join(__dirname, 'typeorm', 'entity', fileExtension);
+    
+
     AppDataSource = new DataSource({
       type: 'postgres',
       host: config.host,
@@ -30,12 +37,15 @@ export function getAppDataSource(config: {
       database: config.database,
       synchronize: true,
       logging: false,
-      entities: [User, Note, Patient, Entry],
+      // entities: [entitiesPath],
+      entities: [Patient, User, Note, Entry],
       migrations: [],
       subscribers: [],
     });
   }
   
+  console.log('in connection.ts file and the AppDataSource is ', AppDataSource);
+  console.log('options are ', AppDataSource.options);
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   console.log('dirname for connection.ts file ', __dirname);
   console.log('from connection.ts Patient entity looks like ', Patient);
