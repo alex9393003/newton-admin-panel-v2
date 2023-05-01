@@ -10,6 +10,10 @@ export function initDataSource() {
     username: config.public.DB_USERNAME,
     password: config.public.DB_PASSWORD,
     database: config.public.DB_DATABASE,
+    // entities: [
+    //   // "dist/server/**/*.entity{.ts,.js}",
+    //   `server/typeorm/entity/**/*{.ts,.js}`
+    // ]
   };
 
 

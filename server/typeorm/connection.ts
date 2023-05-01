@@ -4,6 +4,8 @@ import { User } from "./entity/User";
 import { Note } from "./entity/Note";
 import { Patient } from "./entity/Patient";
 import { Entry } from "./entity/Entry";
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 let AppDataSource: DataSource | null = null;
 
@@ -28,8 +30,11 @@ export function getAppDataSource(config: {
       migrations: [],
       subscribers: [],
     });
-
   }
+  
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  console.log('dirname for connection.ts file ', __dirname);
+  console.log('from connection.ts Patient entity looks like ', Patient);
 
   return AppDataSource;
 }
