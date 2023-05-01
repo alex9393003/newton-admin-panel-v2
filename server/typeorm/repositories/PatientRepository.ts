@@ -93,6 +93,9 @@ export const getAllPatients = async () => {
     console.log("in get all patients");
     console.log('my appdatasource entitymetadatas are ', AppDataSource.entityMetadatas);
     console.log('entities are ', AppDataSource.options.entities);
+    const PatientRepository = AppDataSource.getRepository(Patient);
+    console.log('my patient repository is ', PatientRepository);
+
     const query = AppDataSource
       .getRepository(Patient)
       .createQueryBuilder('patient');

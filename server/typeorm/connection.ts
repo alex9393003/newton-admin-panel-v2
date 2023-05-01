@@ -1,9 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "./entity/User";
-import { Note } from "./entity/Note";
-import { Patient } from "./entity/Patient";
-import { Entry } from "./entity/Entry";
+// import { User } from "./entity/User";
+// import { Note } from "./entity/Note";
+// import { Patient } from "./entity/Patient";
+// import { Entry } from "./entity/Entry";
+import { Patient } from '~/server/typeorm/entity/Patient';
+import { User } from '~/server/typeorm/entity/User';
+import { Note } from '~/server/typeorm/entity/Note';
+import { Entry } from '~/server/typeorm/entity/Entry';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
