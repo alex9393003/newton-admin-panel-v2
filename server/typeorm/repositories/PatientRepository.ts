@@ -96,9 +96,18 @@ export const getAllPatients = async () => {
     const PatientRepository = AppDataSource.getRepository(Patient);
     console.log('my patient repository is ', PatientRepository);
 
+    const test = await PatientRepository.find();
+    const test2 = await PatientRepository.metadata;
+    const test3 = PatientRepository.exist
+    console.log('test is ', test);
+    console.log('test2 is ', test2);
+    console.log('test3 is ', test3);
+
     const query = AppDataSource
       .getRepository(Patient)
       .createQueryBuilder('patient');
+
+
 
 
 
