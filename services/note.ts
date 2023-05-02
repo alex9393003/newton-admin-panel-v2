@@ -4,6 +4,7 @@ import { AxiosInstance } from "axios";
 export const createNoteService = (api : AxiosInstance) => ({
     getNotes: async () => {
         const { data } = await api.get('/notes/notes');
+        console.log("data is ", data);
         return data.data;
     },
 

@@ -46,8 +46,6 @@ export function getAppDataSource(config: {
       subscribers: [],
     });
   }
-  
-  console.log('options are ', AppDataSource.options);
 
   return AppDataSource;
 }

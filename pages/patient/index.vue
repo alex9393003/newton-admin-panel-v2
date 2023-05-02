@@ -1,13 +1,14 @@
 <template>
   <div>
     <v-container>
+      <v-btn class="mb-4" @click="backToDashboard">Back to Dashboard</v-btn>
       <v-card class="elevation-4">
         <div class="py-5 d-flex">
           <v-card-title>
             Patient List
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-btn color="primary" class="ma-2 pa-2" @click="patientDialog = true">Add New Patient</v-btn>
+          <v-btn color="primary" class="mx-2 pa-2" @click="patientDialog = true">Add New Patient</v-btn>
         </div>
         <v-table>
           <thead>
@@ -33,8 +34,8 @@
               <td>{{ item.lastName }}</td>
               <td>{{ formatDateTime(item.lastUpdated) }}</td>
               <td class="d-flex justify-end">
-                <v-icon @click="editPatientItem(item)">mdi-pencil</v-icon>
-                <v-btn class="ma-2 pa-2" color="primary" @click="goToPatient(item)">See patient</v-btn>
+                <v-icon class="ma-2 pa-3" @click="editPatientItem(item)">mdi-pencil</v-icon>
+                <v-btn class="ma-2 pa-3" color="primary" @click="goToPatient(item)">See patient</v-btn>
               </td>
             </tr>
           </tbody>
@@ -58,7 +59,7 @@ import { patientStore } from '~/store/patient';
 import { createPatientService } from '~/services/patient';
 
 export default {
-  name: 'NotePage',
+  name: 'PatientPage',
   components: {
       PatientDialog
   },
@@ -71,6 +72,7 @@ export default {
           itemsPerPage: 10,
           currentPage: 1,
           totalPages: 1,
+          selectedPatientItem: null,
       }
   },
   watch: {
@@ -82,7 +84,6 @@ export default {
       this.patientStore = patientStore();
       this.patientService = createPatientService(this.$api);
       this.patients = await this.patientService.getPatients();
-      console.log('PATIENTS', this.patients);
       this.updateDisplayedPatients();
   },
   methods: {

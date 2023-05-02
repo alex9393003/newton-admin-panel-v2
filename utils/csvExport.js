@@ -30,24 +30,15 @@ function cellReferenceToIndex(ref) {
 
 // Define the generateCSV function
 export function generateCSV(payload) {
-    console.log('FUNCTION BEING CALLED');
   // Create a 2D array representing the cells of the CSV content
   const rows = 42; // Define the number of rows
   const cols = 29; // Define the number of columns (A to AC)
   const cells = new Array(rows)
     .fill(null)
     .map(() => new Array(cols).fill(''));
-
-console.log('cells are ', cells);
-console.log('cell mappings are ', cellMappings);
   // Populate the cells based on the cell mappings
   for (const [ref, value] of Object.entries(cellMappings)) {
     const { row, col } = cellReferenceToIndex(ref);
-    console.log('ref is ', ref);
-    console.log('value is ,', value)
-    console.log('row is ', row);
-    console.log('col is ', col);
-    console.log('typeof value is ', typeof value);
     try {
         if (typeof value === 'function') {
           cells[row][col] = value(payload);
@@ -55,7 +46,7 @@ console.log('cell mappings are ', cellMappings);
           cells[row][col] = value;
         }
       } catch (error) {
-        console.error(`Error populating cell ${ref}:`, error);
+        // console.error(`Error populating cell ${ref}:`, error);
         cells[row][col] = ''; // Set an empty string or a default value in case of error
       }
     }
@@ -118,7 +109,6 @@ export function generateXLSX(payload, exportAsPDF = false, getPdfMakeInstance) {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
   
     if (exportAsPDF) {
-        console.log('make a pdf')
         // const pdfMakeInstance = getPdfMakeInstance(); // Get the pdfMake instance using the provided function
         // generatePDF(wb, pdfMakeInstance);
     } else {

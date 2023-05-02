@@ -9,7 +9,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" class="ma-2 pa-2" @click="showDialog = true">Add New Patient</v-btn>
 
-          <v-dialog style="max-width: 1200px;" v-model="showDialog">
+          <v-dialog v-model="showDialog" style="max-width: 1200px;" @click:outside="closeDialog">
               <v-card>
                 <v-card-title class="headline">Add New Patient</v-card-title>
                 <v-form class="pt-16 pb-16 pl-8 pr-8" @submit.prevent="saveForm">
@@ -61,7 +61,7 @@
 
 
   export default {
-    name: 'Notes',
+    name: 'NotesPage',
     data () {
       return {
         patients: [],
