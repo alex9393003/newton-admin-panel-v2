@@ -21,7 +21,7 @@
           ></v-list-item>
         </v-list>
 
-        <template v-slot:append>
+        <template #append>
           <div class="pa-2">
             <v-btn color="primary" block @click="signOut()">
               Logout
@@ -34,12 +34,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Pynkerton Chiropractic</v-toolbar-title>
-      <v-switch class="d-flex justify-end mr-4" v-model="themeToggler"></v-switch>
+      <v-switch v-model="themeToggler" class="d-flex justify-end mr-4"></v-switch>
           <v-menu
             min-width="200px"
             rounded
           >
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn
                 icon
                 v-bind="props"
@@ -93,6 +93,7 @@
 
 <script>
   export default {
+    name: 'DefaultLayout',
     data: () => ({ drawer: null }),
   }
 </script>
@@ -119,6 +120,11 @@ const items =  [
           icon: 'mdi-chart-bubble',
           title: 'Patients',
           to: '/patient'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Notes',
+          to: '/note'
         },
       ];
 

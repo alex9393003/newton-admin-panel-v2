@@ -58,7 +58,7 @@ import { patientStore } from '~/store/patient';
 import { createPatientService } from '~/services/patient';
 
 export default {
-  name: 'NotePage',
+  name: 'PatientPage',
   components: {
       PatientDialog
   },
