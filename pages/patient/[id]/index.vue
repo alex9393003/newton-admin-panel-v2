@@ -1,6 +1,8 @@
 <template>
     <div>
+      
       <v-container>
+        <v-btn class="mb-4" @click="backToPatients()">Back to Patient List</v-btn>
         <v-row>
           <v-col cols="8">
             <v-card class="elevation-4 mx-5 my-5">
@@ -246,6 +248,10 @@
 
       //   generateXLSX(payload, true, $pdfMake);
       // },
+      backToPatients() {
+        this.$router.push('/patient');
+
+      },
       goToNote(item) {
         this.noteStore.setCurrentNote(item);
         this.$router.push(`/patient/${this.$route.params.id}/note/${item.id}`);

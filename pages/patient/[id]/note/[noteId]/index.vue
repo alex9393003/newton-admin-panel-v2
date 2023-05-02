@@ -1,8 +1,8 @@
 <template>
     <div>
       <v-container>
-        <v-btn class="mb-4" @click="backToPatients()">Back to Patient List</v-btn>
-        <v-btn color="primary" @click="editNote(currentNote)">Edit Note</v-btn>
+        <v-btn class="mb-4 mr-3" @click="backToPatient()">Back to Patient Profile</v-btn>
+        <v-btn class="mb-4" color="primary" @click="editNote(currentNote)">Edit Note</v-btn>
 
         <v-row>
             <v-col cols="4">
@@ -66,7 +66,7 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" class="mr-3" @click="extremityDialog = true">Add Entry</v-btn>
         </div>
-        <EntriesTable :items="extremityEntries"  @edit-item="editExtremityItem" />
+        <EntriesTable :items="extremityEntries"  :extremity-table="true" @edit-item="editExtremityItem" />
       </v-card>
     </v-col>
         </v-row>
@@ -159,14 +159,14 @@ export default {
             this.selectedNoteItem = null;
             this.noteDialog = false;
         },
-        backToPatients() {
+        backToPatient() {
             this.$router.push(`/patient/${this.$route.params.id}`);
         },
         async fetchEntries() {
             if (this.currentNote) {
                 this.noteEntries = await this.entryService.getEntriesForNote({ noteId: this.currentNote.id });
                 this.spinalEntries = this.noteEntries.filter(entry => entry.category === 'spinal');
-                this.extremityEntries = this.noteEntries.filter(entry => entry.category === 'extremeties');
+                this.extremityEntries = this.noteEntries.filter(entry => entry.category === 'extremity');
             } else {
                 console.warn("Current note is not available.");
             }

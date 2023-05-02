@@ -18,6 +18,7 @@
             :title="item.title"
             :value="item.value"
             :prepend-icon="item.icon"
+            class="dashboard-item"
           ></v-list-item>
         </v-list>
 

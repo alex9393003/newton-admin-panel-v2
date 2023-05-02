@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-container>
+      <v-btn class="mb-4" @click="backToDashboard">Back to Dashboard</v-btn>
       <v-card class="elevation-4">
         <div class="py-5 d-flex">
           <v-card-title>
@@ -33,8 +34,8 @@
               <td>{{ item.lastName }}</td>
               <td>{{ formatDateTime(item.lastUpdated) }}</td>
               <td class="d-flex justify-end">
-                <v-icon @click="editPatientItem(item)">mdi-pencil</v-icon>
-                <v-btn class="ma-2 pa-2" color="primary" @click="goToPatient(item)">See patient</v-btn>
+                <v-icon class="ma-2 pa-3" @click="editPatientItem(item)">mdi-pencil</v-icon>
+                <v-btn class="ma-2 pa-3" color="primary" @click="goToPatient(item)">See patient</v-btn>
               </td>
             </tr>
           </tbody>
