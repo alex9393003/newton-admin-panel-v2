@@ -24,9 +24,9 @@
 
         <template #append>
           <div class="pa-2">
-            <v-btn color="primary" block @click="signOut()">
+            <!-- <v-btn color="primary" block @click="signOut()">
               Logout
-            </v-btn>
+            </v-btn> -->
           </div>
         </template>
     </v-navigation-drawer>
@@ -74,12 +74,12 @@
                     Edit Account
                   </v-btn>
                   <v-divider class="my-3"></v-divider>
-                  <v-btn
+                  <!-- <v-btn
                     rounded
                     variant="text"
                   >
                     Disconnect
-                  </v-btn>
+                  </v-btn> -->
                 </div>
               </v-card-text>
             </v-card>
@@ -107,9 +107,9 @@ const theme = useTheme();
 const drawer = ref(null);
 const themeToggler = ref(false);
 const user =  {
-        initials: 'JD',
-        fullName: 'John Doe',
-        email: 'john.doe@doe.com',
+        initials: 'TU',
+        fullName: 'Test User',
+        email: 'm@blacsand.io',
       };
 const items =  [
         {
@@ -122,11 +122,12 @@ const items =  [
           title: 'Patients',
           to: '/patient'
         },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Notes',
-          to: '/note'
-        },
+        // todo: make this view valuable
+        // {
+        //   icon: 'mdi-chart-bubble',
+        //   title: 'Notes',
+        //   to: '/note'
+        // },
       ];
 
       //create method signoutuser that sets the isloggedin in user store to be false

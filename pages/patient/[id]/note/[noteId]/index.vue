@@ -7,24 +7,33 @@
         <v-row>
             <v-col cols="4">
                 <v-card class="w-full h-full">
-                    <v-card-title>{{ currentPatient }}</v-card-title>
-                    <v-card-subtitle>{{ currentNote }}</v-card-subtitle>
+                    <div class="d-flex  pt-8 pb-5 px-5">
+                        <v-avatar color="info" size="x-large">
+                          {{currentPatient?.firstName[0]}}{{currentPatient?.lastName[0]}}
+                        </v-avatar>
+                    </div>
+                    <v-card-title>Note Visit {{ formatDate(currentNote?.visitDate) }}</v-card-title>
+                    <v-card-subtitle>For {{ currentPatient?.firstName }} {{ currentPatient?.lastName }} </v-card-subtitle>
                     <div class="px-2 py-5">
                             <div class="d-flex">
-                                <v-card-title>General</v-card-title>
+                                <v-card-title>Vitals</v-card-title>
                                 <!-- <v-btn color="primary" class="justify-end">Edit General</v-btn> -->
                             </div>
                             <v-divider></v-divider>
                             <v-row>
                                 <v-col class="py-5 px-2"  cols="6">
-                                    <v-card-text>Height: 5' 10" </v-card-text>
-                                    <v-card-text>Weight: 156 lbs </v-card-text>
-                                    <v-card-text>Temperature: 98.7 </v-card-text>
+                                    <v-card-text v-if="currentNote?.heightFeet">Height: {{currentNote?.heightFeet}}' {{ currentNote?.heightInches }}"</v-card-text>
+                                    <v-card-text v-else>Height: N/A</v-card-text>
+
+                                    <v-card-text v-if="currentNote?.weight">Weight: {{ currentNote?.weight }} lbs </v-card-text>
+                                    <v-card-text v-else>Weight: N/A </v-card-text>
+
+                                    <v-card-text>Temperature: {{currentNote?.temperature }} </v-card-text>
                                 </v-col>
                                 <v-col class="py-5 px-2" cols="6">
-                                    <v-card-text>Respiration: 5' 10" </v-card-text>
-                                    <v-card-text>Systolic: 156 lbs </v-card-text>
-                                    <v-card-text>Diastolic: 98.7 </v-card-text>
+                                    <v-card-text>Respiration: {{currentNote?.respiration}} </v-card-text>
+                                    <v-card-text>Systolic: {{ currentNote?.systolic }} </v-card-text>
+                                    <v-card-text>Diastolic: {{ currentNote?.diastolic }} </v-card-text>
                                 </v-col>
                         </v-row>
                     </div>
@@ -52,7 +61,7 @@
                             <v-divider></v-divider>
                             <div class="px-5 py-5">
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut aliquam aliquam, nunc nisl aliquet nunc,
+                                    {{currentNote?.otherNotes}}
                                 </p>
                             </div>
                     </div>
@@ -143,7 +152,6 @@ export default {
             this.extremityDialog = true;
         },
         editNote(item) {
-            console.log('item is', item)
             this.selectedNoteItem = item;
             this.noteDialog = true;
         },
@@ -170,6 +178,19 @@ export default {
             } else {
                 console.warn("Current note is not available.");
             }
+        },
+        formatDate(date) {
+            if (isNaN(Date.parse(date))) {
+                return "Invalid date";
+            }
+
+            const formattedDate = new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+            }).format(new Date(date));
+
+            return `${formattedDate}`;
         },
     },
 }   

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog max-width="1000px">
+    <v-dialog max-width="1000px" @click:outside="closeDialog">
       <v-card>
         <v-card-title>
           <span class="text-h5">{{ title }}</span>
@@ -195,7 +195,6 @@ export default {
       this.resetForm();
     },
     async populateFormData(item) {
-        console.log('item is ', item);
         const visitDateTime = parseISO(item.visitDate);
         this.form = {
           ...item,

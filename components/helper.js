@@ -1,3 +1,17 @@
+export function formatDate(date) {
+    if (isNaN(Date.parse(date))) {
+        return "Invalid date";
+    }
+
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(new Date(date));
+
+    return `${formattedDate}`;
+}
+
 export const sides = [
     {
         title: 'Left',

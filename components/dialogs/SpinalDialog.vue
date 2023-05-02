@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="1000px">
+  <v-dialog max-width="1000px" @click:outside="closeDialog">
     <v-card>
       <v-card-title class="my-5">
         <span class="text-h5">{{ title }}</span>
@@ -332,7 +332,6 @@ export default {
       const noteId = this.$route.params.noteId;
       if (this.$refs.spinalEntryForm.validate()) {
         const res = this.isUpdateMode ? await this.entryService.updateEntry(this.form) : await this.entryService.addEntry(this.form, noteId);
-        console.log('response is ', res);
         if (await res instanceof Error) {
           console.log('Entry not added');
         } else {

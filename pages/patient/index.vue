@@ -8,7 +8,7 @@
             Patient List
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-btn color="primary" class="ma-2 pa-2" @click="patientDialog = true">Add New Patient</v-btn>
+          <v-btn color="primary" class="mx-2 pa-2" @click="patientDialog = true">Add New Patient</v-btn>
         </div>
         <v-table>
           <thead>
@@ -72,6 +72,7 @@ export default {
           itemsPerPage: 10,
           currentPage: 1,
           totalPages: 1,
+          selectedPatientItem: null,
       }
   },
   watch: {
@@ -83,7 +84,6 @@ export default {
       this.patientStore = patientStore();
       this.patientService = createPatientService(this.$api);
       this.patients = await this.patientService.getPatients();
-      console.log('PATIENTS', this.patients);
       this.updateDisplayedPatients();
   },
   methods: {
