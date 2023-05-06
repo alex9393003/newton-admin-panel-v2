@@ -7,17 +7,7 @@
       <v-card-text>
         <v-form ref="spinalEntryForm" v-model="formIsValid">
           <v-row class="w-full">
-            <v-col cols="4">
-              <v-select
-                v-model="form.region"
-                :items="regionOptions"
-                item-text="title"
-                item-value="value"
-                label="Region"
-                required
-              ></v-select>
-            </v-col>
-            <v-col cols="4">
+            <v-col cols="8">
               <v-select
                 v-model="form.spinalLevel"
                 :items="spinalLevelOptions"

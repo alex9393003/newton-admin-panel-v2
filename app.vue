@@ -1,7 +1,14 @@
 <template>
   <div v-if="!isAuthInitialized">
-  <h2>Loading...</h2>
-</div>
+    <v-container>
+      <v-row class="my-24">
+        <v-col cols="4"></v-col>
+        <v-col style="text-align: center;" cols="4"><h4>Loading...</h4></v-col>
+        <v-col cols="4"></v-col>
+
+      </v-row>
+    </v-container>
+  </div>
 <v-container v-else-if="!isLoggedIn">
   <v-row class="pt-16">
     <v-col cols="4">
