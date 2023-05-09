@@ -4,6 +4,7 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
+    UpdateDateColumn,
   } from 'typeorm';
   import { Patient } from './Patient';
   
@@ -17,6 +18,9 @@ import {
   
     @Column('int', { nullable: false })
     painLevel: number;
+
+    @UpdateDateColumn()
+    lastEdited: Date;
   
     @ManyToOne(() => Patient, (patient) => patient.complaints)
     @JoinColumn({ name: 'patient_id' })

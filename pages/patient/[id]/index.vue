@@ -32,7 +32,7 @@
                 </thead>
                 <tbody class="">
                   <tr
-                    v-for="item in displayedNotes"
+                    v-for="item in shownNotes"
                     :key="item.id"
                   >
                     <td>{{ formatDate(item.visitDate) }}</td>
@@ -115,6 +115,58 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="8">
+            <v-card class="elevation-4 mx-5 my-5">
+              <div class="py-5 d-flex">
+                <v-card-title>
+                  Complaints List
+                </v-card-title>
+                <v-spacer></v-spacer>
+                <v-row class="mx-2 pa-2" justify="end">
+                  <v-btn color="primary" @click="complaintDialog = true">Add New Complaint</v-btn>
+                  <PatientComplaintDialog v-model="complaintDialog" :selected-item="selectedComplaintItem" @complaint-added="refreshComplaints" @close-dialog="closeComplaintDialog" />
+                </v-row>
+              </div>
+              <v-table>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      Text
+                    </th>
+                    <th class="text-left">
+                      Pain Level
+                    </th>
+                    <th class="text-left">
+                      Last Edited
+                    </th>
+                    <th class="text-left">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in shownComplaints"
+                    :key="item.id"
+                  >
+                    <td>{{ item.text }}</td>
+                    <td>{{ item.painLevel }}</td>
+                    <td>{{ formatDate(item.lastEdited) }}</td>
+                    <td class="d-flex justify-end">
+                      <v-icon class="ma-2 pa-2 pencil-edit" @click="editComplaintItem(item)">mdi-pencil</v-icon>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
+              <v-pagination
+                v-model="complaintCurrentPage"
+                :length="complaintTotalPages"
+                :total-visible="5"
+                color="primary"
+              ></v-pagination>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </div>
   </template>
@@ -125,13 +177,16 @@
   import { createPatientService } from '~/services/patient';
   import { createNoteService } from '~/services/note';
   import { createEntryService } from '~/services/entry';
+  import {createComplaintService} from '~/services/complaint';
   import NoteDialog from '~/components/dialogs/NoteDialog.vue';
   import { generateCSV, generateXLSX } from '~/utils/csvExport';
+  import PatientComplaintDialog from '~/components/dialogs/PatientComplaintDialog.vue';
 
   export default {
     name: 'PatientPage',
     components: {
       NoteDialog,
+      PatientComplaintDialog
     },
     data() {
       return {
@@ -142,21 +197,34 @@
         patientService: null,
         noteService: null,
         entryService: null,
+        complaintService: null,
         payload: null,
         exportItems: [
           { title: 'Export as CSV', type: 'csv' },
           { title: 'Export as Excel', type: 'excel' },
         ],
-        itemsPerPage: 10,
+        itemsPerPage: 6,
         currentPage: 1,
         totalPages: 1,
         displayedNotes: [],
+        complaints: [],
+        complaintDialog: false,
+        complaintCurrentPage: 1,
+        complaintTotalPages: 1,
+        displayedComplaints: [],
+        selectedComplaintItem: null,
       };
     },
     computed: {
       currentPatient() {
         return this.patientStore?.getCurrentPatient
       },
+      shownNotes() {
+        return this.displayedNotes;
+      },
+      shownComplaints() {
+        return this.displayedComplaints;
+      }
     },
     watch: {
       currentPage() {
@@ -169,11 +237,18 @@
       this.noteStore = noteStore();
       this.noteService = createNoteService(this.$api);
       this.entryService = createEntryService(this.$api);
+      this.complaintService = createComplaintService(this.$api);
       this.notes = await this.noteService.getNotesForPatient({ patientId: this.$route.params.id });
       this.updateDisplayedNotes();
+      this.complaints = await this.complaintService.getComplaintsForPatient({ patientId: this.$route.params.id });
+      this.updateDisplayedComplaints();
     },
     methods: {
       updateDisplayedNotes() {
+        // sort notes based on createdDate in descending order
+        this.notes.sort((a, b) => {
+          return new Date(b.createdDate) - new Date(a.createdDate);
+        });
         this.totalPages = Math.ceil(this.notes.length / this.itemsPerPage);
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         this.displayedNotes = this.notes.slice(startIndex, startIndex + this.itemsPerPage);
@@ -254,6 +329,11 @@
       },
       async refreshNotes() {
         this.notes = await this.noteService.getNotesForPatient({ patientId: this.$route.params.id });
+        this.updateDisplayedNotes();
+      },
+      editComplaintItem(complaint) {
+        this.complaintDialog = true;
+        this.selectedComplaintItem = complaint;
       },
       closeNoteDialog() {
         this.dialog = false;
@@ -279,7 +359,23 @@
             this.patientStore.setCurrentPatient(patient);
             return patient;
         },
-    },
+        updateDisplayedComplaints() {
+          // sort complaints based on lastUpdated in descending order
+          this.complaints.sort((a, b) => {
+            return new Date(b.lastEdited) - new Date(a.lastEdited);
+          });
+          this.complaintTotalPages = Math.ceil(this.complaints.length / this.itemsPerPage);
+          const startIndex = (this.complaintCurrentPage - 1) * this.itemsPerPage;
+          this.displayedComplaints = this.complaints.slice(startIndex, startIndex + this.itemsPerPage);
+        },
+        async refreshComplaints() {
+          this.complaints = await this.complaintService.getComplaintsForPatient({ patientId: this.$route.params.id });
+          this.updateDisplayedComplaints();
+        },
+        closeComplaintDialog() {
+          this.complaintDialog = false;
+        },
+      },
   };
   </script>
   
