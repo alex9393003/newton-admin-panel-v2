@@ -1,6 +1,5 @@
 import { Patient } from '../entity/Patient';
 import { Note } from '../entity/Note';
-import { FindOneOptions, FindManyOptions } from 'typeorm';
 import { initDataSource } from '../database';
 
 
@@ -33,19 +32,21 @@ export const addNewNote = async (payload: Note, patientId: number) => {
     }
   };
 
-export const getAllNotes = async () => {
-  try {
-    const query = AppDataSource
-      .getRepository(Note)
-      .createQueryBuilder('note');
-
-    const [results, count] = await query.getManyAndCount();
-    return results;
-  } catch (error) {
-    console.log(error);
-    return error
-  }
-};
+  export const getAllNotes = async () => {
+    try {
+      const query = AppDataSource
+        .getRepository(Note)
+        .createQueryBuilder('note')
+        .leftJoinAndSelect('note.patient', 'patient'); // Include the related Patient entity
+  
+      const results = await query.getMany();
+      console.log('results from noterepo is ', results);
+      return results;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
 
 export const updateNote = async (noteId: string, payload: Partial<Note>) => {
     try {
@@ -89,7 +90,10 @@ export const updateNote = async (noteId: string, payload: Partial<Note>) => {
   export const getNoteById = async (noteId: string) => {
     try {
       const notesRepository = AppDataSource.getRepository(Note);
-      const note = await notesRepository.findOne({ where: { id: noteId } });
+      const note = await notesRepository.findOne({
+        where: { id: noteId },
+        relations: ['patient'], // Include the related Patient entity
+      });
       if (!note) {
         throw new Error(`Note with id ${noteId} not found`);
       }

@@ -867,7 +867,7 @@
   "resolved" "https://registry.npmjs.org/@nuxt/devalue/-/devalue-2.0.0.tgz"
   "version" "2.0.0"
 
-"@nuxt/kit@^3.0.0", "@nuxt/kit@^3.2.0", "@nuxt/kit@3.3.3":
+"@nuxt/kit@^3.0.0", "@nuxt/kit@^3.0.0-rc.8", "@nuxt/kit@^3.2.0", "@nuxt/kit@3.3.3":
   "integrity" "sha512-8ql3DweT1BNOCM6mmP8st+33NCAHHvmQuOS6Q75kXMZ6Ygqv06hxp5slpLXpT1ZOEoM+vzfkjO2lJ3rnjWYC4Q=="
   "resolved" "https://registry.npmjs.org/@nuxt/kit/-/kit-3.3.3.tgz"
   "version" "3.3.3"
@@ -1009,6 +1009,15 @@
   "version" "2.1.0"
   dependencies:
     "http-proxy-middleware" "^1.0.6"
+
+"@nuxtus/nuxt-localtunnel@^1.0.1":
+  "integrity" "sha512-lKr+XpNw+qKTCyqzk6O/gLvzuTMHEfKdWQypIol33lL//Ix0DQzVBHNdnBbMwOpaYl1lC0eYX57y0rD1BtKf7Q=="
+  "resolved" "https://registry.npmjs.org/@nuxtus/nuxt-localtunnel/-/nuxt-localtunnel-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "@nuxt/kit" "^3.0.0-rc.8"
+    "chalk" "^5.0.1"
+    "localtunnel" "^2.0.2"
 
 "@pdf-lib/standard-fonts@^1.0.0":
   "integrity" "sha512-hU30BK9IUN/su0Mn9VdlVKsWBS6GyhVfqjwl1FjZN4TxP6cCw0jP2w7V3Hf5uX7M0AZJ16vey9yE0ny7Sa59ZA=="
@@ -1965,6 +1974,13 @@
     "form-data" "^4.0.0"
     "proxy-from-env" "^1.1.0"
 
+"axios@0.21.4":
+  "integrity" "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz"
+  "version" "0.21.4"
+  dependencies:
+    "follow-redirects" "^1.14.0"
+
 "balanced-match@^1.0.0":
   "integrity" "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
   "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
@@ -2194,7 +2210,7 @@
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
 
-"chalk@^5.0.0", "chalk@^5.2.0", "chalk@5.2.0":
+"chalk@^5.0.0", "chalk@^5.0.1", "chalk@^5.2.0", "chalk@5.2.0":
   "integrity" "sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA=="
   "resolved" "https://registry.npmjs.org/chalk/-/chalk-5.2.0.tgz"
   "version" "5.2.0"
@@ -2663,6 +2679,13 @@
   "version" "2.6.9"
   dependencies:
     "ms" "2.0.0"
+
+"debug@4.3.2":
+  "integrity" "sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
+  "version" "4.3.2"
+  dependencies:
+    "ms" "2.1.2"
 
 "debug@4":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
@@ -3330,7 +3353,7 @@
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   "version" "3.2.7"
 
-"follow-redirects@^1.0.0", "follow-redirects@^1.15.0":
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.0", "follow-redirects@^1.15.0":
   "integrity" "sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
   "version" "1.15.2"
@@ -4125,6 +4148,16 @@
   "resolved" "https://registry.npmjs.org/local-pkg/-/local-pkg-0.4.3.tgz"
   "version" "0.4.3"
 
+"localtunnel@^2.0.2":
+  "integrity" "sha512-n418Cn5ynvJd7m/N1d9WVJISLJF/ellZnfsLnx8WBWGzxv/ntNcFkJ1o6se5quUhCplfLGBNL5tYHiq5WF3Nug=="
+  "resolved" "https://registry.npmjs.org/localtunnel/-/localtunnel-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "axios" "0.21.4"
+    "debug" "4.3.2"
+    "openurl" "1.1.1"
+    "yargs" "17.1.1"
+
 "locate-path@^6.0.0":
   "integrity" "sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw=="
   "resolved" "https://registry.npmjs.org/locate-path/-/locate-path-6.0.0.tgz"
@@ -4800,6 +4833,11 @@
     "define-lazy-prop" "^2.0.0"
     "is-docker" "^2.1.1"
     "is-wsl" "^2.2.0"
+
+"openurl@1.1.1":
+  "integrity" "sha512-d/gTkTb1i1GKz5k3XE3XFV/PxQ1k45zDqGP2OA7YhgsaLoqm6qRvARAZOFer1fcXritWlGBRCu/UgeS4HAnXAA=="
+  "resolved" "https://registry.npmjs.org/openurl/-/openurl-1.1.1.tgz"
+  "version" "1.1.1"
 
 "optionator@^0.9.1":
   "integrity" "sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw=="
@@ -6420,7 +6458,7 @@
     "vscode-languageserver-textdocument" "^1.0.1"
     "vscode-uri" "^3.0.2"
 
-"vite@^3.0.0 || ^4.0.0", "vite@^4.3.3":
+"vite@^3.0.0 || ^4.0.0":
   "integrity" "sha512-MwFlLBO4udZXd+VBcezo3u8mC77YQk+ik+fbc0GZWGgzfbPP+8Kf0fldhARqvSYmtIWoAJ5BXPClUbMTlqFxrA=="
   "resolved" "https://registry.npmjs.org/vite/-/vite-4.3.3.tgz"
   "version" "4.3.3"
@@ -6771,6 +6809,19 @@
     "string-width" "^4.2.3"
     "y18n" "^5.0.5"
     "yargs-parser" "^21.1.1"
+
+"yargs@17.1.1":
+  "integrity" "sha512-c2k48R0PwKIqKhPMWjeiF6y2xY/gPMUlro0sgxqXpbOIohWiLNXWslsootttv7E1e73QPAMQSg5FeySbVcpsPQ=="
+  "resolved" "https://registry.npmjs.org/yargs/-/yargs-17.1.1.tgz"
+  "version" "17.1.1"
+  dependencies:
+    "cliui" "^7.0.2"
+    "escalade" "^3.1.1"
+    "get-caller-file" "^2.0.5"
+    "require-directory" "^2.1.1"
+    "string-width" "^4.2.0"
+    "y18n" "^5.0.5"
+    "yargs-parser" "^20.2.2"
 
 "yn@3.1.1":
   "integrity" "sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q=="

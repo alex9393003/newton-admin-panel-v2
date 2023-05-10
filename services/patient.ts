@@ -9,12 +9,12 @@ export const createPatientService = (api : AxiosInstance) => ({
   },
 
   getPatient: async (payload: object) => {
-        const { data } = await api.get('/patient/patient', payload);
+        const { data } = await api.post('/patient/patient', payload);
         return data.data;
   },
 
   addPatient: async (payload: object) => {
-    const { data } = await api.post('/patient/patient', payload);
+    const { data } = await api.post('/patient/new-patient', payload);
     return data.data;
   },
 

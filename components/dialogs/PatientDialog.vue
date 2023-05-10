@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="patientDialog" max-width="1000px">
+  <v-dialog v-model="patientDialog" max-width="1000px" @click:outside="closeDialog">
     <v-card>
       <v-card-title>
         <span class="text-h5">{{ title }}</span>
@@ -129,7 +129,6 @@ export default {
       this.form.nextAppointment = null;
     },
     async submitPatientForm() {
-      console.log(this.$refs.patientForm.validate());
       if (this.$refs.patientForm.validate()) {
         const res = this.isUpdateMode
           ? await this.patientService.updatePatient(this.form)

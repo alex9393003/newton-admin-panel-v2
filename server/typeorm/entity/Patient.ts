@@ -9,6 +9,7 @@ import {
   } from 'typeorm';
   import { Note } from './Note';
   import { IsEmail } from 'class-validator';
+  import { Complaint } from './Complaint';
   
   @Entity()
   export class Patient {
@@ -39,4 +40,7 @@ import {
   
     @OneToMany(() => Note, (note) => note.patient)
     notes: Note[];
+
+    @OneToMany(() => Complaint, (complaint) => complaint.patient)
+    complaints: Complaint[];
   }

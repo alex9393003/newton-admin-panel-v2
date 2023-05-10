@@ -18,14 +18,15 @@
             :title="item.title"
             :value="item.value"
             :prepend-icon="item.icon"
+            class="dashboard-item"
           ></v-list-item>
         </v-list>
 
-        <template v-slot:append>
+        <template #append>
           <div class="pa-2">
-            <v-btn color="primary" block @click="signOut()">
+            <!-- <v-btn color="primary" block @click="signOut()">
               Logout
-            </v-btn>
+            </v-btn> -->
           </div>
         </template>
     </v-navigation-drawer>
@@ -34,12 +35,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Pynkerton Chiropractic</v-toolbar-title>
-      <v-switch class="d-flex justify-end mr-4" v-model="themeToggler"></v-switch>
+      <v-switch v-model="themeToggler" class="d-flex justify-end mr-4"></v-switch>
           <v-menu
             min-width="200px"
             rounded
           >
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn
                 icon
                 v-bind="props"
@@ -73,12 +74,12 @@
                     Edit Account
                   </v-btn>
                   <v-divider class="my-3"></v-divider>
-                  <v-btn
+                  <!-- <v-btn
                     rounded
                     variant="text"
                   >
                     Disconnect
-                  </v-btn>
+                  </v-btn> -->
                 </div>
               </v-card-text>
             </v-card>
@@ -93,6 +94,7 @@
 
 <script>
   export default {
+    name: 'DefaultLayout',
     data: () => ({ drawer: null }),
   }
 </script>
@@ -105,9 +107,9 @@ const theme = useTheme();
 const drawer = ref(null);
 const themeToggler = ref(false);
 const user =  {
-        initials: 'JD',
-        fullName: 'John Doe',
-        email: 'john.doe@doe.com',
+        initials: 'TU',
+        fullName: 'Test User',
+        email: 'm@blacsand.io',
       };
 const items =  [
         {
@@ -120,6 +122,12 @@ const items =  [
           title: 'Patients',
           to: '/patient'
         },
+        // todo: make this view valuable
+        // {
+        //   icon: 'mdi-chart-bubble',
+        //   title: 'Notes',
+        //   to: '/note'
+        // },
       ];
 
       //create method signoutuser that sets the isloggedin in user store to be false

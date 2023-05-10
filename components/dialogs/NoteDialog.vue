@@ -1,5 +1,5 @@
 <template>
-    <v-dialog max-width="1000px">
+    <v-dialog max-width="1000px" @click:outside="closeDialog">
       <v-card>
         <v-card-title>
           <span class="text-h5">{{ title }}</span>
@@ -8,9 +8,9 @@
           <v-form ref="noteForm" v-model="formIsValid">
             <v-row>
                 <v-col cols="12">
-                    <label class="form-label">Visit Date and Time</label>
                     <VueDatePicker
                         v-model="visitDateTime"
+                        placeholder="Please select a visit date and time"
                         dark
                         type="datetime"
                         :minute-interval="30"
@@ -20,31 +20,29 @@
   
             <!-- Additional form fields based on Note entity attributes -->
             <v-row>
-              <v-col cols="6">
+              <v-col cols="3">
+                <v-text-field
+                  v-model="form.roomAssignment"
+                  label="Room Assignment"
+                  type="number"
+                ></v-text-field>
+                
+              </v-col>
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.heightFeet"
                   label="Height (Feet)"
                   type="number"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.heightInches"
                   label="Height (Inches)"
                   type="number"
                 ></v-text-field>
               </v-col>
-            </v-row>
-  
-            <v-row>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="form.temperature"
-                  label="Temperature"
-                  type="number"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.respiration"
                   label="Respiration"
@@ -52,41 +50,37 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-  
             <v-row>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.systolic"
                   label="Systolic"
                   type="number"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.diastolic"
                   label="Diastolic"
                   type="number"
                 ></v-text-field>
               </v-col>
-            </v-row>
-  
-            <v-row>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
                   v-model="form.physiotherapy"
                   label="Physiotherapy"
                   type="number"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="3">
                 <v-text-field
-                  v-model="form.roomAssignment"
-                  label="Room Assignment"
+                  v-model="form.temperature"
+                  label="Temperature"
                   type="number"
                 ></v-text-field>
               </v-col>
+              
             </v-row>
-  
             <v-row>
               <v-col cols="6">
                 <v-text-field
@@ -105,7 +99,7 @@
             </v-row>
             <v-textarea
             v-model="form.otherNotes"
-            label="Other Notes"
+            label="Additional Notes"
             auto-grow
           ></v-textarea>
         </v-form>
@@ -144,16 +138,16 @@ export default {
     return {
       form: {
         visitDate: null,
-        heightFeet: 0,
-        heightInches: 0,
-        temperature: 0,
-        respiration: 0,
-        systolic: 0,
-        diastolic: 0,
-        physiotherapy: 0,
-        roomAssignment: 0,
-        physio: 0,
-        tx: 0,
+        heightFeet: null,
+        heightInches: null,
+        temperature: null,
+        respiration: null,
+        systolic: null,
+        diastolic: null,
+        physiotherapy: null,
+        roomAssignment: null,
+        physio: null,
+        tx: null,
         otherNotes: "",
       },
       formIsValid: false,
@@ -201,7 +195,6 @@ export default {
       this.resetForm();
     },
     async populateFormData(item) {
-        console.log('item is ', item);
         const visitDateTime = parseISO(item.visitDate);
         this.form = {
           ...item,

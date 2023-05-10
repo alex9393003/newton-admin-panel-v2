@@ -7,8 +7,8 @@ export default defineNuxtConfig({
         '@/server/typeorm/entity/Note',
         '@/server/typeorm/entity/Patient',
         '@/server/typeorm/entity/Entry',]
+
     },
-    
     
     plugins: [
         '~/plugins/firebaseAuth.ts', 
@@ -41,9 +41,16 @@ export default defineNuxtConfig({
     
     modules: [
         '@pinia/nuxt',
+        '@nuxtus/nuxt-localtunnel',
+        
     ],
+    localtunnel: {
+        subdomain: 'orange-planets-drum-98-116-78-133'
+    },
+
     pinia: {
         autoImports: ['defineStore', 'acceptHMRUpdate'],
     },
+    
 
 })
