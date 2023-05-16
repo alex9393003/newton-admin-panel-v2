@@ -4,6 +4,7 @@ import { Patient } from '~/server/typeorm/entity/Patient';
 import { User } from '~/server/typeorm/entity/User';
 import { Note } from '~/server/typeorm/entity/Note';
 import { Entry } from '~/server/typeorm/entity/Entry';
+import { Complaint } from "./entity/Complaint";
 
 
 let AppDataSource: DataSource | null = null;
@@ -41,13 +42,11 @@ export function getAppDataSource(config: {
       synchronize: true,
       logging: false,
       // entities: [entitiesPath],
-      entities: [Patient, User, Note, Entry],
+      entities: [Patient, User, Note, Entry, Complaint],
       migrations: [],
       subscribers: [],
     });
   }
-  
-  console.log('options are ', AppDataSource.options);
 
   return AppDataSource;
 }

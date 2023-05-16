@@ -18,10 +18,10 @@ import {
     @CreateDateColumn()
     createdDate: Date;
   
-    @Column({ type: 'enum', enum: ['spinal', 'extremeties'] })
+    @Column({ type: 'enum', enum: ['spinal', 'extremity'] })
     category: string;
   
-    @Column({ type: 'enum', enum: ['upper-cerv', 'mid-cerv', 'lower-cerv', 'sub-occ', 'upper-t', 'mid-t', 'lower-t', 'upper-l', 'lower-l', 'upper-sac', 'lower-sac'] })
+    @Column({ type: 'enum', enum: ['upper-cerv', 'mid-cerv', 'lower-cerv', 'sub-occ', 'upper-t', 'mid-t', 'lower-t', 'upper-l', 'lower-l', 'upper-sac', 'lower-sac'], nullable: true })
     region: string;
   
     @Column({ type: 'enum', enum: ['occ', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 't1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9','t10', 't11', 't12', 'l1', 'l2', 'l3', 'l4', 'l5', 's1', 's2', 's3', 's4', 's5'], nullable: true })
@@ -58,7 +58,7 @@ import {
     reducedMotion: boolean;
   
     @Column('text')
-    positioning: string;
+    physioPositioning: string;
   
     @Column('boolean')
     coldPack: boolean;
@@ -74,6 +74,9 @@ import {
   
     @Column('boolean')
     massage: boolean;
+
+    @Column('text')
+    treatmentPositioning: string;
   
     @Column('text')
     technique: string;

@@ -38,7 +38,6 @@ export const signInUser = async (email: string, password: string) => {
             } else if (credentials && res) {
                 store.setUser(res);
                 store.setIsLoggedIn(true);
-                console.log('user is ', store.getUser instanceof User)
                 return { success: true, credentials };
             } else {
                 return { success: false, error: 'Error signing user in.' };
